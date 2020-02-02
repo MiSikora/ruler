@@ -69,7 +69,7 @@ class Length private constructor(
       nanometers: Long = 0
     ): Length {
       var meterPart = nanometers / 1_000_000_000
-      var nanoPart = (nanometers % 1_000_000_000)
+      var nanoPart = nanometers % 1_000_000_000
       if (nanoPart < 0) {
         nanoPart += 1_000_000_000
         meterPart--
