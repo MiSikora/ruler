@@ -1,3 +1,4 @@
 rootProject.name = "Ruler"
 
 include ":library:ruler"
+include ":library:android"
