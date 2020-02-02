@@ -1,0 +1,9 @@
+apply plugin: "kotlin"
+
+dependencies {
+  implementation deps.kotlin.stdLib.jdk7
+
+  testImplementation deps.kotlinTest.runner
+}
+
+apply from: rootProject.file("gradle/gradle-mvn-push.gradle")

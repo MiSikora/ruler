@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+  <issue id="HardcodedText" severity="error" />
+  <issue id="SetTextI18n" severity="error" />
+  <issue id="ObsoleteSdkInt" severity="error" />
+  <issue id="PrivateResource" severity="error" />
+  <issue id="UnusedIds" severity="error" />
+  <issue id="UnusedResources" severity="error" />
+  <issue id="SyntheticAccessor" severity="error">
+    <ignore path="src/test*/**" />
+    <ignore path="src/androidTest*/**" />
+    <ignore path="build*/**" />
+  </issue>
+  <issue id="RequiredSize" severity="error" />
+  <issue id="Registered" severity="error" />
+</lint>
