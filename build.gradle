@@ -147,6 +147,7 @@ allprojects {
       freeCompilerArgs += [
           "-XXLanguage:+NewInference",
           "-progressive",
+          "-Xjvm-default=enable"
       ]
     }
   }
