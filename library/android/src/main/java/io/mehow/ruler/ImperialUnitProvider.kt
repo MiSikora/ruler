@@ -1,12 +1,12 @@
 package io.mehow.ruler
 
-import io.mehow.ruler.ImperialDistanceUnit.Foot
-import io.mehow.ruler.ImperialDistanceUnit.Inch
-import io.mehow.ruler.ImperialDistanceUnit.Mile
-import io.mehow.ruler.ImperialDistanceUnit.Yard
+import io.mehow.ruler.ImperialLengthUnit.Foot
+import io.mehow.ruler.ImperialLengthUnit.Inch
+import io.mehow.ruler.ImperialLengthUnit.Mile
+import io.mehow.ruler.ImperialLengthUnit.Yard
 
-object ImperialUnitProvider : DistanceUnitResourceProvider<ImperialDistanceUnit> {
-  override fun resource(unit: ImperialDistanceUnit) = when (unit) {
+object ImperialUnitProvider : UnitResourceProvider<ImperialLengthUnit> {
+  override fun resource(unit: ImperialLengthUnit) = when (unit) {
     Inch -> R.string.io_mehow_ruler_inches
     Foot -> R.string.io_mehow_ruler_feet
     Yard -> R.string.io_mehow_ruler_yards

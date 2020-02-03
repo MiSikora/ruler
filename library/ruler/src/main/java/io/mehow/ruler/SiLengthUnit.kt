@@ -4,10 +4,10 @@ import java.math.BigDecimal
 import java.math.RoundingMode.CEILING
 import kotlin.Double.Companion.MAX_VALUE
 
-enum class SiDistanceUnit(
+enum class SiLengthUnit(
   private val applicableRange: ClosedRange<BigDecimal>,
   private val meterRatio: BigDecimal
-) : DistanceUnit, Iterable<SiDistanceUnit> {
+) : LengthUnit, Iterable<SiLengthUnit> {
   Nanometer(
       0.0.toBigDecimal()..0.000_001.toBigDecimal(),
       0.000_000_001.toBigDecimal()
@@ -36,26 +36,26 @@ enum class SiDistanceUnit(
       1_000_000_000.0.toBigDecimal()..MAX_VALUE.toBigDecimal(),
       1_000_000_000.0.toBigDecimal()
   ) {
-    override fun appliesRangeTo(length: BigDecimal): Boolean {
-      return length >= super.applicableRange.start
+    override fun appliesRangeTo(distance: BigDecimal): Boolean {
+      return distance >= super.applicableRange.start
     }
   };
 
-  override fun toLength(value: Long): Length {
+  override fun toDistance(value: Long): Distance {
     val meters = value.toBigDecimal() * meterRatio
     val exactMeters = meters.toBigInteger().longValueExact()
     val nanometers = (meters - exactMeters.toBigDecimal()) * 1_000_000_000.toBigDecimal()
-    return Length.create(exactMeters, nanometers.toLong())
+    return Distance.create(exactMeters, nanometers.toLong())
   }
 
-  override fun toMeasuredLength(length: BigDecimal): Double {
-    return length.divide(meterRatio, 9, CEILING).toDouble()
+  override fun toMeasuredLength(distance: BigDecimal): Double {
+    return distance.divide(meterRatio, 9, CEILING).toDouble()
   }
 
   override fun iterator() = values.iterator()
 
-  override fun appliesRangeTo(length: BigDecimal): Boolean {
-    return length >= applicableRange.start && length < applicableRange.endInclusive
+  override fun appliesRangeTo(distance: BigDecimal): Boolean {
+    return distance >= applicableRange.start && distance < applicableRange.endInclusive
   }
 
   companion object {

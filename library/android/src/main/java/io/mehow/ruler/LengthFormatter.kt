@@ -1,38 +1,37 @@
-@file:JvmName("DistanceFormatter")
+@file:JvmName("LengthFormatter")
 
 package io.mehow.ruler
 
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
-import io.mehow.ruler.ImperialDistanceUnit.Yard
-import io.mehow.ruler.SiDistanceUnit.Meter
+import io.mehow.ruler.ImperialLengthUnit.Yard
+import io.mehow.ruler.SiLengthUnit.Meter
 import java.util.Locale
 
-@JvmOverloads fun <T> Distance<T>.format(
+@JvmOverloads fun <T> Length<T>.format(
   context: Context,
   unitSeparator: String = "",
-  resourceProvider: DistanceUnitResourceProvider<DistanceUnit> = BuiltInDistanceUnitProvider,
-  converter: DistanceConverter? = BuiltInConverter
-): String where T : DistanceUnit, T : Comparable<T>, T : Iterable<T> {
+  resourceProvider: UnitResourceProvider<LengthUnit> = BuiltInLengthUnitProvider,
+  converter: LengthConverter? = BuiltInConverter
+): String where T : LengthUnit, T : Comparable<T>, T : Iterable<T> {
   val value = converter?.convert(this) ?: this
   val resource = resourceProvider.resource(value.unit)
-  val distance = value.measuredLength
-  return context.getString(resource, distance, unitSeparator)
+  return context.getString(resource, value.measuredLength, unitSeparator)
 }
 
 @Suppress("LongParameterList")
-@JvmOverloads fun <T> Distance<T>.formatLocalized(
+@JvmOverloads fun <T> Length<T>.formatLocalized(
   context: Context,
   unitSeparator: String = "",
-  resourceProvider: DistanceUnitResourceProvider<DistanceUnit> = BuiltInDistanceUnitProvider,
-  converter: DistanceConverter? = BuiltInConverter,
+  resourceProvider: UnitResourceProvider<LengthUnit> = BuiltInLengthUnitProvider,
+  converter: LengthConverter? = BuiltInConverter,
   locale: Locale? = null
-): String where T : DistanceUnit, T : Comparable<T>, T : Iterable<T> {
+): String where T : LengthUnit, T : Comparable<T>, T : Iterable<T> {
   val preferredContext = if (locale == null) context else context.toLocalizedContext(locale)
   val preferredLocale = preferredContext.preferredLocale
-  val localizedDistance = if (preferredLocale.isImperial) withUnit(Yard) else withUnit(Meter)
-  return localizedDistance.format(preferredContext, unitSeparator, resourceProvider, converter)
+  val localizedLength = if (preferredLocale.isImperial) withUnit(Yard) else withUnit(Meter)
+  return localizedLength.format(preferredContext, unitSeparator, resourceProvider, converter)
 }
 
 private val Context.preferredLocale: Locale

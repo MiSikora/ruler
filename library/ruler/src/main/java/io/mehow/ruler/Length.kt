@@ -1,119 +1,72 @@
 package io.mehow.ruler
 
-import io.mehow.ruler.ImperialDistanceUnit.Foot
-import io.mehow.ruler.ImperialDistanceUnit.Inch
-import io.mehow.ruler.ImperialDistanceUnit.Mile
-import io.mehow.ruler.ImperialDistanceUnit.Yard
-import io.mehow.ruler.SiDistanceUnit.Gigameter
-import io.mehow.ruler.SiDistanceUnit.Kilometer
-import io.mehow.ruler.SiDistanceUnit.Megameter
-import io.mehow.ruler.SiDistanceUnit.Meter
-import io.mehow.ruler.SiDistanceUnit.Micrometer
-import io.mehow.ruler.SiDistanceUnit.Millimeter
-import io.mehow.ruler.SiDistanceUnit.Nanometer
-import kotlin.Long.Companion.MAX_VALUE
+class Length<T> internal constructor(
+  val distance: Distance,
+  val unit: T
+) : Comparable<Length<*>> where T : LengthUnit, T : Comparable<T>, T : Iterable<T> {
+  val measuredLength = unit.toMeasuredLength(distance.exactTotalMeters)
 
-class Length private constructor(
-  val metersPart: Long = 0L,
-  val nanosPart: Long = 0L
-) : Comparable<Length> {
-  internal val exactTotalMeters = metersPart.toBigDecimal() +
-      (nanosPart.toDouble() / 1_000_000_000).toBigDecimal()
-  val totalMeters = exactTotalMeters.toDouble()
-
-  fun <T> toDistance(
-    unit: T
-  ): Distance<T> where T : DistanceUnit, T : Comparable<T>, T : Iterable<T> {
-    return Distance(this, unit)
+  fun <R> withUnit(
+    unit: R
+  ): Length<R> where R : LengthUnit, R : Comparable<R>, R : Iterable<R> {
+    return Length(distance, unit)
   }
 
-  operator fun plus(other: Length): Length {
-    return create(
-        metersPart.safeAdd(other.metersPart),
-        nanosPart.safeAdd(other.nanosPart)
-    )
+  fun withAutoUnit(): Length<T> {
+    return withUnit(unit.single { it.appliesRangeTo(distance.exactTotalMeters) })
   }
 
-  operator fun plus(distance: Distance<*>): Length {
-    return this + distance.length
+  @JvmSynthetic fun coerceUnitIn(range: ClosedRange<T>): Length<T> {
+    require(!range.isEmpty()) { "Range cannot be empty!" }
+    return when {
+      unit > range.endInclusive -> Length(distance, range.endInclusive)
+      unit < range.start -> Length(distance, range.start)
+      else -> this
+    }
   }
 
-  operator fun minus(other: Length): Length {
-    return create(
-        metersPart.safeSubtract(other.metersPart),
-        nanosPart.safeSubtract(other.nanosPart)
-    )
+  fun coerceUnitIn(min: T, max: T): Length<T> {
+    return coerceUnitIn(min..max)
   }
 
-  operator fun minus(distance: Distance<*>): Length {
-    return this - distance.length
+  fun coerceUnitAtLeastTo(min: T): Length<T> {
+    return if (unit < min) Length(distance, min) else this
   }
 
-  override fun compareTo(other: Length): Int {
-    val cmp = metersPart.compareTo(other.metersPart)
-    return if (cmp != 0) cmp else nanosPart.compareTo(other.nanosPart)
+  fun coerceUnitAtMostTo(max: T): Length<T> {
+    return if (unit > max) Length(distance, max) else this
+  }
+
+  operator fun plus(other: Length<*>): Length<T> {
+    return (distance + other.distance).toLength(unit)
+  }
+
+  operator fun plus(distance: Distance): Length<T> {
+    return (this.distance + distance).toLength(unit)
+  }
+
+  operator fun minus(other: Length<*>): Length<T> {
+    return (distance - other.distance).toLength(unit)
+  }
+
+  operator fun minus(distance: Distance): Length<T> {
+    return (this.distance - distance).toLength(unit)
+  }
+
+  override fun compareTo(other: Length<*>): Int {
+    return distance.compareTo(other.distance)
   }
 
   override fun equals(other: Any?): Boolean {
-    if (other !is Length) return false
-    return metersPart == other.metersPart && nanosPart == other.nanosPart
+    if (other !is Length<*>) return false
+    return distance == other.distance && unit == other.unit
   }
 
   override fun hashCode(): Int {
-    return 31 * metersPart.hashCode() + nanosPart.hashCode()
+    return 31 * distance.hashCode() + unit.hashCode()
   }
 
   override fun toString(): String {
-    return "Length(meters=$metersPart, nanometers=$nanosPart)"
-  }
-
-  companion object {
-    @JvmStatic val Zero = Length()
-
-    @JvmStatic val Max = Length(MAX_VALUE, 999_999_999)
-
-    @JvmStatic fun create(
-      meters: Long = 0,
-      nanometers: Long = 0
-    ): Length {
-      var meterPart = nanometers / 1_000_000_000
-      var nanoPart = nanometers % 1_000_000_000
-      if (nanoPart < 0) {
-        nanoPart += 1_000_000_000
-        meterPart--
-      }
-
-      val totalMeters = meters.safeAdd(meterPart)
-      val totalNanometers = nanoPart
-
-      require(totalMeters >= 0) { "Distance cannot be negative." }
-      require(totalNanometers >= 0) { "Distance cannot be negative." }
-
-      return Length(totalMeters, totalNanometers)
-    }
-
-    @JvmStatic fun of(value: Long, unit: DistanceUnit) = unit.toLength(value)
-
-    @JvmStatic fun ofGigameters(value: Long) = of(value, Gigameter)
-
-    @JvmStatic fun ofMegameters(value: Long) = of(value, Megameter)
-
-    @JvmStatic fun ofKilometers(value: Long) = of(value, Kilometer)
-
-    @JvmStatic fun ofMeters(value: Long) = of(value, Meter)
-
-    @JvmStatic fun ofMillimeters(value: Long) = of(value, Millimeter)
-
-    @JvmStatic fun ofMicrometers(value: Long) = of(value, Micrometer)
-
-    @JvmStatic fun ofNanometers(value: Long) = of(value, Nanometer)
-
-    @JvmStatic fun ofMiles(value: Long) = of(value, Mile)
-
-    @JvmStatic fun ofYards(value: Long) = of(value, Yard)
-
-    @JvmStatic fun ofFeet(value: Long) = of(value, Foot)
-
-    @JvmStatic fun ofInches(value: Long) = of(value, Inch)
+    return "Length(measuredLength=$measuredLength, unit=$unit)"
   }
 }

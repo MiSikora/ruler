@@ -1,230 +1,138 @@
 package io.mehow.ruler
 
-import io.kotlintest.matchers.types.shouldBeSameInstanceAs
+import io.kotlintest.matchers.numerics.shouldBeZero
 import io.kotlintest.properties.assertAll
+import io.kotlintest.properties.forAll
 import io.kotlintest.shouldBe
-import io.kotlintest.specs.AbstractBehaviorSpec
+import io.kotlintest.shouldNotThrowAny
+import io.kotlintest.shouldThrow
 import io.kotlintest.specs.BehaviorSpec
-import io.mehow.ruler.ImperialDistanceUnit.Foot
-import io.mehow.ruler.ImperialDistanceUnit.Inch
-import io.mehow.ruler.ImperialDistanceUnit.Mile
-import io.mehow.ruler.ImperialDistanceUnit.Yard
-import io.mehow.ruler.SiDistanceUnit.Gigameter
-import io.mehow.ruler.SiDistanceUnit.Kilometer
-import io.mehow.ruler.SiDistanceUnit.Megameter
-import io.mehow.ruler.SiDistanceUnit.Meter
-import io.mehow.ruler.SiDistanceUnit.Micrometer
-import io.mehow.ruler.SiDistanceUnit.Millimeter
-import io.mehow.ruler.SiDistanceUnit.Nanometer
 import kotlin.Long.Companion.MAX_VALUE
 
 class DistanceSpec : BehaviorSpec({
+  Given("zero distance") {
+    val zeroDistance = Distance.Zero
+
+    Then("it should not have any meters") {
+      zeroDistance.metersPart shouldBe 0L
+    }
+
+    Then("it should not have any nanometers") {
+      zeroDistance.nanosPart.shouldBeZero()
+    }
+
+    When("I add it to itself") {
+      val newDistance = zeroDistance + zeroDistance
+
+      Then("it is still zero") {
+        newDistance shouldBe zeroDistance
+      }
+    }
+
+    When("I subtract it from itself") {
+      val newDistance = zeroDistance - zeroDistance
+
+      Then("it is still zero") {
+        newDistance shouldBe zeroDistance
+      }
+    }
+
+    When("I subtract any distance from it") {
+      Then("it should fail") {
+        assertAll(DistanceGenerator(Distance.ofNanometers(1))) { distance ->
+          shouldThrow<IllegalArgumentException> { zeroDistance - distance }
+        }
+      }
+    }
+
+    When("I add a distance to it") {
+      Then("it should be equal to that distance") {
+        assertAll(DistanceGenerator()) { distance ->
+          val newDistance = zeroDistance + distance
+          newDistance shouldBe distance
+        }
+      }
+    }
+  }
+
+  Given("max distance") {
+    val maxDistance = Distance.Max
+
+    Then("it should have maximum value of meters") {
+      maxDistance.metersPart shouldBe MAX_VALUE
+    }
+
+    Then("it should have maximum value of nanometers") {
+      maxDistance.nanosPart shouldBe 999_999_999
+    }
+
+    When("I add even one nanometer to it") {
+      Then("it fails") {
+        shouldThrow<ArithmeticException> { maxDistance + Distance.create(nanometers = 1) }
+      }
+    }
+
+    When("I add zero distance to it") {
+      val newDistance = maxDistance + Distance.Zero
+
+      Then("it stays the same") {
+        newDistance shouldBe maxDistance
+      }
+    }
+
+    When("I remove any distance from it") {
+      Then("it does not fail") {
+        assertAll(DistanceGenerator()) { distance ->
+          shouldNotThrowAny { maxDistance - distance }
+        }
+      }
+    }
+  }
+
   Given("two distances") {
     When("they are added") {
-      Then("unit of the left operand is preserved") {
-        assertAll(
-            LengthsGenerator(max = Length.create(MAX_VALUE / 2 - 1, 500_000_000)),
-            DistanceUnitGenerator,
-            LengthsGenerator(max = Length.create(MAX_VALUE / 2 - 1, 500_000_000)),
-            DistanceUnitGenerator
-        ) { length1, unit1, length2, unit2 ->
-          val distance1 = DistanceUnitGenerator.createDistance(length1, unit1)
-          val distance2 = DistanceUnitGenerator.createDistance(length2, unit2)
+      Then("nanometer parts should carry over for overflow") {
+        assertAll(LongGenerator(0L, 999_999_999), LongGenerator(0L, 999_999_999)) { nano1, nano2 ->
+          val totalNanometers = nano1 + nano2
+          val shouldCarryOver = totalNanometers >= 1_000_000_000
+          val distance = Distance.create(nanometers = nano1) + Distance.create(nanometers = nano2)
 
-          val newDistance = distance1 + distance2
-
-          newDistance.unit shouldBe distance1.unit
+          if (shouldCarryOver) distance shouldBe Distance.create(1, totalNanometers - 1_000_000_000)
+          else distance shouldBe Distance.create(0, totalNanometers)
         }
       }
     }
 
     When("they are subtracted") {
-      Then("unit of the left operand is preserved") {
-        assertAll(
-            LengthsGenerator(min = Length.ofMeters(MAX_VALUE / 2)),
-            DistanceUnitGenerator,
-            LengthsGenerator(max = Length.ofMeters(MAX_VALUE / 2)),
-            DistanceUnitGenerator
-        ) { length1, unit1, length2, unit2 ->
-          val distance1 = DistanceUnitGenerator.createDistance(length1, unit1)
-          val distance2 = DistanceUnitGenerator.createDistance(length2, unit2)
+      Then("nanometer parts should carry over for overflow") {
+        assertAll(LongGenerator(0L, 999_999_999), LongGenerator(0L, 999_999_999)) { nano1, nano2 ->
+          val nanoDiff = nano1 - nano2
+          val shouldCarryOver = nanoDiff < 0
+          val distance = Distance.create(1, nano1) - Distance.create(0, nano2)
 
-          val newDistance = distance1 - distance2
+          if (shouldCarryOver) distance shouldBe Distance.create(0, 1_000_000_000 + nanoDiff)
+          else distance shouldBe Distance.create(1, nanoDiff)
+        }
+      }
+    }
 
-          newDistance.unit shouldBe distance1.unit
+    Then("they can be compared to each other") {
+      forAll(
+          LongGenerator(0L, MAX_VALUE),
+          LongGenerator(0L, 999_999_999),
+          LongGenerator(0L, MAX_VALUE),
+          LongGenerator(0L, 999_999_999)
+      ) { meter1, nano1, meter2, nano2 ->
+        val distance1 = Distance.create(meter1, nano1)
+        val distance2 = Distance.create(meter2, nano2)
+
+        return@forAll when {
+          meter1 > meter2 -> distance1 > distance2
+          meter1 == meter2 && nano1 > nano2 -> distance1 > distance2
+          meter1 == meter2 && nano1 == nano2 -> distance1.compareTo(distance2) == 0
+          else -> distance1 < distance2
         }
       }
     }
   }
-
-  checkSiUnit(Nanometer)
-
-  checkSiUnit(Micrometer)
-
-  checkSiUnit(Millimeter)
-
-  checkSiUnit(Meter)
-
-  checkSiUnit(Kilometer)
-
-  checkSiUnit(Megameter)
-
-  checkSiUnit(Gigameter)
-
-  checkImperialUnit(Inch, 11)
-
-  checkImperialUnit(Foot, 2)
-
-  checkImperialUnit(Yard, 1759)
-
-  checkImperialUnit(Mile, 1_000_000)
 })
-
-private fun AbstractBehaviorSpec.checkSiUnit(unit: SiDistanceUnit) {
-  Given("$unit length") {
-    When("I auto unit it") {
-      Then("it uses $unit as a unit") {
-        assertAll(LengthsGenerator(Length.of(1, unit), Length.of(999, unit))) { length ->
-          val distance = length.toDistance(SiDistanceUnit.values().random()).withAutoUnit()
-
-          distance.unit shouldBeSameInstanceAs unit
-        }
-      }
-    }
-
-    When("I get measured length") {
-      Then("It converts original length correctly") {
-        assertAll(LongGenerator(min = 0L, max = 1_000L)) { value ->
-          val length = Length.of(value, unit)
-          val distance = length.toDistance(unit)
-
-          distance.measuredLength.toDouble() shouldBe value.toDouble()
-        }
-      }
-    }
-
-    Then("I can coerce distance in range") {
-      assertAll(LengthsGenerator()) { length ->
-        val distance = length.toDistance(unit)
-
-        SiDistanceUnit.values().filter { it > unit && it < Gigameter }.forEach {
-          distance.coerceUnitIn(it..Gigameter).unit shouldBeSameInstanceAs it
-        }
-      }
-    }
-
-    Then("I can coerce distance in min and max") {
-      assertAll(LengthsGenerator()) { length ->
-        val distance = length.toDistance(unit)
-
-        SiDistanceUnit.values().filter { it > unit && it < Gigameter }.forEach {
-          distance.coerceUnitIn(it, Gigameter).unit shouldBeSameInstanceAs it
-        }
-      }
-    }
-
-    Then("I can coerce distance to min") {
-      assertAll(LengthsGenerator()) { length ->
-        val distance = length.toDistance(unit)
-
-        SiDistanceUnit.values().filter { it > unit }.forEach {
-          distance.coerceUnitAtLeastTo(it).unit shouldBeSameInstanceAs it
-        }
-
-        SiDistanceUnit.values().filter { it <= unit }.forEach {
-          distance.coerceUnitAtLeastTo(it).unit shouldBeSameInstanceAs unit
-        }
-      }
-    }
-
-    Then("I can coerce distance to max") {
-      assertAll(LengthsGenerator()) { length ->
-        val distance = length.toDistance(unit)
-
-        SiDistanceUnit.values().filter { it < unit }.forEach {
-          distance.coerceUnitAtMostTo(it).unit shouldBeSameInstanceAs it
-        }
-
-        SiDistanceUnit.values().filter { it >= unit }.forEach {
-          distance.coerceUnitAtMostTo(it).unit shouldBeSameInstanceAs unit
-        }
-      }
-    }
-  }
-}
-
-private fun AbstractBehaviorSpec.checkImperialUnit(
-  unit: ImperialDistanceUnit,
-  maxRange: Long
-) {
-  Given("$unit length") {
-    When("I auto unit it") {
-      Then("it uses $unit as a unit") {
-        assertAll(LengthsGenerator(Length.of(1, unit), Length.of(maxRange, unit))) { length ->
-          val distance = length.toDistance(ImperialDistanceUnit.values().random()).withAutoUnit()
-
-          distance.unit shouldBeSameInstanceAs unit
-        }
-      }
-    }
-
-    When("I get measured length") {
-      Then("It converts original length correctly") {
-        assertAll(LongGenerator(min = 0L, max = 1_000L)) { value ->
-          val length = Length.of(value, unit)
-          val distance = length.toDistance(unit)
-
-          distance.measuredLength.toDouble() shouldBe value.toDouble()
-        }
-      }
-    }
-
-    Then("I can coerce distance in range") {
-      assertAll(LengthsGenerator()) { length ->
-        val distance = length.toDistance(unit)
-
-        ImperialDistanceUnit.values().filter { it > unit && it < Mile }.forEach {
-          distance.coerceUnitIn(it..Mile).unit shouldBeSameInstanceAs it
-        }
-      }
-    }
-
-    Then("I can coerce distance in min and max") {
-      assertAll(LengthsGenerator()) { length ->
-        val distance = length.toDistance(unit)
-
-        ImperialDistanceUnit.values().filter { it > unit && it < Mile }.forEach {
-          distance.coerceUnitIn(it, Mile).unit shouldBeSameInstanceAs it
-        }
-      }
-    }
-
-    Then("I can coerce distance to min") {
-      assertAll(LengthsGenerator()) { length ->
-        val distance = length.toDistance(unit)
-
-        ImperialDistanceUnit.values().filter { it > unit }.forEach {
-          distance.coerceUnitAtLeastTo(it).unit shouldBeSameInstanceAs it
-        }
-
-        ImperialDistanceUnit.values().filter { it <= unit }.forEach {
-          distance.coerceUnitAtLeastTo(it).unit shouldBeSameInstanceAs unit
-        }
-      }
-    }
-
-    Then("I can coerce distance to max") {
-      assertAll(LengthsGenerator()) { length ->
-        val distance = length.toDistance(unit)
-
-        ImperialDistanceUnit.values().filter { it < unit }.forEach {
-          distance.coerceUnitAtMostTo(it).unit shouldBeSameInstanceAs it
-        }
-
-        ImperialDistanceUnit.values().filter { it >= unit }.forEach {
-          distance.coerceUnitAtMostTo(it).unit shouldBeSameInstanceAs unit
-        }
-      }
-    }
-  }
-}

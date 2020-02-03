@@ -1,15 +1,15 @@
 package io.mehow.ruler
 
-import io.mehow.ruler.SiDistanceUnit.Gigameter
-import io.mehow.ruler.SiDistanceUnit.Kilometer
-import io.mehow.ruler.SiDistanceUnit.Megameter
-import io.mehow.ruler.SiDistanceUnit.Meter
-import io.mehow.ruler.SiDistanceUnit.Micrometer
-import io.mehow.ruler.SiDistanceUnit.Millimeter
-import io.mehow.ruler.SiDistanceUnit.Nanometer
+import io.mehow.ruler.SiLengthUnit.Gigameter
+import io.mehow.ruler.SiLengthUnit.Kilometer
+import io.mehow.ruler.SiLengthUnit.Megameter
+import io.mehow.ruler.SiLengthUnit.Meter
+import io.mehow.ruler.SiLengthUnit.Micrometer
+import io.mehow.ruler.SiLengthUnit.Millimeter
+import io.mehow.ruler.SiLengthUnit.Nanometer
 
-object SiUnitProvider : DistanceUnitResourceProvider<SiDistanceUnit> {
-  override fun resource(unit: SiDistanceUnit) = when (unit) {
+object SiUnitProvider : UnitResourceProvider<SiLengthUnit> {
+  override fun resource(unit: SiLengthUnit) = when (unit) {
     Nanometer -> R.string.io_mehow_ruler_nanometers
     Micrometer -> R.string.io_mehow_ruler_micrometers
     Millimeter -> R.string.io_mehow_ruler_millimeters

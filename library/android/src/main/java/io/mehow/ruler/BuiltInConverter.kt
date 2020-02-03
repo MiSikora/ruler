@@ -1,14 +1,14 @@
 package io.mehow.ruler
 
-import io.mehow.ruler.SiDistanceUnit.Kilometer
-import io.mehow.ruler.SiDistanceUnit.Meter
+import io.mehow.ruler.SiLengthUnit.Kilometer
+import io.mehow.ruler.SiLengthUnit.Meter
 
-internal object BuiltInConverter : DistanceConverter {
+internal object BuiltInConverter : LengthConverter {
   @Suppress("UNCHECKED_CAST", "UseIfInsteadOfWhen")
-  override fun convert(distance: Distance<*>): Distance<*> {
-    val autoDistance = distance.withAutoUnit()
+  override fun convert(length: Length<*>): Length<*> {
+    val autoDistance = length.withAutoUnit()
     return when (autoDistance.unit) {
-      is SiDistanceUnit -> (autoDistance as Distance<SiDistanceUnit>).coerceUnitIn(Meter, Kilometer)
+      is SiLengthUnit -> (autoDistance as Length<SiLengthUnit>).coerceUnitIn(Meter, Kilometer)
       else -> autoDistance
     }
   }

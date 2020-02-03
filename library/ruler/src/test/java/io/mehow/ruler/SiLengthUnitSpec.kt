@@ -3,25 +3,25 @@ package io.mehow.ruler
 import io.kotlintest.properties.assertAll
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.BehaviorSpec
-import io.mehow.ruler.SiDistanceUnit.Gigameter
-import io.mehow.ruler.SiDistanceUnit.Kilometer
-import io.mehow.ruler.SiDistanceUnit.Megameter
-import io.mehow.ruler.SiDistanceUnit.Meter
-import io.mehow.ruler.SiDistanceUnit.Micrometer
-import io.mehow.ruler.SiDistanceUnit.Millimeter
-import io.mehow.ruler.SiDistanceUnit.Nanometer
+import io.mehow.ruler.SiLengthUnit.Gigameter
+import io.mehow.ruler.SiLengthUnit.Kilometer
+import io.mehow.ruler.SiLengthUnit.Megameter
+import io.mehow.ruler.SiLengthUnit.Meter
+import io.mehow.ruler.SiLengthUnit.Micrometer
+import io.mehow.ruler.SiLengthUnit.Millimeter
+import io.mehow.ruler.SiLengthUnit.Nanometer
 import kotlin.Long.Companion.MAX_VALUE
 
-class SiDistanceUnitSpec : BehaviorSpec({
+class SiLengthUnitSpec : BehaviorSpec({
   Given("nanometers") {
     val unit = Nanometer
 
     Then("length can be created from it") {
       assertAll(LongGenerator(0L)) { value ->
-        val expectedLength = Length.create(value / 1_000_000_000, value % 1_000_000_000)
+        val expectedLength = Distance.create(value / 1_000_000_000, value % 1_000_000_000)
 
-        val length1 = unit.toLength(value)
-        val length2 = Length.ofNanometers(value)
+        val length1 = unit.toDistance(value)
+        val length2 = Distance.ofNanometers(value)
 
         length1 shouldBe expectedLength
         length2 shouldBe expectedLength
@@ -34,10 +34,10 @@ class SiDistanceUnitSpec : BehaviorSpec({
 
     Then("length can be created from it") {
       assertAll(LongGenerator(0L)) { value ->
-        val expectedLength = Length.create(value / 1_000_000, (value % 1_000_000) * 1_000)
+        val expectedLength = Distance.create(value / 1_000_000, (value % 1_000_000) * 1_000)
 
-        val length1 = unit.toLength(value)
-        val length2 = Length.ofMicrometers(value)
+        val length1 = unit.toDistance(value)
+        val length2 = Distance.ofMicrometers(value)
 
         length1 shouldBe expectedLength
         length2 shouldBe expectedLength
@@ -50,10 +50,10 @@ class SiDistanceUnitSpec : BehaviorSpec({
 
     Then("length can be created from it") {
       assertAll(LongGenerator(0L)) { value ->
-        val expectedLength = Length.create(value / 1_000, (value % 1_000) * 1_000_000)
+        val expectedLength = Distance.create(value / 1_000, (value % 1_000) * 1_000_000)
 
-        val length1 = unit.toLength(value)
-        val length2 = Length.ofMillimeters(value)
+        val length1 = unit.toDistance(value)
+        val length2 = Distance.ofMillimeters(value)
 
         length1 shouldBe expectedLength
         length2 shouldBe expectedLength
@@ -66,10 +66,10 @@ class SiDistanceUnitSpec : BehaviorSpec({
 
     Then("length can be created from it") {
       assertAll(LongGenerator(0L)) { value ->
-        val expectedLength = Length.create(value)
+        val expectedLength = Distance.create(value)
 
-        val length1 = unit.toLength(value)
-        val length2 = Length.ofMeters(value)
+        val length1 = unit.toDistance(value)
+        val length2 = Distance.ofMeters(value)
 
         length1 shouldBe expectedLength
         length2 shouldBe expectedLength
@@ -82,10 +82,10 @@ class SiDistanceUnitSpec : BehaviorSpec({
 
     Then("length can be created from it") {
       assertAll(LongGenerator(0L, MAX_VALUE / 1_000)) { value ->
-        val expectedLength = Length.create(value * 1_000)
+        val expectedLength = Distance.create(value * 1_000)
 
-        val length1 = unit.toLength(value)
-        val length2 = Length.ofKilometers(value)
+        val length1 = unit.toDistance(value)
+        val length2 = Distance.ofKilometers(value)
 
         length1 shouldBe expectedLength
         length2 shouldBe expectedLength
@@ -98,10 +98,10 @@ class SiDistanceUnitSpec : BehaviorSpec({
 
     Then("length can be created from it") {
       assertAll(LongGenerator(0L, MAX_VALUE / 1_000_000)) { value ->
-        val expectedLength = Length.create(value * 1_000_000)
+        val expectedLength = Distance.create(value * 1_000_000)
 
-        val length1 = unit.toLength(value)
-        val length2 = Length.ofMegameters(value)
+        val length1 = unit.toDistance(value)
+        val length2 = Distance.ofMegameters(value)
 
         length1 shouldBe expectedLength
         length2 shouldBe expectedLength
@@ -114,10 +114,10 @@ class SiDistanceUnitSpec : BehaviorSpec({
 
     Then("length can be created from it") {
       assertAll(LongGenerator(0L, MAX_VALUE / 1_000_000_000)) { value ->
-        val expectedLength = Length.create(value * 1_000_000_000)
+        val expectedLength = Distance.create(value * 1_000_000_000)
 
-        val length1 = unit.toLength(value)
-        val length2 = Length.ofGigameters(value)
+        val length1 = unit.toDistance(value)
+        val length2 = Distance.ofGigameters(value)
 
         length1 shouldBe expectedLength
         length2 shouldBe expectedLength
