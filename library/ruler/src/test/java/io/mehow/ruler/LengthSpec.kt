@@ -14,11 +14,11 @@ class LengthSpec : BehaviorSpec({
     val zeroLength = Length.Zero
 
     Then("it should not have any meters") {
-      zeroLength.meters shouldBe BigInteger.ZERO
+      zeroLength.metersPart shouldBe BigInteger.ZERO
     }
 
     Then("it should not have any nanometers") {
-      zeroLength.nanometers.shouldBeZero()
+      zeroLength.nanometersPart.shouldBeZero()
     }
 
     When("I add it to itself") {

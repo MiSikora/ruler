@@ -14,12 +14,11 @@ import io.mehow.ruler.SiDistanceUnit.Nanometer
 import java.math.BigInteger
 
 class Length private constructor(
-  val meters: BigInteger = BigInteger.ZERO,
-  val nanometers: Long = 0
+  val metersPart: BigInteger = BigInteger.ZERO,
+  val nanometersPart: Long = 0
 ) : Comparable<Length> {
-
-  internal val totalMeters = meters.toBigDecimal() +
-      (nanometers.toDouble() / 1_000_000_000).toBigDecimal()
+  internal val totalMeters = metersPart.toBigDecimal() +
+      (nanometersPart.toDouble() / 1_000_000_000).toBigDecimal()
 
   fun <T> toDistance(
     unit: T
@@ -28,7 +27,7 @@ class Length private constructor(
   }
 
   operator fun plus(other: Length): Length {
-    return create(meters + other.meters, nanometers + other.nanometers)
+    return create(metersPart + other.metersPart, nanometersPart + other.nanometersPart)
   }
 
   operator fun plus(distance: Distance<*>): Length {
@@ -36,7 +35,7 @@ class Length private constructor(
   }
 
   operator fun minus(other: Length): Length {
-    return create(meters - other.meters, nanometers - other.nanometers)
+    return create(metersPart - other.metersPart, nanometersPart - other.nanometersPart)
   }
 
   operator fun minus(distance: Distance<*>): Length {
@@ -44,21 +43,21 @@ class Length private constructor(
   }
 
   override fun compareTo(other: Length): Int {
-    val cmp = meters.compareTo(other.meters)
-    return if (cmp != 0) cmp else nanometers.compareTo(other.nanometers)
+    val cmp = metersPart.compareTo(other.metersPart)
+    return if (cmp != 0) cmp else nanometersPart.compareTo(other.nanometersPart)
   }
 
   override fun equals(other: Any?): Boolean {
     if (other !is Length) return false
-    return meters == other.meters && nanometers == other.nanometers
+    return metersPart == other.metersPart && nanometersPart == other.nanometersPart
   }
 
   override fun hashCode(): Int {
-    return 31 * meters.hashCode() + nanometers.hashCode()
+    return 31 * metersPart.hashCode() + nanometersPart.hashCode()
   }
 
   override fun toString(): String {
-    return "Length(meters=$meters, nanometers=$nanometers)"
+    return "Length(meters=$metersPart, nanometers=$nanometersPart)"
   }
 
   companion object {

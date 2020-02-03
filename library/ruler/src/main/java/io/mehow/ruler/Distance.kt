@@ -1,9 +1,11 @@
 package io.mehow.ruler
 
-class Distance<T>(
-  val length: Length,
+class Distance<T> internal constructor(
+  internal val length: Length,
   val unit: T
 ) : Comparable<Distance<*>> where T : DistanceUnit, T : Comparable<T>, T : Iterable<T> {
+  val metersPart = length.metersPart
+  val nanometersPart = length.nanometersPart
   val measuredLength = unit.toMeasuredLength(length.totalMeters)
 
   fun <R> withUnit(

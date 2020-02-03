@@ -1,6 +1,6 @@
 package io.mehow.ruler
 
-object LibraryDistanceUnitProvider : DistanceUnitResourceProvider<DistanceUnit> {
+object BuiltInDistanceUnitProvider : DistanceUnitResourceProvider<DistanceUnit> {
   override fun resource(unit: DistanceUnit) = when (unit) {
     is SiDistanceUnit -> SiUnitProvider.resource(unit)
     is ImperialDistanceUnit -> ImperialUnitProvider.resource(unit)

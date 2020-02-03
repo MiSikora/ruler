@@ -14,16 +14,16 @@ class LengthsGenerator(
 
   private fun createLength(): Length {
     val meters = when {
-      min.meters == max.meters -> min.meters
-      else -> Random.nextLong(min.meters.toLong(), max.meters.toLong()).toBigInteger()
+      min.metersPart == max.metersPart -> min.metersPart
+      else -> Random.nextLong(min.metersPart.toLong(), max.metersPart.toLong()).toBigInteger()
     }
     val nanometers = when {
-      meters > min.meters -> Random.nextLong(1_000_000_000)
-      meters < max.meters -> Random.nextLong(1_000_000_000)
-      meters == max.meters && meters == min.meters -> Random.nextLong(min.nanometers, max.nanometers)
-      meters == min.meters -> Random.nextLong(min.nanometers, 1_000_000_000)
-      meters == max.meters -> Random.nextLong(0, max.nanometers)
-      else -> error("Unexpected condition: min=${min.meters}, max=${max.meters}, value=${meters}")
+      meters > min.metersPart -> Random.nextLong(1_000_000_000)
+      meters < max.metersPart -> Random.nextLong(1_000_000_000)
+      meters == max.metersPart && meters == min.metersPart -> Random.nextLong(min.nanometersPart, max.nanometersPart)
+      meters == min.metersPart -> Random.nextLong(min.nanometersPart, 1_000_000_000)
+      meters == max.metersPart -> Random.nextLong(0, max.nanometersPart)
+      else -> error("Unexpected condition: min=${min.metersPart}, max=${max.metersPart}, value=${meters}")
     }
     val candidate = Length.create(meters, nanometers)
     return if (candidate in min..max) candidate else createLength()
