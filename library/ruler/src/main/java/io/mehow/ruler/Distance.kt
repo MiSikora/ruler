@@ -178,5 +178,29 @@ class Distance private constructor(
     @JvmStatic fun ofFeet(value: Long) = of(value, Foot)
 
     @JvmStatic fun ofInches(value: Long) = of(value, Inch)
+
+    @JvmStatic fun of(value: Double, unit: LengthUnit) = unit.toDistance(value)
+
+    @JvmStatic fun ofGigameters(value: Double) = of(value, Gigameter)
+
+    @JvmStatic fun ofMegameters(value: Double) = of(value, Megameter)
+
+    @JvmStatic fun ofKilometers(value: Double) = of(value, Kilometer)
+
+    @JvmStatic fun ofMeters(value: Double) = of(value, Meter)
+
+    @JvmStatic fun ofMillimeters(value: Double) = of(value, Millimeter)
+
+    @JvmStatic fun ofMicrometers(value: Double) = of(value, Micrometer)
+
+    @JvmStatic fun ofNanometers(value: Double) = of(value, Nanometer)
+
+    @JvmStatic fun ofMiles(value: Double) = of(value, Mile)
+
+    @JvmStatic fun ofYards(value: Double) = of(value, Yard)
+
+    @JvmStatic fun ofFeet(value: Double) = of(value, Foot)
+
+    @JvmStatic fun ofInches(value: Double) = of(value, Inch)
   }
 }

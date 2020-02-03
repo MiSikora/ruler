@@ -46,15 +46,19 @@ enum class SiLengthUnit(
     return create(value.toBigDecimal() * meterRatio)
   }
 
+  override fun toDistance(value: Double): Distance {
+    return create(value.toBigDecimal() * meterRatio)
+  }
+
   override fun toMeasuredLength(distance: BigDecimal): Double {
     return distance.divide(meterRatio, 9, DOWN).toDouble()
   }
 
-  override fun iterator() = values.iterator()
-
   override fun appliesRangeTo(distance: BigDecimal): Boolean {
     return distance >= applicableRange.start && distance < applicableRange.endInclusive
   }
+
+  override fun iterator() = values.iterator()
 
   companion object {
     private val values = values().toList()
