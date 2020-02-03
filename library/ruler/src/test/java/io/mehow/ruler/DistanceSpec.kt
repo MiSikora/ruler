@@ -7,6 +7,7 @@ import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotThrowAny
 import io.kotlintest.shouldThrow
 import io.kotlintest.specs.BehaviorSpec
+import java.math.RoundingMode.DOWN
 import kotlin.Long.Companion.MAX_VALUE
 
 class DistanceSpec : BehaviorSpec({
@@ -169,6 +170,44 @@ class DistanceSpec : BehaviorSpec({
           val expected = Distance.create(divRem[0].toLong(), divRem[1].toLong())
 
           val multipliedDistance = distance * multiplicant
+
+          multipliedDistance shouldBe expected
+        }
+      }
+    }
+
+    When("I divide it by a natural number") {
+      Then("the result is correct") {
+        assertAll(
+            DistanceGenerator(max = Distance.ofKilometers(1_000)),
+            LongGenerator(1, 500_000)
+        ) { distance, divisor ->
+          val meters = distance.exactTotalMeters.divide(divisor.toBigDecimal(), DOWN)
+          val nanos = meters.movePointRight(9).toBigIntegerExact()
+          val divRem = nanos.divideAndRemainder(1_000_000_000.toBigInteger())
+          check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
+          val expected = Distance.create(divRem[0].toLong(), divRem[1].toLong())
+
+          val multipliedDistance = distance / divisor
+
+          multipliedDistance shouldBe expected
+        }
+      }
+    }
+
+    When("I divide it by a real number") {
+      Then("the result is correct") {
+        assertAll(
+            DistanceGenerator(max = Distance.ofKilometers(1_000)),
+            DoubleGenerator(0.000_001, 500_000.0)
+        ) { distance, divisor ->
+          val meters = distance.exactTotalMeters.divide(divisor.toBigDecimal(), DOWN)
+          val nanos = meters.movePointRight(9).toBigInteger()
+          val divRem = nanos.divideAndRemainder(1_000_000_000.toBigInteger())
+          check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
+          val expected = Distance.create(divRem[0].toLong(), divRem[1].toLong())
+
+          val multipliedDistance = distance / divisor
 
           multipliedDistance shouldBe expected
         }

@@ -14,6 +14,7 @@ import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 import java.math.BigDecimal
+import java.math.RoundingMode.DOWN
 import kotlin.Long.Companion.MAX_VALUE
 
 class Distance private constructor(
@@ -78,6 +79,28 @@ class Distance private constructor(
       1.0 -> this
       else -> create(exactTotalMeters * multiplicand.toBigDecimal())
     }
+  }
+
+  operator fun div(divisor: Int): Distance {
+    return this / divisor.toLong()
+  }
+
+  operator fun div(divisor: Long): Distance {
+    require(divisor > 0) { "Distance must be positive." }
+
+    return if (divisor == 1L) this
+    else create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
+  }
+
+  operator fun div(divisor: Float): Distance {
+    return this / divisor.toDouble()
+  }
+
+  operator fun div(divisor: Double): Distance {
+    require(divisor > 0) { "Distance must be positive." }
+
+    return if (divisor == 1.0) this
+    else create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
   }
 
   override fun compareTo(other: Distance): Int {
