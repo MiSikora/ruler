@@ -1,3 +1,5 @@
+@file:Suppress("StringLiteralDuplication")
+
 package io.mehow.ruler
 
 import io.mehow.ruler.ImperialLengthUnit.Foot
@@ -11,6 +13,7 @@ import io.mehow.ruler.SiLengthUnit.Meter
 import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
+import java.math.BigDecimal
 import kotlin.Long.Companion.MAX_VALUE
 
 class Distance private constructor(
@@ -18,7 +21,7 @@ class Distance private constructor(
   val nanosPart: Long = 0L
 ) : Comparable<Distance> {
   internal val exactTotalMeters =
-    metersPart.toBigDecimal() + (nanosPart.toDouble() / 1_000_000_000).toBigDecimal()
+    metersPart.toBigDecimal() + (nanosPart.toDouble() / NanosInMeter).toBigDecimal()
   val totalMeters = exactTotalMeters.toDouble()
 
   fun <T> toLength(
@@ -49,6 +52,34 @@ class Distance private constructor(
     return this - length.distance
   }
 
+  operator fun times(multiplicand: Int): Distance {
+    return this * multiplicand.toLong()
+  }
+
+  operator fun times(multiplicand: Long): Distance {
+    require(multiplicand >= 0) { "Distance cannot be negative." }
+
+    return when (multiplicand) {
+      0L -> Zero
+      1L -> this
+      else -> create(exactTotalMeters * multiplicand.toBigDecimal())
+    }
+  }
+
+  operator fun times(multiplicand: Float): Distance {
+    return this * multiplicand.toDouble()
+  }
+
+  operator fun times(multiplicand: Double): Distance {
+    require(multiplicand >= 0) { "Distance cannot be negative." }
+
+    return when (multiplicand) {
+      0.0 -> Zero
+      1.0 -> this
+      else -> create(exactTotalMeters * multiplicand.toBigDecimal())
+    }
+  }
+
   override fun compareTo(other: Distance): Int {
     val cmp = metersPart.compareTo(other.metersPart)
     return if (cmp != 0) cmp else nanosPart.compareTo(other.nanosPart)
@@ -68,18 +99,27 @@ class Distance private constructor(
   }
 
   companion object {
+    private const val NanosInMeter = 1_000_000_000L
+    private val bigNanosInMeter = NanosInMeter.toBigDecimal()
+
     @JvmStatic val Zero = Distance()
 
-    @JvmStatic val Max = Distance(MAX_VALUE, 999_999_999)
+    @JvmStatic val Max = Distance(MAX_VALUE, NanosInMeter - 1)
+
+    internal fun create(meters: BigDecimal): Distance {
+      val storedMeters = meters.toBigInteger().longValueExact()
+      val nanometers = (meters - storedMeters.toBigDecimal()) * bigNanosInMeter
+      return create(storedMeters, nanometers.toLong())
+    }
 
     @JvmStatic fun create(
       meters: Long = 0,
       nanometers: Long = 0
     ): Distance {
-      var meterPart = nanometers / 1_000_000_000
-      var nanoPart = nanometers % 1_000_000_000
+      var meterPart = nanometers / NanosInMeter
+      var nanoPart = nanometers % NanosInMeter
       if (nanoPart < 0) {
-        nanoPart += 1_000_000_000
+        nanoPart += NanosInMeter
         meterPart--
       }
 

@@ -1,7 +1,7 @@
 package io.mehow.ruler
 
 import java.math.BigDecimal
-import java.math.RoundingMode.CEILING
+import java.math.RoundingMode.DOWN
 import kotlin.Double.Companion.MAX_VALUE
 
 enum class ImperialLengthUnit(
@@ -18,14 +18,11 @@ enum class ImperialLengthUnit(
   };
 
   override fun toDistance(value: Long): Distance {
-    val meters = value.toBigDecimal() * meterRatio
-    val exactMeters = meters.toBigInteger().longValueExact()
-    val nanometers = (meters - exactMeters.toBigDecimal()) * 1_000_000_000.toBigDecimal()
-    return Distance.create(exactMeters, nanometers.toLong())
+    return Distance.create(value.toBigDecimal() * meterRatio)
   }
 
   override fun toMeasuredLength(distance: BigDecimal): Double {
-    return distance.divide(meterRatio, 9, CEILING).toDouble()
+    return distance.divide(meterRatio, 9, DOWN).toDouble()
   }
 
   override fun iterator() = values.iterator()

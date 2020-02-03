@@ -22,7 +22,7 @@ class ImperialLengthUnitSpec : BehaviorSpec({
           1_680L to Distance.create(meters = 42, nanometers = 672_000_000),
           131_296L to Distance.create(meters = 3_334, nanometers = 918_400_000),
           MAX_VALUE to Distance.create(meters = 234_273_649_736_111_305, nanometers = 497_800_000)
-      ).map { (inches, expected) ->
+      ).forEach { (inches, expected) ->
         unit.toDistance(inches) shouldBe expected
         Distance.ofInches(inches) shouldBe expected
       }
@@ -42,7 +42,7 @@ class ImperialLengthUnitSpec : BehaviorSpec({
           1_680L to Distance.create(meters = 512, nanometers = 64_000_000),
           131_296L to Distance.create(meters = 40_019, nanometers = 20_800_000),
           MAX_VALUE to Distance.create(meters = 2_811_283_796_833_335_665, nanometers = 973_600_000)
-      ).map { (feet, expected) ->
+      ).forEach { (feet, expected) ->
         unit.toDistance(feet) shouldBe expected
         Distance.ofFeet(feet) shouldBe expected
       }
@@ -62,7 +62,7 @@ class ImperialLengthUnitSpec : BehaviorSpec({
           1_680L to Distance.create(meters = 1_536, nanometers = 192_000_000),
           131_296L to Distance.create(meters = 120_057, nanometers = 62_400_000),
           MAX_VALUE to Distance.create(meters = 8_433_851_390_500_006_997, nanometers = 920_800_000)
-      ).map { (yards, expected) ->
+      ).forEach { (yards, expected) ->
         unit.toDistance(yards) shouldBe expected
         Distance.ofYards(yards) shouldBe expected
       }
@@ -82,7 +82,7 @@ class ImperialLengthUnitSpec : BehaviorSpec({
             133L to Distance.create(meters = 214_042, nanometers = 752_000_000),
             1_680L to Distance.create(meters = 2_703_697, nanometers = 920_000_000),
             131_296L to Distance.create(meters = 211_300_429, nanometers = 824_000_000)
-        ).map { (miles, expected) ->
+        ).forEach { (miles, expected) ->
           unit.toDistance(miles) shouldBe expected
           Distance.ofMiles(miles) shouldBe expected
         }

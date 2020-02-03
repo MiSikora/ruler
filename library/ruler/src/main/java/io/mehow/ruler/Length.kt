@@ -53,6 +53,22 @@ class Length<T> internal constructor(
     return (this.distance - distance).toLength(unit)
   }
 
+  operator fun times(multiplicand: Int): Length<T> {
+    return (distance * multiplicand).toLength(unit)
+  }
+
+  operator fun times(multiplicand: Long): Length<T> {
+    return (distance * multiplicand).toLength(unit)
+  }
+
+  operator fun times(multiplicand: Float): Length<T> {
+    return (distance * multiplicand).toLength(unit)
+  }
+
+  operator fun times(multiplicand: Double): Length<T> {
+    return (distance * multiplicand).toLength(unit)
+  }
+
   override fun compareTo(other: Length<*>): Int {
     return distance.compareTo(other.distance)
   }

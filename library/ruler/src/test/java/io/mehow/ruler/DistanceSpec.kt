@@ -135,4 +135,44 @@ class DistanceSpec : BehaviorSpec({
       }
     }
   }
+
+  Given("a distance") {
+    When("I multiply it by a natural number") {
+      Then("the result is correct") {
+        assertAll(
+            DistanceGenerator(max = Distance.ofKilometers(1_000)),
+            LongGenerator(0, 500_000)
+        ) { distance, multiplicant ->
+          val meters = distance.exactTotalMeters * multiplicant.toBigDecimal()
+          val nanos = meters.movePointRight(9).toBigIntegerExact()
+          val divRem = nanos.divideAndRemainder(1_000_000_000.toBigInteger())
+          check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
+          val expected = Distance.create(divRem[0].toLong(), divRem[1].toLong())
+
+          val multipliedDistance = distance * multiplicant
+
+          multipliedDistance shouldBe expected
+        }
+      }
+    }
+
+    When("I multiply it by a real number") {
+      Then("the result is correct") {
+        assertAll(
+            DistanceGenerator(max = Distance.ofKilometers(1_000)),
+            DoubleGenerator(0.0, 500_000.0)
+        ) { distance, multiplicant ->
+          val meters = distance.exactTotalMeters * multiplicant.toBigDecimal()
+          val nanos = meters.movePointRight(9).toBigInteger()
+          val divRem = nanos.divideAndRemainder(1_000_000_000.toBigInteger())
+          check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
+          val expected = Distance.create(divRem[0].toLong(), divRem[1].toLong())
+
+          val multipliedDistance = distance * multiplicant
+
+          multipliedDistance shouldBe expected
+        }
+      }
+    }
+  }
 })
