@@ -12,13 +12,13 @@ Distance measurements library for Java and Android.
 To integrate it with your app you need to add a dependency to you project.
 
 ```groovy
-debugImplementation "io.mehow.ruler:ruler:0.3.1"
+debugImplementation "io.mehow.ruler:ruler:0.3.2"
 ```
 
 If you use Android you can use Android artifact.
 
 ```groovy
-debugImplementation "io.mehow.ruler:android:0.3.1"
+debugImplementation "io.mehow.ruler:android:0.3.2"
 ```
 
 ## License

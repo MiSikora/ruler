@@ -1,7 +1,12 @@
 Change Log
 ==========
 
-Version 0.2.0 *(2020-02-03)*
+Version 0.3.2 *(2020-02-03)*
+----------------------------
+
+* Fix issue with high precision Float and Double multiplication.
+
+Version 0.3.1 *(2020-02-03)*
 ----------------------------
 
 * Make library JDK 7 compatible.
