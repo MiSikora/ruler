@@ -130,7 +130,7 @@ class Distance private constructor(
     @JvmStatic val Max = Distance(MAX_VALUE, NanosInMeter - 1)
 
     internal fun create(meters: BigDecimal): Distance {
-      val nanos = meters.movePointRight(9).toBigIntegerExact()
+      val nanos = meters.movePointRight(9).toBigInteger()
       val divRem = nanos.divideAndRemainder(bigNanosInMeter)
       check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
       val storedMeters = divRem[0].toLong()
