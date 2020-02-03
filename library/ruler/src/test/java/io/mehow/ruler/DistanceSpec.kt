@@ -145,10 +145,9 @@ class DistanceSpec : BehaviorSpec({
             LongGenerator(0, 500_000)
         ) { distance, multiplicant ->
           val meters = distance.exactTotalMeters * multiplicant.toBigDecimal()
-          val nanos = meters.movePointRight(9).toBigIntegerExact()
-          val divRem = nanos.divideAndRemainder(1_000_000_000.toBigInteger())
-          check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
-          val expected = Distance.create(divRem[0].toLong(), divRem[1].toLong())
+          val storedMeters = meters.toBigInteger().longValueExact()
+          val nanometers = (meters - storedMeters.toBigDecimal()) * 1_000_000_000.toBigDecimal()
+          val expected = Distance.create(storedMeters, nanometers.toLong())
 
           val multipliedDistance = distance * multiplicant
 

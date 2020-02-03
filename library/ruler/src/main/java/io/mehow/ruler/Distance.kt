@@ -123,16 +123,19 @@ class Distance private constructor(
 
   companion object {
     private const val NanosInMeter = 1_000_000_000L
-    private val bigNanosInMeter = NanosInMeter.toBigDecimal()
+    private val bigNanosInMeter = NanosInMeter.toBigInteger()
 
     @JvmStatic val Zero = Distance()
 
     @JvmStatic val Max = Distance(MAX_VALUE, NanosInMeter - 1)
 
     internal fun create(meters: BigDecimal): Distance {
-      val storedMeters = meters.toBigInteger().longValueExact()
-      val nanometers = (meters - storedMeters.toBigDecimal()) * bigNanosInMeter
-      return create(storedMeters, nanometers.toLong())
+      val nanos = meters.movePointRight(9).toBigIntegerExact()
+      val divRem = nanos.divideAndRemainder(bigNanosInMeter)
+      check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
+      val storedMeters = divRem[0].toLong()
+      val storedNanometers = divRem[1].toLong()
+      return create(storedMeters, storedNanometers)
     }
 
     @JvmStatic fun create(
