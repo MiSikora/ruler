@@ -80,12 +80,12 @@ class DistanceFormatterTest {
   }
 
   @Test fun `gigameter distance is properly formatted`() {
-    val length = Length.ofGigameters(2_573_213_532_2)
+    val length = Length.ofGigameters(2_573_213)
     val distance = length.toDistance(Gigameter)
 
     val formattedDistance = distance.format(context, converter = null)
 
-    formattedDistance shouldBe "25732135322.00Gm"
+    formattedDistance shouldBe "2573213.00Gm"
   }
 
   @Test fun `inches distance is properly formatted`() {

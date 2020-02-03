@@ -81,8 +81,7 @@ class ImperialDistanceUnitSpec : BehaviorSpec({
             25L to Length.create(meters = 40_233, nanometers = 600_000_000),
             133L to Length.create(meters = 214_042, nanometers = 752_000_000),
             1_680L to Length.create(meters = 2_703_697, nanometers = 920_000_000),
-            131_296L to Length.create(meters = 211_300_429, nanometers = 824_000_000),
-            MAX_VALUE to Length.create(meters = "14843578447280012316340".toBigInteger(), nanometers = 608_000_000)
+            131_296L to Length.create(meters = 211_300_429, nanometers = 824_000_000)
         ).map { (miles, expected) ->
           unit.toLength(miles) shouldBe expected
           Length.ofMiles(miles) shouldBe expected

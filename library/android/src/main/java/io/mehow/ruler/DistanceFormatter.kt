@@ -17,7 +17,7 @@ import java.util.Locale
 ): String where T : DistanceUnit, T : Comparable<T>, T : Iterable<T> {
   val value = converter?.convert(this) ?: this
   val resource = resourceProvider.resource(value.unit)
-  val distance = value.measuredLength.toDouble()
+  val distance = value.measuredLength
   return context.getString(resource, distance, unitSeparator)
 }
 

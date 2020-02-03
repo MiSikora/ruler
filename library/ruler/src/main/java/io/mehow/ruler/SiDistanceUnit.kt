@@ -1,7 +1,6 @@
 package io.mehow.ruler
 
 import java.math.BigDecimal
-import java.math.BigInteger
 import java.math.RoundingMode.CEILING
 import kotlin.Double.Companion.MAX_VALUE
 
@@ -37,33 +36,26 @@ enum class SiDistanceUnit(
       1_000_000_000.0.toBigDecimal()..MAX_VALUE.toBigDecimal(),
       1_000_000_000.0.toBigDecimal()
   ) {
-    override fun appliesRangeTo(meters: BigDecimal) = meters >= super.applicableRange.start
+    override fun appliesRangeTo(length: BigDecimal): Boolean {
+      return length >= super.applicableRange.start
+    }
   };
 
-  override fun toLength(value: BigInteger) = when {
-    this == Meter -> Length.create(meters = value)
-    meterRatio > 1.0.toBigDecimal() -> aboveMeterToLength(value)
-    else -> belowMeterToLength(value)
-  }
-
-  private fun aboveMeterToLength(value: BigInteger): Length {
-    val meters = value * meterRatio.toLong().toBigInteger()
-    return Length.create(meters = meters)
-  }
-
-  private fun belowMeterToLength(value: BigInteger): Length {
+  override fun toLength(value: Long): Length {
     val meters = value.toBigDecimal() * meterRatio
-    val exactMeters = meters.toBigInteger()
-    val nanometers = ((meters - exactMeters.toBigDecimal()) * 1_000_000_000.toBigDecimal()).toLong()
-    return Length.create(meters = exactMeters, nanometers = nanometers)
+    val exactMeters = meters.toBigInteger().longValueExact()
+    val nanometers = (meters - exactMeters.toBigDecimal()) * 1_000_000_000.toBigDecimal()
+    return Length.create(exactMeters, nanometers.toLong())
   }
 
-  override fun toMeasuredLength(meters: BigDecimal) = meters.divide(meterRatio, 9, CEILING)
+  override fun toMeasuredLength(length: BigDecimal): Double {
+    return length.divide(meterRatio, 9, CEILING).toDouble()
+  }
 
   override fun iterator() = values.iterator()
 
-  override fun appliesRangeTo(meters: BigDecimal): Boolean {
-    return meters >= applicableRange.start && meters < applicableRange.endInclusive
+  override fun appliesRangeTo(length: BigDecimal): Boolean {
+    return length >= applicableRange.start && length < applicableRange.endInclusive
   }
 
   companion object {

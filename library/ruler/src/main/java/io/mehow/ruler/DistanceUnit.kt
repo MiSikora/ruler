@@ -1,14 +1,11 @@
 package io.mehow.ruler
 
 import java.math.BigDecimal
-import java.math.BigInteger
 
 interface DistanceUnit {
-  fun appliesRangeTo(meters: BigDecimal): Boolean
+  fun appliesRangeTo(length: BigDecimal): Boolean
 
-  fun toLength(value: BigInteger): Length
+  fun toLength(value: Long): Length
 
-  @JvmDefault fun toLength(value: Long): Length = toLength(value.toBigInteger())
-
-  fun toMeasuredLength(meters: BigDecimal): BigDecimal
+  fun toMeasuredLength(length: BigDecimal): Double
 }

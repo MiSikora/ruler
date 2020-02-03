@@ -1,12 +1,10 @@
 package io.mehow.ruler
 
 class Distance<T> internal constructor(
-  internal val length: Length,
+  val length: Length,
   val unit: T
 ) : Comparable<Distance<*>> where T : DistanceUnit, T : Comparable<T>, T : Iterable<T> {
-  val metersPart = length.metersPart
-  val nanometersPart = length.nanometersPart
-  val measuredLength = unit.toMeasuredLength(length.totalMeters)
+  val measuredLength = unit.toMeasuredLength(length.exactTotalMeters)
 
   fun <R> withUnit(
     unit: R
@@ -15,7 +13,7 @@ class Distance<T> internal constructor(
   }
 
   fun withAutoUnit(): Distance<T> {
-    return withUnit(unit.single { it.appliesRangeTo(length.totalMeters) })
+    return withUnit(unit.single { it.appliesRangeTo(length.exactTotalMeters) })
   }
 
   @JvmSynthetic fun coerceUnitIn(range: ClosedRange<T>): Distance<T> {

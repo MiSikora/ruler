@@ -23,9 +23,9 @@ class DistanceSpec : BehaviorSpec({
     When("they are added") {
       Then("unit of the left operand is preserved") {
         assertAll(
-            LengthsGenerator(),
+            LengthsGenerator(max = Length.create(MAX_VALUE / 2 - 1, 500_000_000)),
             DistanceUnitGenerator,
-            LengthsGenerator(),
+            LengthsGenerator(max = Length.create(MAX_VALUE / 2 - 1, 500_000_000)),
             DistanceUnitGenerator
         ) { length1, unit1, length2, unit2 ->
           val distance1 = DistanceUnitGenerator.createDistance(length1, unit1)

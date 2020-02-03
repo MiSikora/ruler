@@ -11,14 +11,15 @@ import io.mehow.ruler.SiDistanceUnit.Meter
 import io.mehow.ruler.SiDistanceUnit.Micrometer
 import io.mehow.ruler.SiDistanceUnit.Millimeter
 import io.mehow.ruler.SiDistanceUnit.Nanometer
-import java.math.BigInteger
+import kotlin.Long.Companion.MAX_VALUE
 
 class Length private constructor(
-  val metersPart: BigInteger = BigInteger.ZERO,
-  val nanometersPart: Long = 0
+  val metersPart: Long = 0L,
+  val nanosPart: Long = 0L
 ) : Comparable<Length> {
-  internal val totalMeters = metersPart.toBigDecimal() +
-      (nanometersPart.toDouble() / 1_000_000_000).toBigDecimal()
+  internal val exactTotalMeters = metersPart.toBigDecimal() +
+      (nanosPart.toDouble() / 1_000_000_000).toBigDecimal()
+  val totalMeters = exactTotalMeters.toDouble()
 
   fun <T> toDistance(
     unit: T
@@ -27,7 +28,10 @@ class Length private constructor(
   }
 
   operator fun plus(other: Length): Length {
-    return create(metersPart + other.metersPart, nanometersPart + other.nanometersPart)
+    return create(
+        metersPart.safeAdd(other.metersPart),
+        nanosPart.safeAdd(other.nanosPart)
+    )
   }
 
   operator fun plus(distance: Distance<*>): Length {
@@ -35,7 +39,10 @@ class Length private constructor(
   }
 
   operator fun minus(other: Length): Length {
-    return create(metersPart - other.metersPart, nanometersPart - other.nanometersPart)
+    return create(
+        metersPart.safeSubtract(other.metersPart),
+        nanosPart.safeSubtract(other.nanosPart)
+    )
   }
 
   operator fun minus(distance: Distance<*>): Length {
@@ -44,27 +51,29 @@ class Length private constructor(
 
   override fun compareTo(other: Length): Int {
     val cmp = metersPart.compareTo(other.metersPart)
-    return if (cmp != 0) cmp else nanometersPart.compareTo(other.nanometersPart)
+    return if (cmp != 0) cmp else nanosPart.compareTo(other.nanosPart)
   }
 
   override fun equals(other: Any?): Boolean {
     if (other !is Length) return false
-    return metersPart == other.metersPart && nanometersPart == other.nanometersPart
+    return metersPart == other.metersPart && nanosPart == other.nanosPart
   }
 
   override fun hashCode(): Int {
-    return 31 * metersPart.hashCode() + nanometersPart.hashCode()
+    return 31 * metersPart.hashCode() + nanosPart.hashCode()
   }
 
   override fun toString(): String {
-    return "Length(meters=$metersPart, nanometers=$nanometersPart)"
+    return "Length(meters=$metersPart, nanometers=$nanosPart)"
   }
 
   companion object {
     @JvmStatic val Zero = Length()
 
+    @JvmStatic val Max = Length(MAX_VALUE, 999_999_999)
+
     @JvmStatic fun create(
-      meters: BigInteger = BigInteger.ZERO,
+      meters: Long = 0,
       nanometers: Long = 0
     ): Length {
       var meterPart = nanometers / 1_000_000_000
@@ -74,20 +83,13 @@ class Length private constructor(
         meterPart--
       }
 
-      val totalMeters = meters + meterPart.toBigInteger()
+      val totalMeters = meters.safeAdd(meterPart)
       val totalNanometers = nanoPart
 
-      require(totalMeters >= BigInteger.ZERO) { "Distance cannot be negative." }
+      require(totalMeters >= 0) { "Distance cannot be negative." }
       require(totalNanometers >= 0) { "Distance cannot be negative." }
 
       return Length(totalMeters, totalNanometers)
-    }
-
-    @JvmStatic fun create(
-      meters: Long = 0,
-      nanometers: Long = 0
-    ): Length {
-      return create(meters.toBigInteger(), nanometers)
     }
 
     @JvmStatic fun of(value: Long, unit: DistanceUnit) = unit.toLength(value)
