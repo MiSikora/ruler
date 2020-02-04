@@ -18,7 +18,6 @@ import io.mehow.ruler.SiLengthUnit.Nanometer
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
@@ -128,7 +127,7 @@ class LengthFormatterTest {
     val distance = Distance.ofMeters(1)
     val length = distance.toLength(Meter)
 
-    val formattedLength = length.format(context, unitSeparator = "-", converter = null)
+    val formattedLength = length.format(context, separator = "-", converter = null)
 
     formattedLength shouldBe "1.00-m"
   }
@@ -139,29 +138,41 @@ class LengthFormatterTest {
 
     val formattedLength = length.format(
         context,
-        resourceProvider = object : UnitResourceProvider<LengthUnit> {
-          override fun resource(unit: LengthUnit) = R.string.io_mehow_ruler_yards
-        },
-        converter = null
+        converter = null,
+        formatter = object : LengthFormatter {
+          override fun Length<*>.format(context: Context, separator: String): String? {
+            return context.getString(R.string.io_mehow_ruler_yards, measuredLength, separator)
+          }
+        }
     )
 
     formattedLength shouldBe "1.00yd"
   }
 
   @Test fun `formatting uses kilometers for large values with SI units`() {
+    // Only language of locale can be set with @Config and we need to set country.
+    val config = context.resources.configuration
+    val localizedConfig = Configuration(config).apply { setLocale(Locale.UK) }
+    val localizedContext = context.createConfigurationContext(localizedConfig)
+
     val distance = Distance.ofGigameters(1)
     val length = distance.toLength(Gigameter)
 
-    val formattedLength = length.format(context)
+    val formattedLength = length.format(localizedContext)
 
     formattedLength shouldBe "1000000.00km"
   }
 
   @Test fun `formatting uses meters for small values with SI units`() {
+    // Only language of locale can be set with @Config and we need to set country.
+    val config = context.resources.configuration
+    val localizedConfig = Configuration(config).apply { setLocale(Locale.UK) }
+    val localizedContext = context.createConfigurationContext(localizedConfig)
+
     val distance = Distance.ofMillimeters(987)
     val length = distance.toLength(Millimeter)
 
-    val formattedLength = length.format(context)
+    val formattedLength = length.format(localizedContext)
 
     formattedLength shouldBe "0.99m"
   }
@@ -173,7 +184,7 @@ class LengthFormatterTest {
     val formattedLength = length.format(
         context,
         converter = object : LengthConverter {
-          override fun convert(length: Length<*>) = length.withUnit(Nanometer)
+          override fun Length<*>.convert(context: Context) = length.withUnit(Nanometer)
         }
     )
 
@@ -189,18 +200,8 @@ class LengthFormatterTest {
     val distance = Distance.ofInches(30)
     val length = distance.toLength(Meter)
 
-    val formattedLength = length.formatLocalized(localizedContext)
+    val formattedLength = length.format(localizedContext)
 
     formattedLength shouldBe "2.50ft"
-  }
-
-  @Test @Config(qualifiers = "pl")
-  fun `provided locale overwrites system ones for auto formatting`() {
-    val distance = Distance.ofYards(3)
-    val length = distance.toLength(Meter)
-
-    val formattedLength = length.formatLocalized(context, locale = Locale.US)
-
-    formattedLength shouldBe "3.00yd"
   }
 }
