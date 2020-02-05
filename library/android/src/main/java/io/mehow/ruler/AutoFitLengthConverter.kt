@@ -1,7 +1,6 @@
 package io.mehow.ruler
 
 import android.content.Context
-import android.os.Build.VERSION
 import io.mehow.ruler.ImperialLengthUnit.Yard
 import io.mehow.ruler.SiLengthUnit.Kilometer
 import io.mehow.ruler.SiLengthUnit.Meter
@@ -17,12 +16,6 @@ internal object AutoFitLengthConverter : LengthConverter {
       else -> autoLength
     }
   }
-
-  private val Context.preferredLocale: Locale
-    get() {
-      val configuration = resources.configuration
-      return if (VERSION.SDK_INT >= 24) configuration.locales[0] else configuration.locale
-    }
 
   private val imperialCountryCodes = listOf("US", "LR", "MM")
   private val Locale.isImperial get() = country in imperialCountryCodes

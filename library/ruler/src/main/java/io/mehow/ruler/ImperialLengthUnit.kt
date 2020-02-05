@@ -8,9 +8,9 @@ enum class ImperialLengthUnit(
   private val applicableRange: ClosedRange<BigDecimal>,
   private val meterRatio: BigDecimal
 ) : LengthUnit, Iterable<ImperialLengthUnit> {
-  Inch(0.0.toBigDecimal()..0.3048.toBigDecimal(), 0.0254.toBigDecimal()),
-  Foot(0.3048.toBigDecimal()..0.9144.toBigDecimal(), 0.3048.toBigDecimal()),
-  Yard(0.9144.toBigDecimal()..1_609.3.toBigDecimal(), 0.9144.toBigDecimal()),
+  Inch(0.0.toBigDecimal()..0.3_048.toBigDecimal(), 0.0_254.toBigDecimal()),
+  Foot(0.3_048.toBigDecimal()..0.9_144.toBigDecimal(), 0.3_048.toBigDecimal()),
+  Yard(0.9_144.toBigDecimal()..1_609.3.toBigDecimal(), 0.9_144.toBigDecimal()),
   Mile(1_609.3.toBigDecimal()..MAX_VALUE.toBigDecimal(), 1_609.344.toBigDecimal()) {
     override fun appliesRangeTo(distance: BigDecimal): Boolean {
       return distance >= super.applicableRange.start

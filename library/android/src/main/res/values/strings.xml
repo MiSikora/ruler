@@ -10,4 +10,8 @@
   <string name="io_mehow_ruler_yards">%1$.2f%2$syd</string>
   <string name="io_mehow_ruler_feet">%1$.2f%2$sft</string>
   <string name="io_mehow_ruler_inches">%1$.2f%2$sin</string>
+  <string name="io_mehow_ruler_miles_part">%1$d%2$smi</string>
+  <string name="io_mehow_ruler_yards_part">%1$d%2$syd</string>
+  <string name="io_mehow_ruler_feet_part">%1$d%2$sft</string>
+  <string name="io_mehow_ruler_inches_part">%1$d%2$sin</string>
 </resources>

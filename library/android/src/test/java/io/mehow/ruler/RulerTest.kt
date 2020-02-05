@@ -21,7 +21,7 @@ import org.robolectric.RobolectricTestRunner
 import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
-class LengthFormatterTest {
+class RulerTest {
   private val context: Context get() = ApplicationProvider.getApplicationContext()
 
   @Test fun `nanometer length is properly formatted`() {
@@ -93,25 +93,25 @@ class LengthFormatterTest {
 
     val formattedLength = length.format(context, converter = null)
 
-    formattedLength shouldBe "86.00in"
+    formattedLength shouldBe "2yd 1ft"
   }
 
-  @Test fun `lengtht length is properly formatted`() {
+  @Test fun `length length is properly formatted`() {
     val distance = Distance.ofFeet(111)
     val length = distance.toLength(Foot)
 
     val formattedLength = length.format(context, converter = null)
 
-    formattedLength shouldBe "111.00ft"
+    formattedLength shouldBe "37yd"
   }
 
   @Test fun `yard length is properly formatted`() {
-    val distance = Distance.ofYards(8912)
+    val distance = Distance.ofMiles(4) + Distance.ofYards(666)
     val length = distance.toLength(Yard)
 
     val formattedLength = length.format(context, converter = null)
 
-    formattedLength shouldBe "8912.00yd"
+    formattedLength shouldBe "4mi 666yd"
   }
 
   @Test fun `mile length is properly formatted`() {
@@ -120,7 +120,7 @@ class LengthFormatterTest {
 
     val formattedLength = length.format(context, converter = null)
 
-    formattedLength shouldBe "69.00mi"
+    formattedLength shouldBe "69mi"
   }
 
   @Test fun `formatting uses provided separator`() {
@@ -197,11 +197,11 @@ class LengthFormatterTest {
     val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
     val localizedContext = context.createConfigurationContext(localizedConfig)
 
-    val distance = Distance.ofInches(30)
+    val distance = Distance.ofFeet(4)
     val length = distance.toLength(Meter)
 
     val formattedLength = length.format(localizedContext)
 
-    formattedLength shouldBe "2.50ft"
+    formattedLength shouldBe "1yd 1ft"
   }
 }

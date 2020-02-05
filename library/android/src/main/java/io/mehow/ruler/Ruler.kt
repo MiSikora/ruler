@@ -3,6 +3,7 @@ package io.mehow.ruler
 import android.content.Context
 import io.mehow.ruler.SiLengthUnit.Meter
 
+@Suppress("ObjectPropertyNaming")
 object Ruler {
   private val converters = mutableListOf<LengthConverter>()
 
@@ -28,6 +29,9 @@ object Ruler {
   }
 
   private val formatters = mutableListOf<LengthFormatter>()
+  fun enableImperialFormatter(enable: Boolean) {
+    AutoLengthFormatter.useImperialFormatter = enable
+  }
 
   @JvmStatic
   @JvmName("addFormatter")
@@ -46,10 +50,11 @@ object Ruler {
       return formatters.toList()
           .asSequence()
           .map { format(context, separator) }
-          .firstOrNull() ?: with(ResourcesLengthFormatter) { format(context, separator) }
+          .firstOrNull() ?: with(AutoLengthFormatter) { format(context, separator) }
     }
   }
 
+  @Suppress("LongParameterList")
   @JvmStatic
   @JvmOverloads
   fun format(
@@ -62,6 +67,7 @@ object Ruler {
     return distance.format(context, separator, converter, formatter)
   }
 
+  @Suppress("LongParameterList")
   @JvmStatic
   @JvmOverloads
   fun <T> format(
