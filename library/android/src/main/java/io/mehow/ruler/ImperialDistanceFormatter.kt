@@ -1,40 +1,65 @@
 package io.mehow.ruler
 
 import android.content.Context
-import android.content.res.Resources
 import android.text.TextUtils
 import android.view.View
+import java.math.BigInteger
 import java.util.Locale
 
 class ImperialDistanceFormatter internal constructor(
   private val formatters: Set<PartFormatter>,
   private val partsSeparator: String
 ) {
-  fun format(
-    distance: Distance,
-    context: Context
-  ): String {
+  fun format(distance: Distance, context: Context): String {
     val reverseOrder = context.preferredLocale.isRtl
-    return formattedParts(distance, context, reverseOrder).joinToString(partsSeparator)
+    return formatParts(distance, context, reverseOrder)
   }
 
-  fun format(
-    length: Length<ImperialLengthUnit>,
-    context: Context
-  ): String {
+  fun format(length: Length<ImperialLengthUnit>, context: Context): String {
     return format(length.distance, context)
   }
 
-  private fun formattedParts(
-    distance: Distance,
-    context: Context,
-    reverseOrder: Boolean
-  ): List<String> {
-    val highestHierarchy = formatters.map(PartFormatter::hierarchy).min() ?: -1L
-    val parts = formatters.mapNotNull { formatter ->
-      formatter.format(distance, context.resources, formatter.hierarchy == highestHierarchy)
+  private fun formatParts(distance: Distance, context: Context, reverseOrder: Boolean): String {
+    val lowestHierarchy = formatters.map(PartFormatter::hierarchy).max()!!
+    val highestHierarchy = formatters.map(PartFormatter::hierarchy).min()!!
+
+    val lengthMap = formatters.associateWith { formatter ->
+      val isBasePart = formatter.hierarchy == highestHierarchy
+      return@associateWith formatter.part(distance, isBasePart)
     }
-    return if (reverseOrder) parts.reversed() else parts
+    val totalLength = lengthMap.values.fold(BigInteger.ZERO) { acc, length -> acc + length }
+
+    val formattedParts = formatters.mapNotNull { formatter ->
+      val part = lengthMap.getValue(formatter)
+      return@mapNotNull formatter.printData(context, part, totalLength, lowestHierarchy)
+    }
+
+    val localizedParts = if (reverseOrder) formattedParts.reversed() else formattedParts
+    return localizedParts.joinToString(partsSeparator)
+  }
+
+  private fun PartFormatter.printData(
+    context: Context,
+    length: BigInteger,
+    totalLength: BigInteger,
+    lowestAvailableHierarchy: Int
+  ): String? {
+    return when {
+      canPrintData(length) -> format(context, length.toLong())
+      shouldPrintData(totalLength, lowestAvailableHierarchy) -> format(context, 0L)
+      else -> null
+    }
+  }
+
+  private fun PartFormatter.shouldPrintData(
+    totalLength: BigInteger,
+    lowestHierarchy: Int
+  ): Boolean {
+    return totalLength == BigInteger.ZERO && hierarchy == lowestHierarchy
+  }
+
+  private fun PartFormatter.canPrintData(part: BigInteger): Boolean {
+    return printZeros || part != BigInteger.ZERO
   }
 
   companion object {
@@ -104,14 +129,18 @@ internal sealed class PartFormatter {
   abstract val hierarchy: Int
   abstract val resource: Int
 
-  fun format(distance: Distance, resources: Resources, isBasePart: Boolean): String? {
-    val part = distance.extractPart() + if (isBasePart) distance.extractBasePart() else 0L
-    return if (printZeros || part != 0L) resources.getString(resource, part, separator) else null
+  fun format(context: Context, distance: Long): String {
+    return context.getString(resource, distance, separator)
   }
 
-  protected abstract fun Distance.extractPart(): Long
+  fun part(distance: Distance, isBasePart: Boolean): BigInteger {
+    val extraPart = if (isBasePart) distance.extractExtraPart() else 0.toBigInteger()
+    return distance.extractPart() + extraPart
+  }
 
-  protected abstract fun Distance.extractBasePart(): Long
+  protected abstract fun Distance.extractPart(): BigInteger
+
+  protected abstract fun Distance.extractExtraPart(): BigInteger
 
   abstract override fun equals(other: Any?): Boolean
 
@@ -126,7 +155,7 @@ internal sealed class PartFormatter {
 
     override fun Distance.extractPart() = milesPart
 
-    override fun Distance.extractBasePart() = 0L
+    override fun Distance.extractExtraPart() = 0.toBigInteger()
 
     override fun equals(other: Any?) = other is Miles
 
@@ -142,7 +171,7 @@ internal sealed class PartFormatter {
 
     override fun Distance.extractPart() = yardsPart
 
-    override fun Distance.extractBasePart() = totalMiles.toLong() * 1_760
+    override fun Distance.extractExtraPart() = totalMiles * 1_760.toBigInteger()
 
     override fun equals(other: Any?) = other is Yards
 
@@ -158,7 +187,7 @@ internal sealed class PartFormatter {
 
     override fun Distance.extractPart() = feetPart
 
-    override fun Distance.extractBasePart() = totalYards.toLong() * 3
+    override fun Distance.extractExtraPart() = totalYards * 3.toBigInteger()
 
     override fun equals(other: Any?) = other is Feet
 
@@ -174,7 +203,7 @@ internal sealed class PartFormatter {
 
     override fun Distance.extractPart() = inchesPart
 
-    override fun Distance.extractBasePart() = totalFeet.toLong() * 12
+    override fun Distance.extractExtraPart() = totalFeet * 12.toBigInteger()
 
     override fun equals(other: Any?) = other is Inches
 
@@ -182,18 +211,30 @@ internal sealed class PartFormatter {
   }
 }
 
-internal val Distance.totalMiles get() = exactTotalMeters / 1_609.344.toBigDecimal()
+internal val Distance.totalMiles: BigInteger
+  get() {
+    return (exactTotalMeters / 1_609.344.toBigDecimal()).toBigInteger()
+  }
 
-internal val Distance.milesPart get() = totalMiles.toLong()
+internal val Distance.milesPart get() = totalMiles
 
-internal val Distance.totalYards get() = exactTotalMeters / 0.9_144.toBigDecimal()
+internal val Distance.totalYards: BigInteger
+  get() {
+    return (exactTotalMeters / 0.9_144.toBigDecimal()).toBigInteger()
+  }
 
-internal val Distance.yardsPart get() = totalYards.toLong() % 1_760
+internal val Distance.yardsPart get() = totalYards % 1_760.toBigInteger()
 
-internal val Distance.totalFeet get() = exactTotalMeters / 0.3_048.toBigDecimal()
+internal val Distance.totalFeet: BigInteger
+  get() {
+    return (exactTotalMeters / 0.3_048.toBigDecimal()).toBigInteger()
+  }
 
-internal val Distance.feetPart get() = totalFeet.toLong() % 3
+internal val Distance.feetPart get() = totalFeet % 3.toBigInteger()
 
-internal val Distance.totalInches get() = exactTotalMeters / 0.0_254.toBigDecimal()
+internal val Distance.totalInches: BigInteger
+  get() {
+    return (exactTotalMeters / 0.0_254.toBigDecimal()).toBigInteger()
+  }
 
-internal val Distance.inchesPart get() = totalInches.toLong() % 12
+internal val Distance.inchesPart get() = totalInches % 12.toBigInteger()
