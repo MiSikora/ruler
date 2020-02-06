@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 0.4. *(2020-02-05)*
+Version 0.4.0 *(2020-02-05)*
 ----------------------------
 
 * Add Ruler class as a central point for distance and length formatting.
