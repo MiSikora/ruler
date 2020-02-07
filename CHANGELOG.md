@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.4.1 *(2020-02-07)*
+----------------------------
+
+* Add support for negative distances.
+* Add support for floored SI unit lengths formatting.
+
 Version 0.4.0 *(2020-02-05)*
 ----------------------------
 
