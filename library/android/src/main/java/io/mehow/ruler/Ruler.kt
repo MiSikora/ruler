@@ -79,10 +79,31 @@ object Ruler {
   ): String where T : LengthUnit, T : Comparable<T>, T : Iterable<T> {
     return length.format(context, separator, converter, formatter)
   }
+
+  @JvmStatic
+  @JvmOverloads
+  fun formatFloored(
+    distance: Distance,
+    context: Context,
+    unit: SiLengthUnit = Meter,
+    separator: String = ""
+  ): String {
+    return distance.formatFloored(context, unit, separator)
+  }
+
+  @JvmStatic
+  @JvmOverloads
+  fun formatFloored(
+    length: Length<*>,
+    context: Context,
+    unit: SiLengthUnit = Meter,
+    separator: String = ""
+  ): String {
+    return length.formatFloored(context, unit, separator)
+  }
 }
 
-@JvmSynthetic
-fun Distance.format(
+@JvmSynthetic fun Distance.format(
   context: Context,
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
@@ -91,8 +112,7 @@ fun Distance.format(
   return toLength(Meter).format(context, separator, converter, formatter)
 }
 
-@JvmSynthetic
-fun <T> Length<T>.format(
+@JvmSynthetic fun <T> Length<T>.format(
   context: Context,
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
@@ -107,4 +127,22 @@ fun <T> Length<T>.format(
   checkNotNull(text) { "Failed to format length $length." }
 
   return text
+}
+
+@JvmSynthetic fun Distance.formatFloored(
+  context: Context,
+  unit: SiLengthUnit = Meter,
+  separator: String = ""
+): String {
+  val formatter = SiUnitFlooredFormatter(unit)
+  return format(context, separator, null, formatter)
+}
+
+@JvmSynthetic fun Length<*>.formatFloored(
+  context: Context,
+  unit: SiLengthUnit = Meter,
+  separator: String = ""
+): String {
+  val formatter = SiUnitFlooredFormatter(unit)
+  return format(context, separator, null, formatter)
 }

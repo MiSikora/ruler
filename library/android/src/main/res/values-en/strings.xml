@@ -1,17 +1,34 @@
 <resources>
   <string name="io_mehow_ruler_gigameters">%1$.2f%2$sGm</string>
+  <string name="io_mehow_ruler_gigameters_part">%1$d%2$sGm</string>
+
   <string name="io_mehow_ruler_megameters">%1$.2f%2$sMm</string>
+  <string name="io_mehow_ruler_megameters_part">%1$d%2$sMm</string>
+
   <string name="io_mehow_ruler_kilometers">%1$.2f%2$skm</string>
+  <string name="io_mehow_ruler_kilometers_part">%1$d%2$skm</string>
+
   <string name="io_mehow_ruler_meters">%1$.2f%2$sm</string>
+  <string name="io_mehow_ruler_meters_part">%1$d%2$sm</string>
+
   <string name="io_mehow_ruler_millimeters">%1$.2f%2$smm</string>
+  <string name="io_mehow_ruler_millimeters_part">%1$d%2$smm</string>
+
   <string name="io_mehow_ruler_micrometers">%1$.2f%2$sµm</string>
+  <string name="io_mehow_ruler_micrometers_part">%1$d%2$sµm</string>
+
   <string name="io_mehow_ruler_nanometers">%1$.2f%2$snm</string>
+  <string name="io_mehow_ruler_nanometers_part">%1$d%2$snm</string>
+
   <string name="io_mehow_ruler_miles">%1$.2f%2$smi</string>
-  <string name="io_mehow_ruler_yards">%1$.2f%2$syd</string>
-  <string name="io_mehow_ruler_feet">%1$.2f%2$sft</string>
-  <string name="io_mehow_ruler_inches">%1$.2f%2$sin</string>
   <string name="io_mehow_ruler_miles_part">%1$d%2$smi</string>
+
+  <string name="io_mehow_ruler_yards">%1$.2f%2$syd</string>
   <string name="io_mehow_ruler_yards_part">%1$d%2$syd</string>
+
+  <string name="io_mehow_ruler_feet">%1$.2f%2$sft</string>
   <string name="io_mehow_ruler_feet_part">%1$d%2$sft</string>
+
+  <string name="io_mehow_ruler_inches">%1$.2f%2$sin</string>
   <string name="io_mehow_ruler_inches_part">%1$d%2$sin</string>
 </resources>
