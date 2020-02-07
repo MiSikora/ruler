@@ -13,7 +13,7 @@ class Length<T> internal constructor(
   }
 
   fun withAutoUnit(): Length<T> {
-    return withUnit(unit.single { it.appliesRangeTo(distance.exactTotalMeters) })
+    return withUnit(unit.single { it.appliesRangeTo(distance.exactTotalMeters.abs()) })
   }
 
   @JvmSynthetic fun coerceUnitIn(range: ClosedRange<T>): Length<T> {
@@ -83,6 +83,10 @@ class Length<T> internal constructor(
 
   operator fun div(multiplicand: Double): Length<T> {
     return (distance / multiplicand).toLength(unit)
+  }
+
+  operator fun unaryMinus(): Length<T> {
+    return this * -1
   }
 
   override fun compareTo(other: Length<*>): Int {

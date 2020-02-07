@@ -4,7 +4,7 @@ import io.kotlintest.properties.Gen
 import kotlin.random.Random
 
 class DistanceGenerator(
-  private val min: Distance = Distance.Zero,
+  private val min: Distance = Distance.Min,
   private val max: Distance = Distance.Max
 ) : Gen<Distance> {
   override fun constants() = listOf(min, max)

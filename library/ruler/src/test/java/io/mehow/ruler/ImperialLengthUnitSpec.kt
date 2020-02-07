@@ -25,6 +25,9 @@ class ImperialLengthUnitSpec : BehaviorSpec({
       ).forEach { (inches, expected) ->
         unit.toDistance(inches) shouldBe expected
         Distance.ofInches(inches) shouldBe expected
+
+        unit.toDistance(-inches) shouldBe -expected
+        Distance.ofInches(-inches) shouldBe -expected
       }
     }
   }
@@ -45,6 +48,9 @@ class ImperialLengthUnitSpec : BehaviorSpec({
       ).forEach { (feet, expected) ->
         unit.toDistance(feet) shouldBe expected
         Distance.ofFeet(feet) shouldBe expected
+
+        unit.toDistance(-feet) shouldBe -expected
+        Distance.ofFeet(-feet) shouldBe -expected
       }
     }
   }
@@ -65,6 +71,9 @@ class ImperialLengthUnitSpec : BehaviorSpec({
       ).forEach { (yards, expected) ->
         unit.toDistance(yards) shouldBe expected
         Distance.ofYards(yards) shouldBe expected
+
+        unit.toDistance(-yards) shouldBe -expected
+        Distance.ofYards(-yards) shouldBe -expected
       }
     }
   }
@@ -85,6 +94,9 @@ class ImperialLengthUnitSpec : BehaviorSpec({
         ).forEach { (miles, expected) ->
           unit.toDistance(miles) shouldBe expected
           Distance.ofMiles(miles) shouldBe expected
+
+          unit.toDistance(-miles) shouldBe -expected
+          Distance.ofMiles(-miles) shouldBe -expected
         }
       }
     }

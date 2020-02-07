@@ -9,6 +9,7 @@ import io.kotlintest.shouldThrow
 import io.kotlintest.specs.BehaviorSpec
 import java.math.RoundingMode.DOWN
 import kotlin.Long.Companion.MAX_VALUE
+import kotlin.Long.Companion.MIN_VALUE
 
 class DistanceSpec : BehaviorSpec({
   Given("zero distance") {
@@ -38,19 +39,45 @@ class DistanceSpec : BehaviorSpec({
       }
     }
 
-    When("I subtract any distance from it") {
-      Then("it should fail") {
-        assertAll(DistanceGenerator(Distance.ofNanometers(1))) { distance ->
-          shouldThrow<IllegalArgumentException> { zeroDistance - distance }
-        }
-      }
-    }
-
     When("I add a distance to it") {
       Then("it should be equal to that distance") {
         assertAll(DistanceGenerator()) { distance ->
           val newDistance = zeroDistance + distance
           newDistance shouldBe distance
+        }
+      }
+    }
+  }
+
+  Given("min distance") {
+    val minDistance = Distance.Min
+
+    Then("it should have minimum value of meters") {
+      minDistance.metersPart shouldBe MIN_VALUE
+    }
+
+    Then("it should have no nanometers") {
+      minDistance.nanosPart shouldBe 0L
+    }
+
+    When("I subtract even one nanometer from it") {
+      Then("it fails") {
+        shouldThrow<ArithmeticException> { minDistance - Distance.create(nanometers = 1) }
+      }
+    }
+
+    When("I add zero distance to it") {
+      val newDistance = minDistance + Distance.Zero
+
+      Then("it stays the same") {
+        newDistance shouldBe minDistance
+      }
+    }
+
+    When("I add any distance from it") {
+      Then("it does not fail") {
+        assertAll(DistanceGenerator(Distance.Zero)) { distance ->
+          shouldNotThrowAny { minDistance + distance }
         }
       }
     }
@@ -83,7 +110,7 @@ class DistanceSpec : BehaviorSpec({
 
     When("I remove any distance from it") {
       Then("it does not fail") {
-        assertAll(DistanceGenerator()) { distance ->
+        assertAll(DistanceGenerator(Distance.Zero)) { distance ->
           shouldNotThrowAny { maxDistance - distance }
         }
       }
@@ -119,9 +146,9 @@ class DistanceSpec : BehaviorSpec({
 
     Then("they can be compared to each other") {
       forAll(
-          LongGenerator(0L, MAX_VALUE),
+          LongGenerator(MIN_VALUE, MAX_VALUE),
           LongGenerator(0L, 999_999_999),
-          LongGenerator(0L, MAX_VALUE),
+          LongGenerator(MIN_VALUE, MAX_VALUE),
           LongGenerator(0L, 999_999_999)
       ) { meter1, nano1, meter2, nano2 ->
         val distance1 = Distance.create(meter1, nano1)
@@ -141,7 +168,7 @@ class DistanceSpec : BehaviorSpec({
     When("I multiply it by a natural number") {
       Then("the result is correct") {
         assertAll(
-            DistanceGenerator(max = Distance.ofKilometers(1_000)),
+            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
             LongGenerator(0, 500_000)
         ) { distance, multiplicant ->
           val meters = distance.exactTotalMeters * multiplicant.toBigDecimal()
@@ -159,7 +186,7 @@ class DistanceSpec : BehaviorSpec({
     When("I multiply it by a real number") {
       Then("the result is correct") {
         assertAll(
-            DistanceGenerator(max = Distance.ofKilometers(1_000)),
+            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
             DoubleGenerator(0.0, 500_000.0)
         ) { distance, multiplicant ->
           val meters = distance.exactTotalMeters * multiplicant.toBigDecimal()
@@ -178,7 +205,7 @@ class DistanceSpec : BehaviorSpec({
     When("I divide it by a natural number") {
       Then("the result is correct") {
         assertAll(
-            DistanceGenerator(max = Distance.ofKilometers(1_000)),
+            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
             LongGenerator(1, 500_000)
         ) { distance, divisor ->
           val meters = distance.exactTotalMeters.divide(divisor.toBigDecimal(), DOWN)
@@ -197,7 +224,7 @@ class DistanceSpec : BehaviorSpec({
     When("I divide it by a real number") {
       Then("the result is correct") {
         assertAll(
-            DistanceGenerator(max = Distance.ofKilometers(1_000)),
+            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
             DoubleGenerator(0.000_001, 500_000.0)
         ) { distance, divisor ->
           val meters = distance.exactTotalMeters.divide(divisor.toBigDecimal(), DOWN)

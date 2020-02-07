@@ -16,6 +16,7 @@ import io.mehow.ruler.SiLengthUnit.Nanometer
 import java.math.BigDecimal
 import java.math.RoundingMode.DOWN
 import kotlin.Long.Companion.MAX_VALUE
+import kotlin.Long.Companion.MIN_VALUE
 
 class Distance private constructor(
   val metersPart: Long = 0L,
@@ -58,8 +59,6 @@ class Distance private constructor(
   }
 
   operator fun times(multiplicand: Long): Distance {
-    require(multiplicand >= 0) { "Distance cannot be negative." }
-
     return when (multiplicand) {
       0L -> Zero
       1L -> this
@@ -72,8 +71,6 @@ class Distance private constructor(
   }
 
   operator fun times(multiplicand: Double): Distance {
-    require(multiplicand >= 0) { "Distance cannot be negative." }
-
     return when (multiplicand) {
       0.0 -> Zero
       1.0 -> this
@@ -86,7 +83,7 @@ class Distance private constructor(
   }
 
   operator fun div(divisor: Long): Distance {
-    require(divisor > 0) { "Distance must be positive." }
+    require(divisor != 0L) { "Cannot divide by 0." }
 
     return if (divisor == 1L) this
     else create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
@@ -97,10 +94,14 @@ class Distance private constructor(
   }
 
   operator fun div(divisor: Double): Distance {
-    require(divisor > 0) { "Distance must be positive." }
+    require(divisor != 0.0) { "Cannot divide by 0" }
 
     return if (divisor == 1.0) this
     else create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
+  }
+
+  operator fun unaryMinus(): Distance {
+    return this * -1
   }
 
   override fun compareTo(other: Distance): Int {
@@ -124,6 +125,8 @@ class Distance private constructor(
   companion object {
     private const val NanosInMeter = 1_000_000_000L
     private val bigNanosInMeter = NanosInMeter.toBigInteger()
+
+    @JvmStatic val Min = Distance(MIN_VALUE, 0L)
 
     @JvmStatic val Zero = Distance()
 
@@ -152,8 +155,7 @@ class Distance private constructor(
       val totalMeters = meters.safeAdd(meterPart)
       val totalNanometers = nanoPart
 
-      require(totalMeters >= 0) { "Distance cannot be negative." }
-      require(totalNanometers >= 0) { "Distance cannot be negative." }
+      require(totalNanometers in 0..999_999_999) { "Nanoseconds must be between 0 and 1s" }
 
       return Distance(totalMeters, totalNanometers)
     }

@@ -17,15 +17,22 @@ import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 import kotlin.Long.Companion.MAX_VALUE
+import kotlin.Long.Companion.MIN_VALUE
 
 class LengthSpec : BehaviorSpec({
   Given("two lengths") {
     When("they are added") {
       Then("unit of the left operand is preserved") {
         assertAll(
-            DistanceGenerator(max = Distance.create(MAX_VALUE / 2 - 1, 500_000_000)),
+            DistanceGenerator(
+                min = Distance.create(MIN_VALUE / 2 + 1, 500_000_000),
+                max = Distance.create(MAX_VALUE / 2 - 1, 500_000_000)
+            ),
             DistanceUnitGenerator,
-            DistanceGenerator(max = Distance.create(MAX_VALUE / 2 - 1, 500_000_000)),
+            DistanceGenerator(
+                min = Distance.create(MIN_VALUE / 2 + 1, 500_000_000),
+                max = Distance.create(MAX_VALUE / 2 - 1, 500_000_000)
+            ),
             DistanceUnitGenerator
         ) { distance1, unit1, distance2, unit2 ->
           val length1 = DistanceUnitGenerator.createLength(distance1, unit1)
@@ -41,9 +48,15 @@ class LengthSpec : BehaviorSpec({
     When("they are subtracted") {
       Then("unit of the left operand is preserved") {
         assertAll(
-            DistanceGenerator(min = Distance.ofMeters(MAX_VALUE / 2)),
+            DistanceGenerator(
+                min = Distance.ofMeters(MIN_VALUE / 2 + 1),
+                max = Distance.ofMeters(MAX_VALUE / 2 - 1)
+            ),
             DistanceUnitGenerator,
-            DistanceGenerator(max = Distance.ofMeters(MAX_VALUE / 2)),
+            DistanceGenerator(
+                min = Distance.ofMeters(MIN_VALUE / 2 + 1),
+                max = Distance.ofMeters(MAX_VALUE / 2 - 1)
+            ),
             DistanceUnitGenerator
         ) { distance1, unit1, distance2, unit2 ->
           val length1 = DistanceUnitGenerator.createLength(distance1, unit1)
@@ -89,16 +102,22 @@ private fun AbstractBehaviorSpec.checkSiUnit(unit: SiLengthUnit) {
 
           length.unit shouldBeSameInstanceAs unit
         }
+
+        assertAll(DistanceGenerator(Distance.of(-999, unit), Distance.of(-1, unit))) { distance ->
+          val length = distance.toLength(SiLengthUnit.values().random()).withAutoUnit()
+
+          length.unit shouldBeSameInstanceAs unit
+        }
       }
     }
 
     When("I get measured distance") {
       Then("It converts original distance correctly") {
-        assertAll(LongGenerator(min = 0L, max = 1_000L)) { value ->
+        assertAll(LongGenerator(min = -1_000L, max = 1_000L)) { value ->
           val distance = Distance.of(value, unit)
           val length = distance.toLength(unit)
 
-          length.measuredLength.toDouble() shouldBe value.toDouble()
+          length.measuredLength shouldBe value.toDouble()
         }
       }
     }
@@ -161,10 +180,15 @@ private fun AbstractBehaviorSpec.checkImperialUnit(
     When("I auto unit it") {
       Then("it uses $unit as a unit") {
         assertAll(
-            DistanceGenerator(
-                Distance.of(1, unit),
-                Distance.of(maxRange, unit)
-            )
+            DistanceGenerator(Distance.of(1, unit), Distance.of(maxRange, unit))
+        ) { distance ->
+          val length = distance.toLength(ImperialLengthUnit.values().random()).withAutoUnit()
+
+          length.unit shouldBeSameInstanceAs unit
+        }
+
+        assertAll(
+            DistanceGenerator(Distance.of(-maxRange, unit), Distance.of(-1, unit))
         ) { distance ->
           val length = distance.toLength(ImperialLengthUnit.values().random()).withAutoUnit()
 
@@ -175,11 +199,11 @@ private fun AbstractBehaviorSpec.checkImperialUnit(
 
     When("I get measured distance") {
       Then("It converts original distance correctly") {
-        assertAll(LongGenerator(min = 0L, max = 1_000L)) { value ->
+        assertAll(LongGenerator(min = -1_000L, max = 1_000L)) { value ->
           val distance = Distance.of(value, unit)
           val length = distance.toLength(unit)
 
-          length.measuredLength.toDouble() shouldBe value.toDouble()
+          length.measuredLength shouldBe value.toDouble()
         }
       }
     }

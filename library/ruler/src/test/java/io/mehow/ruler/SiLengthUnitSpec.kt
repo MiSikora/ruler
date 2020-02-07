@@ -11,13 +11,14 @@ import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 import kotlin.Long.Companion.MAX_VALUE
+import kotlin.Long.Companion.MIN_VALUE
 
 class SiLengthUnitSpec : BehaviorSpec({
   Given("nanometers") {
     val unit = Nanometer
 
     Then("length can be created from it") {
-      assertAll(LongGenerator(0L)) { value ->
+      assertAll(LongGenerator()) { value ->
         val expectedLength = Distance.create(value / 1_000_000_000, value % 1_000_000_000)
 
         val length1 = unit.toDistance(value)
@@ -33,7 +34,7 @@ class SiLengthUnitSpec : BehaviorSpec({
     val unit = Micrometer
 
     Then("length can be created from it") {
-      assertAll(LongGenerator(0L)) { value ->
+      assertAll(LongGenerator()) { value ->
         val expectedLength = Distance.create(value / 1_000_000, (value % 1_000_000) * 1_000)
 
         val length1 = unit.toDistance(value)
@@ -49,7 +50,7 @@ class SiLengthUnitSpec : BehaviorSpec({
     val unit = Millimeter
 
     Then("length can be created from it") {
-      assertAll(LongGenerator(0L)) { value ->
+      assertAll(LongGenerator()) { value ->
         val expectedLength = Distance.create(value / 1_000, (value % 1_000) * 1_000_000)
 
         val length1 = unit.toDistance(value)
@@ -65,7 +66,7 @@ class SiLengthUnitSpec : BehaviorSpec({
     val unit = Meter
 
     Then("length can be created from it") {
-      assertAll(LongGenerator(0L)) { value ->
+      assertAll(LongGenerator()) { value ->
         val expectedLength = Distance.create(value)
 
         val length1 = unit.toDistance(value)
@@ -81,7 +82,7 @@ class SiLengthUnitSpec : BehaviorSpec({
     val unit = Kilometer
 
     Then("length can be created from it") {
-      assertAll(LongGenerator(0L, MAX_VALUE / 1_000)) { value ->
+      assertAll(LongGenerator(MIN_VALUE / 1_000, MAX_VALUE / 1_000)) { value ->
         val expectedLength = Distance.create(value * 1_000)
 
         val length1 = unit.toDistance(value)
@@ -97,7 +98,7 @@ class SiLengthUnitSpec : BehaviorSpec({
     val unit = Megameter
 
     Then("length can be created from it") {
-      assertAll(LongGenerator(0L, MAX_VALUE / 1_000_000)) { value ->
+      assertAll(LongGenerator(MIN_VALUE / 1_000_000, MAX_VALUE / 1_000_000)) { value ->
         val expectedLength = Distance.create(value * 1_000_000)
 
         val length1 = unit.toDistance(value)
@@ -113,7 +114,7 @@ class SiLengthUnitSpec : BehaviorSpec({
     val unit = Gigameter
 
     Then("length can be created from it") {
-      assertAll(LongGenerator(0L, MAX_VALUE / 1_000_000_000)) { value ->
+      assertAll(LongGenerator(MIN_VALUE / 1_000_000_000, MAX_VALUE / 1_000_000_000)) { value ->
         val expectedLength = Distance.create(value * 1_000_000_000)
 
         val length1 = unit.toDistance(value)
