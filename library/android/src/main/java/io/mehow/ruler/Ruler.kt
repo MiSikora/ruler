@@ -29,6 +29,7 @@ object Ruler {
   }
 
   private val formatters = mutableListOf<LengthFormatter>()
+
   fun enableImperialFormatter(enable: Boolean) {
     AutoLengthFormatter.useImperialFormatter = enable
   }
@@ -85,7 +86,7 @@ object Ruler {
   fun formatFloored(
     distance: Distance,
     context: Context,
-    unit: SiLengthUnit = Meter,
+    unit: LengthUnit? = null,
     separator: String = ""
   ): String {
     return distance.formatFloored(context, unit, separator)
@@ -96,10 +97,9 @@ object Ruler {
   fun formatFloored(
     length: Length<*>,
     context: Context,
-    unit: SiLengthUnit = Meter,
     separator: String = ""
   ): String {
-    return length.formatFloored(context, unit, separator)
+    return length.formatFloored(context, separator)
   }
 }
 
@@ -131,18 +131,20 @@ object Ruler {
 
 @JvmSynthetic fun Distance.formatFloored(
   context: Context,
-  unit: SiLengthUnit = Meter,
+  unit: LengthUnit? = null,
   separator: String = ""
 ): String {
-  val formatter = SiUnitFlooredFormatter(unit)
+  val formatter = when (unit) {
+    is SiLengthUnit -> SiUnitFlooredFormatter(unit)
+    is ImperialLengthUnit -> ImperialUnitFlooredFormatter(unit)
+    else -> SiUnitFlooredFormatter(Meter)
+  }
   return format(context, separator, null, formatter)
 }
 
 @JvmSynthetic fun Length<*>.formatFloored(
   context: Context,
-  unit: SiLengthUnit = Meter,
   separator: String = ""
 ): String {
-  val formatter = SiUnitFlooredFormatter(unit)
-  return format(context, separator, null, formatter)
+  return distance.formatFloored(context, unit, separator)
 }

@@ -3,6 +3,10 @@ package io.mehow.ruler
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import io.kotlintest.shouldBe
+import io.mehow.ruler.ImperialLengthUnit.Foot
+import io.mehow.ruler.ImperialLengthUnit.Inch
+import io.mehow.ruler.ImperialLengthUnit.Mile
+import io.mehow.ruler.ImperialLengthUnit.Yard
 import io.mehow.ruler.SiLengthUnit.Gigameter
 import io.mehow.ruler.SiLengthUnit.Kilometer
 import io.mehow.ruler.SiLengthUnit.Megameter
@@ -15,8 +19,22 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class SiDistanceFormatterTest {
+class FlooredDistanceFormatterTest {
   private val context: Context get() = ApplicationProvider.getApplicationContext()
+
+  @Test fun `meters are used as a default formatting unit`() {
+    val distance = Distance.ofGigameters(1) +
+        Distance.ofMegameters(2) +
+        Distance.ofKilometers(3) +
+        Distance.ofMeters(4) +
+        Distance.ofMillimeters(5) +
+        Distance.ofMicrometers(6) +
+        Distance.ofNanometers(7)
+
+    val formattedDistance = distance.formatFloored(context)
+
+    formattedDistance shouldBe "1002003004m"
+  }
 
   @Test fun `gigameters are properly formatted`() {
     val distance = Distance.ofGigameters(1) +
@@ -185,5 +203,78 @@ class SiDistanceFormatterTest {
     val formattedDistance = distance.formatFloored(context, Nanometer)
 
     formattedDistance shouldBe "0nm"
+  }
+
+  @Test fun `miles are properly formatted`() {
+    val distance = Distance.ofMiles(1) +
+        Distance.ofYards(1) +
+        Distance.ofFeet(1) +
+        Distance.ofInches(1)
+
+    val formattedDistance = distance.formatFloored(context, Mile)
+
+    formattedDistance shouldBe "1mi"
+  }
+
+  @Test fun `yards are properly formatted`() {
+    val distance = Distance.ofYards(1) +
+        Distance.ofFeet(1) +
+        Distance.ofInches(1)
+
+    val formattedDistance = distance.formatFloored(context, Yard)
+
+    formattedDistance shouldBe "1yd"
+  }
+
+  @Test fun `feet are properly formatted`() {
+    val distance = Distance.ofFeet(1) +
+        Distance.ofInches(1)
+
+    val formattedDistance = distance.formatFloored(context, Foot)
+
+    formattedDistance shouldBe "1ft"
+  }
+
+  @Test fun `inches are properly formatted`() {
+    val distance = Distance.ofInches(1)
+
+    val formattedDistance = distance.formatFloored(context, Inch)
+
+    formattedDistance shouldBe "1in"
+  }
+
+  @Test fun `miles are formatting zeros properly`() {
+    val distance = Distance.ofYards(1759) +
+        Distance.ofFeet(2) +
+        Distance.ofInches(11.99)
+
+    val formattedDistance = distance.formatFloored(context, Mile)
+
+    formattedDistance shouldBe "0mi"
+  }
+
+  @Test fun `yards are formatting zeros properly`() {
+    val distance = Distance.ofFeet(2) +
+        Distance.ofInches(11.99)
+
+    val formattedDistance = distance.formatFloored(context, Yard)
+
+    formattedDistance shouldBe "0yd"
+  }
+
+  @Test fun `feet are formatting zeros properly`() {
+    val distance = Distance.ofInches(11.99)
+
+    val formattedDistance = distance.formatFloored(context, Foot)
+
+    formattedDistance shouldBe "0ft"
+  }
+
+  @Test fun `inches are formatting zeros properly`() {
+    val distance = Distance.ofInches(0.99)
+
+    val formattedDistance = distance.formatFloored(context, Inch)
+
+    formattedDistance shouldBe "0in"
   }
 }
