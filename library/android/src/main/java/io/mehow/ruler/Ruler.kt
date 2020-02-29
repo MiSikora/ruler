@@ -1,6 +1,7 @@
 package io.mehow.ruler
 
 import android.content.Context
+import io.mehow.ruler.ImperialLengthUnit.Yard
 import io.mehow.ruler.SiLengthUnit.Meter
 
 @Suppress("ObjectPropertyNaming")
@@ -54,6 +55,16 @@ object Ruler {
           .firstOrNull() ?: with(AutoLengthFormatter) { format(context, separator) }
     }
   }
+
+  private const val ukCountryCode = "GB"
+  internal val imperialCountryCodes = mutableSetOf("US", "LR", "MM")
+
+  var isUkImperial
+    get() = synchronized(this) { ukCountryCode in imperialCountryCodes }
+    set(value) {
+      val func = if (value) imperialCountryCodes::add else imperialCountryCodes::remove
+      synchronized(this) { func(ukCountryCode) }
+    }
 
   @Suppress("LongParameterList")
   @JvmStatic
@@ -134,6 +145,7 @@ object Ruler {
   unit: LengthUnit? = null,
   separator: String = ""
 ): String {
+  val unit = unit ?: if (context.preferredLocale.isImperial) Yard else Meter
   val formatter = when (unit) {
     is SiLengthUnit -> SiUnitFlooredFormatter(unit)
     is ImperialLengthUnit -> ImperialUnitFlooredFormatter(unit)

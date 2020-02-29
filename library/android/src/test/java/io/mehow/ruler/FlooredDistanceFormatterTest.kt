@@ -1,6 +1,7 @@
 package io.mehow.ruler
 
 import android.content.Context
+import android.content.res.Configuration
 import androidx.test.core.app.ApplicationProvider
 import io.kotlintest.shouldBe
 import io.mehow.ruler.ImperialLengthUnit.Foot
@@ -17,12 +18,18 @@ import io.mehow.ruler.SiLengthUnit.Nanometer
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
 class FlooredDistanceFormatterTest {
   private val context: Context get() = ApplicationProvider.getApplicationContext()
 
-  @Test fun `meters are used as a default formatting unit`() {
+  @Test fun `meters are used as a default formatting SI unit`() {
+    // Only language of locale can be set with @Config and we need to set country.
+    val config = context.resources.configuration
+    val localizedConfig = Configuration(config).apply { setLocale(Locale.UK) }
+    val localizedContext = context.createConfigurationContext(localizedConfig)
+
     val distance = Distance.ofGigameters(1) +
         Distance.ofMegameters(2) +
         Distance.ofKilometers(3) +
@@ -31,9 +38,25 @@ class FlooredDistanceFormatterTest {
         Distance.ofMicrometers(6) +
         Distance.ofNanometers(7)
 
-    val formattedDistance = distance.formatFloored(context)
+    val formattedDistance = distance.formatFloored(localizedContext)
 
     formattedDistance shouldBe "1002003004m"
+  }
+
+  @Test fun `yards are used as a default formatting imperial unit`() {
+    // Only language of locale can be set with @Config and we need to set country.
+    val config = context.resources.configuration
+    val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
+    val localizedContext = context.createConfigurationContext(localizedConfig)
+
+    val distance = Distance.ofMiles(1) +
+        Distance.ofYards(500) +
+        Distance.ofFeet(4) +
+        Distance.ofInches(5)
+
+    val formattedDistance = distance.formatFloored(localizedContext)
+
+    formattedDistance shouldBe "2261yd"
   }
 
   @Test fun `gigameters are properly formatted`() {

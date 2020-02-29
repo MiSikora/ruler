@@ -4,7 +4,6 @@ import android.content.Context
 import io.mehow.ruler.ImperialLengthUnit.Yard
 import io.mehow.ruler.SiLengthUnit.Kilometer
 import io.mehow.ruler.SiLengthUnit.Meter
-import java.util.Locale
 
 internal object AutoFitLengthConverter : LengthConverter {
   @Suppress("UNCHECKED_CAST", "UseIfInsteadOfWhen")
@@ -16,7 +15,4 @@ internal object AutoFitLengthConverter : LengthConverter {
       else -> autoLength
     }
   }
-
-  private val imperialCountryCodes = listOf("US", "LR", "MM")
-  private val Locale.isImperial get() = country in imperialCountryCodes
 }
