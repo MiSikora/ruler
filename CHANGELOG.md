@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.4.2 *(2020-02-29)*
+----------------------------
+
+* Add support for floored formatting of any length units.
+* Allow to set globally if UK should use imperial or SI units.
+
 Version 0.4.1 *(2020-02-07)*
 ----------------------------
 
