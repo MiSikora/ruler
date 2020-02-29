@@ -9,8 +9,6 @@ Distance measurements library for Java and Android.
 
 ## Integration
 
-To integrate it with your app you need to add a dependency to you project.
-
 Ruler requires Java 8 bytecode. To enable Java 8 desugaring configure it in your Gradle script.
 
 ```groovy
@@ -24,6 +22,9 @@ android {
     jvmTarget = "1.8"
   }
 }
+```
+
+To integrate it with your app you need to add a dependency to you project.
 
 ```groovy
 debugImplementation "io.mehow.ruler:ruler:0.5.0"
