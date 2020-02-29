@@ -26,13 +26,13 @@ android {
 }
 
 ```groovy
-debugImplementation "io.mehow.ruler:ruler:0.4.2"
+debugImplementation "io.mehow.ruler:ruler:0.5.0"
 ```
 
 If you use Android you can use Android artifact.
 
 ```groovy
-debugImplementation "io.mehow.ruler:android:0.4.2"
+debugImplementation "io.mehow.ruler:android:0.5.0"
 ```
 
 ## License
