@@ -13,7 +13,7 @@ import kotlin.Long.Companion.MIN_VALUE
 
 class DistanceSpec : BehaviorSpec({
   Given("zero distance") {
-    val zeroDistance = Distance.Zero
+    val zeroDistance = Distance.zero
 
     Then("it should not have any meters") {
       zeroDistance.metersPart shouldBe 0L
@@ -50,7 +50,7 @@ class DistanceSpec : BehaviorSpec({
   }
 
   Given("min distance") {
-    val minDistance = Distance.Min
+    val minDistance = Distance.min
 
     Then("it should have minimum value of meters") {
       minDistance.metersPart shouldBe MIN_VALUE
@@ -67,7 +67,7 @@ class DistanceSpec : BehaviorSpec({
     }
 
     When("I add zero distance to it") {
-      val newDistance = minDistance + Distance.Zero
+      val newDistance = minDistance + Distance.zero
 
       Then("it stays the same") {
         newDistance shouldBe minDistance
@@ -76,7 +76,7 @@ class DistanceSpec : BehaviorSpec({
 
     When("I add any distance from it") {
       Then("it does not fail") {
-        assertAll(DistanceGenerator(Distance.Zero)) { distance ->
+        assertAll(DistanceGenerator(Distance.zero)) { distance ->
           shouldNotThrowAny { minDistance + distance }
         }
       }
@@ -84,7 +84,7 @@ class DistanceSpec : BehaviorSpec({
   }
 
   Given("max distance") {
-    val maxDistance = Distance.Max
+    val maxDistance = Distance.max
 
     Then("it should have maximum value of meters") {
       maxDistance.metersPart shouldBe MAX_VALUE
@@ -101,7 +101,7 @@ class DistanceSpec : BehaviorSpec({
     }
 
     When("I add zero distance to it") {
-      val newDistance = maxDistance + Distance.Zero
+      val newDistance = maxDistance + Distance.zero
 
       Then("it stays the same") {
         newDistance shouldBe maxDistance
@@ -110,7 +110,7 @@ class DistanceSpec : BehaviorSpec({
 
     When("I remove any distance from it") {
       Then("it does not fail") {
-        assertAll(DistanceGenerator(Distance.Zero)) { distance ->
+        assertAll(DistanceGenerator(Distance.zero)) { distance ->
           shouldNotThrowAny { maxDistance - distance }
         }
       }

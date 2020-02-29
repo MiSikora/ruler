@@ -23,7 +23,7 @@ class Distance private constructor(
   val nanosPart: Long = 0L
 ) : Comparable<Distance> {
   val exactTotalMeters =
-    metersPart.toBigDecimal() + (nanosPart.toDouble() / NanosInMeter).toBigDecimal()
+    metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
   val totalMeters = exactTotalMeters.toDouble()
 
   fun <T> toLength(
@@ -60,7 +60,7 @@ class Distance private constructor(
 
   operator fun times(multiplicand: Long): Distance {
     return when (multiplicand) {
-      0L -> Zero
+      0L -> zero
       1L -> this
       else -> create(exactTotalMeters * multiplicand.toBigDecimal())
     }
@@ -72,7 +72,7 @@ class Distance private constructor(
 
   operator fun times(multiplicand: Double): Distance {
     return when (multiplicand) {
-      0.0 -> Zero
+      0.0 -> zero
       1.0 -> this
       else -> create(exactTotalMeters * multiplicand.toBigDecimal())
     }
@@ -123,14 +123,14 @@ class Distance private constructor(
   }
 
   companion object {
-    private const val NanosInMeter = 1_000_000_000L
-    private val bigNanosInMeter = NanosInMeter.toBigInteger()
+    private const val nanosInMeter = 1_000_000_000L
+    private val bigNanosInMeter = nanosInMeter.toBigInteger()
 
-    @JvmStatic val Min = Distance(MIN_VALUE, 0L)
+    @JvmStatic val min = Distance(MIN_VALUE, 0L)
 
-    @JvmStatic val Zero = Distance()
+    @JvmStatic val zero = Distance()
 
-    @JvmStatic val Max = Distance(MAX_VALUE, NanosInMeter - 1)
+    @JvmStatic val max = Distance(MAX_VALUE, nanosInMeter - 1)
 
     internal fun create(meters: BigDecimal): Distance {
       val nanos = meters.movePointRight(9).toBigInteger()
@@ -145,10 +145,10 @@ class Distance private constructor(
       meters: Long = 0,
       nanometers: Long = 0
     ): Distance {
-      var meterPart = nanometers / NanosInMeter
-      var nanoPart = nanometers % NanosInMeter
+      var meterPart = nanometers / nanosInMeter
+      var nanoPart = nanometers % nanosInMeter
       if (nanoPart < 0) {
-        nanoPart += NanosInMeter
+        nanoPart += nanosInMeter
         meterPart--
       }
 

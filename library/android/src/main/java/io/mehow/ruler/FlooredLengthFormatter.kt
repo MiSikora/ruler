@@ -1,6 +1,10 @@
 package io.mehow.ruler
 
 import android.content.Context
+import io.mehow.ruler.ImperialLengthUnit.Foot
+import io.mehow.ruler.ImperialLengthUnit.Inch
+import io.mehow.ruler.ImperialLengthUnit.Mile
+import io.mehow.ruler.ImperialLengthUnit.Yard
 import io.mehow.ruler.SiLengthUnit.Gigameter
 import io.mehow.ruler.SiLengthUnit.Kilometer
 import io.mehow.ruler.SiLengthUnit.Megameter
@@ -9,11 +13,19 @@ import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 
-internal class SiUnitFlooredFormatter(
-  private val siUnit: SiLengthUnit
-) : LengthFormatter {
+internal object FlooredLengthFormatter : LengthFormatter {
   override fun Length<*>.format(context: Context, separator: String): String? {
-    return context.getString(siUnit.partResource, siUnit.unitsPart(distance), separator)
+    return when (unit) {
+      is SiLengthUnit -> {
+        val siUnit = unit as SiLengthUnit
+        context.getString(siUnit.partResource, siUnit.unitsPart(distance), separator)
+      }
+      is ImperialLengthUnit -> {
+        val imperialUnit = unit as ImperialLengthUnit
+        context.getString(imperialUnit.partResource, imperialUnit.unitsPart(distance), separator)
+      }
+      else -> null
+    }
   }
 
   private val SiLengthUnit.partResource
@@ -38,4 +50,24 @@ internal class SiUnitFlooredFormatter(
       Gigameter -> distance.metersPart / 1_000_000_000
     }
   }
+
+  private val ImperialLengthUnit.partResource
+    get() = when (this) {
+      Inch -> R.string.io_mehow_ruler_inches_part
+      Foot -> R.string.io_mehow_ruler_feet_part
+      Yard -> R.string.io_mehow_ruler_yards_part
+      Mile -> R.string.io_mehow_ruler_miles_part
+    }
+
+  private fun ImperialLengthUnit.unitsPart(distance: Distance): Long {
+    val inches = (distance.exactTotalMeters * inchesInMeter).toLong()
+    return when (this) {
+      Inch -> inches
+      Foot -> inches / 12
+      Yard -> inches / 36
+      Mile -> inches / 63_360
+    }
+  }
+
+  private val inchesInMeter = 39.3700787402.toBigDecimal()
 }

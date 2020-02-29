@@ -1,22 +1,15 @@
 package io.mehow.ruler
 
 import android.content.Context
-import io.mehow.ruler.ImperialLengthUnit.Yard
-import io.mehow.ruler.SiLengthUnit.Meter
 
-@Suppress("ObjectPropertyNaming")
 object Ruler {
   private val converters = mutableListOf<LengthConverter>()
 
-  @JvmStatic
-  @JvmName("addConverter")
-  operator fun plusAssign(converter: LengthConverter) = synchronized(this) {
+  @JvmStatic fun addConverter(converter: LengthConverter) = synchronized(this) {
     converters += converter
   }
 
-  @JvmStatic
-  @JvmName("removeConverter")
-  operator fun minusAssign(converter: LengthConverter) = synchronized(this) {
+  @JvmStatic fun removeConverter(converter: LengthConverter) = synchronized(this) {
     converters -= converter
   }
 
@@ -31,19 +24,11 @@ object Ruler {
 
   private val formatters = mutableListOf<LengthFormatter>()
 
-  fun enableImperialFormatter(enable: Boolean) {
-    AutoLengthFormatter.useImperialFormatter = enable
-  }
-
-  @JvmStatic
-  @JvmName("addFormatter")
-  operator fun plusAssign(formatter: LengthFormatter) = synchronized(this) {
+  @JvmStatic fun addFormatter(formatter: LengthFormatter) = synchronized(this) {
     formatters += formatter
   }
 
-  @JvmStatic
-  @JvmName("removeFormatter")
-  operator fun minusAssign(formatter: LengthFormatter) = synchronized(this) {
+  @JvmStatic fun removeFormatter(formatter: LengthFormatter) = synchronized(this) {
     formatters -= formatter
   }
 
@@ -56,107 +41,39 @@ object Ruler {
     }
   }
 
-  private const val ukCountryCode = "GB"
-  internal val imperialCountryCodes = mutableSetOf("US", "LR", "MM")
-
-  var isUkImperial
-    get() = synchronized(this) { ukCountryCode in imperialCountryCodes }
+  @JvmStatic var isImperialAutoFormattingEnabled
+    get() = AutoLengthFormatter.useImperialFormatter
     set(value) {
-      val func = if (value) imperialCountryCodes::add else imperialCountryCodes::remove
+      AutoLengthFormatter.useImperialFormatter = value
+    }
+
+  private val mutableImperialCountries = mutableSetOf("US", "LR", "MM")
+  internal val imperialCountryCodes get() = mutableImperialCountries.toSet()
+
+  private const val ukCountryCode = "GB"
+  @JvmStatic var isUkImperial
+    get() = ukCountryCode in imperialCountryCodes
+    set(value) {
+      val func = if (value) mutableImperialCountries::add else mutableImperialCountries::remove
       synchronized(this) { func(ukCountryCode) }
     }
 
-  @Suppress("LongParameterList")
-  @JvmStatic
-  @JvmOverloads
-  fun format(
-    distance: Distance,
-    context: Context,
-    separator: String = "",
-    converter: LengthConverter? = Ruler.converter,
-    formatter: LengthFormatter = Ruler.formatter
-  ): String {
-    return distance.format(context, separator, converter, formatter)
+  private val flooredFormatters = mutableListOf<LengthFormatter>()
+
+  @JvmStatic fun addFlooredFormatter(formatter: LengthFormatter) = synchronized(this) {
+    flooredFormatters += formatter
   }
 
-  @Suppress("LongParameterList")
-  @JvmStatic
-  @JvmOverloads
-  fun <T> format(
-    length: Length<T>,
-    context: Context,
-    separator: String = "",
-    converter: LengthConverter? = Ruler.converter,
-    formatter: LengthFormatter = Ruler.formatter
-  ): String where T : LengthUnit, T : Comparable<T>, T : Iterable<T> {
-    return length.format(context, separator, converter, formatter)
+  @JvmStatic fun removeFlooredFormatter(formatter: LengthFormatter) = synchronized(this) {
+    flooredFormatters -= formatter
   }
 
-  @JvmStatic
-  @JvmOverloads
-  fun formatFloored(
-    distance: Distance,
-    context: Context,
-    unit: LengthUnit? = null,
-    separator: String = ""
-  ): String {
-    return distance.formatFloored(context, unit, separator)
+  internal val flooredFormatter = object : LengthFormatter {
+    override fun Length<*>.format(context: Context, separator: String): String? {
+      return flooredFormatters.toList()
+          .asSequence()
+          .map { format(context, separator) }
+          .firstOrNull() ?: with(FlooredLengthFormatter) { format(context, separator) }
+    }
   }
-
-  @JvmStatic
-  @JvmOverloads
-  fun formatFloored(
-    length: Length<*>,
-    context: Context,
-    separator: String = ""
-  ): String {
-    return length.formatFloored(context, separator)
-  }
-}
-
-@JvmSynthetic fun Distance.format(
-  context: Context,
-  separator: String = "",
-  converter: LengthConverter? = Ruler.converter,
-  formatter: LengthFormatter = Ruler.formatter
-): String {
-  return toLength(Meter).format(context, separator, converter, formatter)
-}
-
-@JvmSynthetic fun <T> Length<T>.format(
-  context: Context,
-  separator: String = "",
-  converter: LengthConverter? = Ruler.converter,
-  formatter: LengthFormatter = Ruler.formatter
-): String where T : LengthUnit, T : Comparable<T>, T : Iterable<T> {
-  val length = if (converter == null) this else {
-    val convertedLength = with(converter) { convert(context) }
-    checkNotNull(convertedLength) { "Failed to convert length $convertedLength." }
-  }
-
-  val text = with(formatter) { length.format(context, separator) }
-  checkNotNull(text) { "Failed to format length $length." }
-
-  return text
-}
-
-@JvmSynthetic fun Distance.formatFloored(
-  context: Context,
-  unit: LengthUnit? = null,
-  separator: String = ""
-): String {
-  val unit = unit ?: if (context.preferredLocale.isImperial) Yard else Meter
-  val formatter = when (unit) {
-    is SiLengthUnit -> SiUnitFlooredFormatter(unit)
-    is ImperialLengthUnit -> ImperialUnitFlooredFormatter(unit)
-    else -> SiUnitFlooredFormatter(Meter)
-  }
-  return format(context, separator, null, formatter)
-}
-
-@JvmSynthetic fun Length<*>.formatFloored(
-  context: Context,
-  separator: String = ""
-): String {
-  return distance.formatFloored(context, unit, separator)
 }

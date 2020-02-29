@@ -13,7 +13,6 @@ import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 
-@Suppress("ObjectPropertyNaming")
 internal object AutoLengthFormatter : LengthFormatter {
   @Volatile internal var useImperialFormatter = true
 
@@ -26,8 +25,7 @@ internal object AutoLengthFormatter : LengthFormatter {
       is ImperialLengthUnit -> if (!useImperialFormatter) {
         val imperialUnit = unit as ImperialLengthUnit
         context.getString(imperialUnit.resource, measuredLength, separator)
-      } else ImperialDistanceFormatter
-          .Builder()
+      } else ImperialDistanceFormatter.Builder()
           .withMiles(separator)
           .withYards(separator)
           .withFeet(separator)

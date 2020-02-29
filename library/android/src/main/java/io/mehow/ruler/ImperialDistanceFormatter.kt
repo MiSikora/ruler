@@ -63,13 +63,13 @@ class ImperialDistanceFormatter internal constructor(
   }
 
   companion object {
-    @JvmField val Basic = Builder()
+    @JvmField val basic = Builder()
         .withMiles()
         .withYards()
         .withFeet()
         .build()
 
-    @JvmField val Full = Builder()
+    @JvmField val full = Builder()
         .withMiles(printZeros = true)
         .withYards(printZeros = true)
         .withFeet(printZeros = true)
