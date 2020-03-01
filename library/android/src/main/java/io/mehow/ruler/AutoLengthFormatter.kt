@@ -20,11 +20,11 @@ internal object AutoLengthFormatter : LengthFormatter {
     return when (unit) {
       is SiLengthUnit -> {
         val siUnit = unit as SiLengthUnit
-        context.getString(siUnit.resource, measuredLength, separator)
+        context.getString(siUnit.resource, measuredLength.toDouble(), separator)
       }
       is ImperialLengthUnit -> if (!useImperialFormatter) {
         val imperialUnit = unit as ImperialLengthUnit
-        context.getString(imperialUnit.resource, measuredLength, separator)
+        context.getString(imperialUnit.resource, measuredLength.toDouble(), separator)
       } else ImperialDistanceFormatter.Builder()
           .withMiles(separator)
           .withYards(separator)

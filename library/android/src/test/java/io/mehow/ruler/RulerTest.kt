@@ -143,7 +143,11 @@ class RulerTest {
         converter = null,
         formatter = object : LengthFormatter {
           override fun Length<*>.format(context: Context, separator: String): String? {
-            return context.getString(R.string.io_mehow_ruler_yards, measuredLength, separator)
+            return context.getString(
+                R.string.io_mehow_ruler_yards,
+                measuredLength.toDouble(),
+                separator
+            )
           }
         }
     )

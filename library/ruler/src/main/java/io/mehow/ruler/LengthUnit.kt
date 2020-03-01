@@ -7,7 +7,7 @@ interface LengthUnit<T> : Comparable<T>, Iterable<T> where T : Enum<T>, T : Leng
 
   fun toDistance(value: Double): Distance
 
-  fun toMeasuredLength(distance: BigDecimal): Double
+  fun toMeasuredLength(distance: BigDecimal): BigDecimal
 
   fun appliesRangeTo(distance: BigDecimal): Boolean
 }
