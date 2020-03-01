@@ -22,9 +22,8 @@ class Distance private constructor(
   val metersPart: Long = 0L,
   val nanosPart: Long = 0L
 ) : Comparable<Distance> {
-  val exactTotalMeters =
-    metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
-  val totalMeters = exactTotalMeters.toDouble()
+  val exactTotalMeters = metersPart.toBigDecimal() +
+      (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
 
   fun <T> toLength(
     unit: T
