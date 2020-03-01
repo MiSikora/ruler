@@ -3,7 +3,7 @@ package io.mehow.ruler
 import java.math.BigDecimal
 
 interface LengthUnit<T> : Comparable<T>, Iterable<T> where T : Enum<T>, T : LengthUnit<T> {
-  fun toDistance(value: Long): Distance
+  @JvmDefault fun toDistance(value: Long) = toDistance(value.toDouble())
 
   fun toDistance(value: Double): Distance
 
