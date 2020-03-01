@@ -4,12 +4,12 @@ package io.mehow.ruler
 
 import android.content.Context
 
-@JvmOverloads fun <T> Length<T>.format(
+@JvmOverloads fun Length<*>.format(
   context: Context,
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
   formatter: LengthFormatter = Ruler.formatter
-): String where T : LengthUnit, T : Comparable<T>, T : Iterable<T> {
+): String {
   val length = if (converter == null) this else {
     val convertedLength = with(converter) { convert(context) }
     checkNotNull(convertedLength) { "Failed to convert length $convertedLength." }

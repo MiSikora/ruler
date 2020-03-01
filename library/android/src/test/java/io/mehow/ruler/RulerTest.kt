@@ -15,6 +15,7 @@ import io.mehow.ruler.SiLengthUnit.Meter
 import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -22,6 +23,7 @@ import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
 class RulerTest {
+  @get:Rule val rulerRule = RulerRule
   private val context: Context get() = ApplicationProvider.getApplicationContext()
 
   @Test fun `nanometer length is properly formatted`() {
@@ -87,7 +89,7 @@ class RulerTest {
     formattedLength shouldBe "2573213.00Gm"
   }
 
-  @Test fun `inches length is properly formatted`() {
+  @Test fun `inch length is properly formatted`() {
     val distance = Distance.ofInches(86)
     val length = distance.toLength(Inch)
 
@@ -96,7 +98,7 @@ class RulerTest {
     formattedLength shouldBe "2yd 1ft"
   }
 
-  @Test fun `length length is properly formatted`() {
+  @Test fun `foot length is properly formatted`() {
     val distance = Distance.ofFeet(111)
     val length = distance.toLength(Foot)
 
@@ -203,5 +205,67 @@ class RulerTest {
     val formattedLength = length.format(localizedContext)
 
     formattedLength shouldBe "1yd 1ft"
+  }
+
+  @Test fun `inch length is properly formatted without imperial formatting`() {
+    // Only language of locale can be set with @Config and we need to set country.
+    val config = context.resources.configuration
+    val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
+    val localizedContext = context.createConfigurationContext(localizedConfig)
+
+    Ruler.useImperialFormatter = false
+    val distance = Distance.ofInches(10)
+
+    val formattedDistance = distance.format(localizedContext)
+
+    formattedDistance shouldBe "10.00in"
+  }
+
+  @Test fun `foot length is properly formatted without imperial formatting`() {
+    // Only language of locale can be set with @Config and we need to set country.
+    val config = context.resources.configuration
+    val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
+    val localizedContext = context.createConfigurationContext(localizedConfig)
+
+    Ruler.useImperialFormatter = false
+    val distance = Distance.ofInches(10) +
+        Distance.ofFeet(2)
+
+    val formattedDistance = distance.format(localizedContext)
+
+    formattedDistance shouldBe "2.83ft"
+  }
+
+  @Test fun `yard length is properly formatted without imperial formatting`() {
+    // Only language of locale can be set with @Config and we need to set country.
+    val config = context.resources.configuration
+    val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
+    val localizedContext = context.createConfigurationContext(localizedConfig)
+
+    Ruler.useImperialFormatter = false
+    val distance = Distance.ofInches(10) +
+        Distance.ofFeet(2) +
+        Distance.ofYards(211)
+
+    val formattedDistance = distance.format(localizedContext)
+
+    formattedDistance shouldBe "211.94yd"
+  }
+
+  @Test fun `mile length is properly formatted without imperial formatting`() {
+    // Only language of locale can be set with @Config and we need to set country.
+    val config = context.resources.configuration
+    val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
+    val localizedContext = context.createConfigurationContext(localizedConfig)
+
+    Ruler.useImperialFormatter = false
+    val distance = Distance.ofInches(10) +
+        Distance.ofFeet(2) +
+        Distance.ofYards(211) +
+        Distance.ofMiles(58)
+
+    val formattedDistance = distance.format(localizedContext)
+
+    formattedDistance shouldBe "58.12mi"
   }
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.test.core.app.ApplicationProvider
 import io.kotlintest.shouldBe
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -11,6 +12,7 @@ import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
 class UkAsImperialTest {
+  @get:Rule val rulerRule = RulerRule
   private val context: Context get() = ApplicationProvider.getApplicationContext()
 
   @Test fun `UK can be set to use imperial units`() {

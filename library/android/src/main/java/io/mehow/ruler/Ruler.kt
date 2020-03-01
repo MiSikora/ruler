@@ -41,7 +41,7 @@ object Ruler {
     }
   }
 
-  @JvmStatic var isImperialAutoFormattingEnabled
+  @JvmStatic var useImperialFormatter
     get() = AutoLengthFormatter.useImperialFormatter
     set(value) {
       AutoLengthFormatter.useImperialFormatter = value

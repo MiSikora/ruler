@@ -50,7 +50,7 @@ internal object AutoLengthFormatter : LengthFormatter {
     get() = when (this) {
       Mile -> R.string.io_mehow_ruler_miles
       Yard -> R.string.io_mehow_ruler_yards
-      Foot -> R.string.io_mehow_ruler_millimeters
+      Foot -> R.string.io_mehow_ruler_feet
       Inch -> R.string.io_mehow_ruler_inches
     }
 }
