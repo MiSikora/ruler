@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 0.4.2 *(2020-02-29)*
+Version 0.5.0 *(2020-02-29)*
 ----------------------------
 
 * Add support for floored formatting of any length units.
