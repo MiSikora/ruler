@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.5.1 *(2020-03-01)*
+----------------------------
+
+* Fix wrong unit displayed for feet.
+* Remove 'totalMeters' property that approximates distance.
+
 Version 0.5.0 *(2020-02-29)*
 ----------------------------
 
