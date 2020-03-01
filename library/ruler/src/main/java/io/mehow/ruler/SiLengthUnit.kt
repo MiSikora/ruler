@@ -37,8 +37,8 @@ enum class SiLengthUnit(
       1_000_000_000.0.toBigDecimal()..MAX_VALUE.toBigDecimal(),
       1_000_000_000.0.toBigDecimal()
   ) {
-    override fun appliesRangeTo(distance: BigDecimal): Boolean {
-      return distance >= super.applicableRange.start
+    override fun appliesRangeTo(meters: BigDecimal): Boolean {
+      return meters >= super.applicableRange.start
     }
   };
 
@@ -50,12 +50,12 @@ enum class SiLengthUnit(
     return create(value.toBigDecimal() * meterRatio)
   }
 
-  override fun toMeasuredLength(distance: BigDecimal): BigDecimal {
-    return distance.divide(meterRatio, 9, DOWN)
+  override fun toMeasuredLength(meters: BigDecimal): BigDecimal {
+    return meters.divide(meterRatio, 9, DOWN)
   }
 
-  override fun appliesRangeTo(distance: BigDecimal): Boolean {
-    return distance >= applicableRange.start && distance < applicableRange.endInclusive
+  override fun appliesRangeTo(meters: BigDecimal): Boolean {
+    return meters >= applicableRange.start && meters < applicableRange.endInclusive
   }
 
   override fun iterator() = values.iterator()

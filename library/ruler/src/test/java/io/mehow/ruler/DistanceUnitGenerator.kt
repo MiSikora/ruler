@@ -19,8 +19,8 @@ object DistanceUnitGenerator : Gen<LengthUnit<*>> {
   }
 
   fun createLength(distance: Distance, unit: LengthUnit<*>) = when (unit) {
-    is SiLengthUnit -> Length(distance, unit)
-    is ImperialLengthUnit -> Length(distance, unit)
+    is SiLengthUnit -> distance.toLength(unit)
+    is ImperialLengthUnit -> distance.toLength(unit)
     else -> error("Unknown unit: $unit")
   }
 }

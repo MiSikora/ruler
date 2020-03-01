@@ -1,5 +1,17 @@
 package io.mehow.ruler
 
+import io.mehow.ruler.ImperialLengthUnit.Foot
+import io.mehow.ruler.ImperialLengthUnit.Inch
+import io.mehow.ruler.ImperialLengthUnit.Mile
+import io.mehow.ruler.ImperialLengthUnit.Yard
+import io.mehow.ruler.SiLengthUnit.Gigameter
+import io.mehow.ruler.SiLengthUnit.Kilometer
+import io.mehow.ruler.SiLengthUnit.Megameter
+import io.mehow.ruler.SiLengthUnit.Meter
+import io.mehow.ruler.SiLengthUnit.Micrometer
+import io.mehow.ruler.SiLengthUnit.Millimeter
+import io.mehow.ruler.SiLengthUnit.Nanometer
+
 class Length<T> internal constructor(
   val distance: Distance,
   val unit: T
@@ -102,5 +114,59 @@ class Length<T> internal constructor(
 
   override fun toString(): String {
     return "Length(measuredLength=$measuredLength, unit=$unit)"
+  }
+
+  companion object {
+    @JvmStatic fun <T> of(value: Long, unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> {
+      return Length(unit.toDistance(value), unit)
+    }
+
+    @JvmStatic fun ofGigameters(value: Long) = of(value, Gigameter)
+
+    @JvmStatic fun ofMegameters(value: Long) = of(value, Megameter)
+
+    @JvmStatic fun ofKilometers(value: Long) = of(value, Kilometer)
+
+    @JvmStatic fun ofMeters(value: Long) = of(value, Meter)
+
+    @JvmStatic fun ofMillimeters(value: Long) = of(value, Millimeter)
+
+    @JvmStatic fun ofMicrometers(value: Long) = of(value, Micrometer)
+
+    @JvmStatic fun ofNanometers(value: Long) = of(value, Nanometer)
+
+    @JvmStatic fun ofMiles(value: Long) = of(value, Mile)
+
+    @JvmStatic fun ofYards(value: Long) = of(value, Yard)
+
+    @JvmStatic fun ofFeet(value: Long) = of(value, Foot)
+
+    @JvmStatic fun ofInches(value: Long) = of(value, Inch)
+
+    @JvmStatic fun <T> of(value: Double, unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> {
+      return Length(unit.toDistance(value), unit)
+    }
+
+    @JvmStatic fun ofGigameters(value: Double) = of(value, Gigameter)
+
+    @JvmStatic fun ofMegameters(value: Double) = of(value, Megameter)
+
+    @JvmStatic fun ofKilometers(value: Double) = of(value, Kilometer)
+
+    @JvmStatic fun ofMeters(value: Double) = of(value, Meter)
+
+    @JvmStatic fun ofMillimeters(value: Double) = of(value, Millimeter)
+
+    @JvmStatic fun ofMicrometers(value: Double) = of(value, Micrometer)
+
+    @JvmStatic fun ofNanometers(value: Double) = of(value, Nanometer)
+
+    @JvmStatic fun ofMiles(value: Double) = of(value, Mile)
+
+    @JvmStatic fun ofYards(value: Double) = of(value, Yard)
+
+    @JvmStatic fun ofFeet(value: Double) = of(value, Foot)
+
+    @JvmStatic fun ofInches(value: Double) = of(value, Inch)
   }
 }
