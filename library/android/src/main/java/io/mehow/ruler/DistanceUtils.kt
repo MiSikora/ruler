@@ -25,7 +25,7 @@ fun <T> Distance.format(
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
   formatter: LengthFormatter = Ruler.formatter
-): String where T : LengthUnit, T : Comparable<T>, T : Iterable<T> {
+): String where T : Enum<T>, T : LengthUnit<T> {
   return toLength(unit).format(context, separator, converter, formatter)
 }
 
@@ -42,6 +42,6 @@ fun <T> Distance.format(
   context: Context,
   unit: T,
   separator: String = ""
-): String where T : LengthUnit, T : Comparable<T>, T : Iterable<T> {
+): String where T : Enum<T>, T : LengthUnit<T> {
   return toLength(unit).formatFloored(context, separator)
 }

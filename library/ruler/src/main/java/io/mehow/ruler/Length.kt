@@ -3,12 +3,10 @@ package io.mehow.ruler
 class Length<T> internal constructor(
   val distance: Distance,
   val unit: T
-) : Comparable<Length<*>> where T : LengthUnit, T : Comparable<T>, T : Iterable<T> {
+) : Comparable<Length<*>> where T : Enum<T>, T : LengthUnit<T> {
   val measuredLength = unit.toMeasuredLength(distance.exactTotalMeters)
 
-  fun <R> withUnit(
-    unit: R
-  ): Length<R> where R : LengthUnit, R : Comparable<R>, R : Iterable<R> {
+  fun <R> withUnit(unit: R): Length<R> where R : Enum<R>, R : LengthUnit<R> {
     return Length(distance, unit)
   }
 

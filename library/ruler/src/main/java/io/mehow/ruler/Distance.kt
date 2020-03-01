@@ -25,9 +25,7 @@ class Distance private constructor(
   val exactTotalMeters = metersPart.toBigDecimal() +
       (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
 
-  fun <T> toLength(
-    unit: T
-  ): Length<T> where T : LengthUnit, T : Comparable<T>, T : Iterable<T> {
+  fun <T> toLength(unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> {
     return Length(this, unit)
   }
 
@@ -159,7 +157,7 @@ class Distance private constructor(
       return Distance(totalMeters, totalNanometers)
     }
 
-    @JvmStatic fun of(value: Long, unit: LengthUnit) = unit.toDistance(value)
+    @JvmStatic fun of(value: Long, unit: LengthUnit<*>) = unit.toDistance(value)
 
     @JvmStatic fun ofGigameters(value: Long) = of(value, Gigameter)
 
@@ -183,7 +181,7 @@ class Distance private constructor(
 
     @JvmStatic fun ofInches(value: Long) = of(value, Inch)
 
-    @JvmStatic fun of(value: Double, unit: LengthUnit) = unit.toDistance(value)
+    @JvmStatic fun of(value: Double, unit: LengthUnit<*>) = unit.toDistance(value)
 
     @JvmStatic fun ofGigameters(value: Double) = of(value, Gigameter)
 
