@@ -135,7 +135,7 @@ class Distance private constructor(
     internal fun create(meters: BigDecimal): Distance {
       val nanos = meters.movePointRight(9).toBigInteger()
       val divRem = nanos.divideAndRemainder(bigNanosInMeter)
-      check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
+      check(divRem[0].bitLength() <= 63) { "Exceeded distance capacity: $nanos" }
       val storedMeters = divRem[0].toLong()
       val storedNanometers = divRem[1].toLong()
       return create(storedMeters, storedNanometers)
@@ -155,7 +155,7 @@ class Distance private constructor(
       val totalMeters = meters.safeAdd(meterPart)
       val totalNanometers = nanoPart
 
-      require(totalNanometers in 0..999_999_999) { "Nanoseconds must be between 0 and 1s" }
+      require(totalNanometers in 0..999_999_999) { "Nanometers must be between 0 and 1m" }
 
       return Distance(totalMeters, totalNanometers)
     }
