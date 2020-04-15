@@ -19,6 +19,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
@@ -95,7 +96,7 @@ class RulerTest {
 
     val formattedLength = length.format(context, converter = null)
 
-    formattedLength shouldBe "2yd 1ft"
+    formattedLength shouldBe "2yd 1ft 2in"
   }
 
   @Test fun `foot length is properly formatted`() {
@@ -271,5 +272,126 @@ class RulerTest {
     val formattedDistance = distance.format(localizedContext)
 
     formattedDistance shouldBe "58.12mi"
+  }
+
+  @Test @Config(qualifiers = "ar") fun `nanometers are reversed for RTL locales`() {
+    val distance = Distance.of(1, Nanometer)
+    val length = distance.toLength(Nanometer)
+
+    val formattedLength = length.format(context, converter = null)
+    val flooredLength = length.formatFloored(context)
+
+    formattedLength shouldBe "1.00نانومتر"
+    flooredLength shouldBe "1نانومتر"
+  }
+
+  @Test @Config(qualifiers = "ar") fun `micrometers are reversed for RTL locales`() {
+    val distance = Distance.of(1, Micrometer)
+    val length = distance.toLength(Micrometer)
+
+    val formattedLength = length.format(context, converter = null)
+    val flooredLength = length.formatFloored(context)
+
+    formattedLength shouldBe "1.00ميكرومتر"
+    flooredLength shouldBe "1ميكرومتر"
+  }
+
+  @Test @Config(qualifiers = "ar") fun `millimeters are reversed for RTL locales`() {
+    val distance = Distance.of(1, Millimeter)
+    val length = distance.toLength(Millimeter)
+
+    val formattedLength = length.format(context, converter = null)
+    val flooredLength = length.formatFloored(context)
+
+    formattedLength shouldBe "1.00مم"
+    flooredLength shouldBe "1مم"
+  }
+
+  @Test @Config(qualifiers = "ar") fun `meters are reversed for RTL locales`() {
+    val distance = Distance.of(1, Meter)
+    val length = distance.toLength(Meter)
+
+    val formattedLength = length.format(context, converter = null)
+    val flooredLength = length.formatFloored(context)
+
+    formattedLength shouldBe "1.00م"
+    flooredLength shouldBe "1م"
+  }
+
+  @Test @Config(qualifiers = "ar") fun `kilometers are reversed for RTL locales`() {
+    val distance = Distance.of(1, Kilometer)
+    val length = distance.toLength(Kilometer)
+
+    val formattedLength = length.format(context, converter = null)
+    val flooredLength = length.formatFloored(context)
+
+    formattedLength shouldBe "1.00كم"
+    flooredLength shouldBe "1كم"
+  }
+
+  @Test @Config(qualifiers = "ar") fun `megameters are reversed for RTL locales`() {
+    val distance = Distance.of(1, Megameter)
+    val length = distance.toLength(Megameter)
+
+    val formattedLength = length.format(context, converter = null)
+    val flooredLength = length.formatFloored(context)
+
+    formattedLength shouldBe "1.00ميجامتر"
+    flooredLength shouldBe "1ميجامتر"
+  }
+
+  @Test @Config(qualifiers = "ar") fun `gigameters are reversed for RTL locales`() {
+    val distance = Distance.of(1, Gigameter)
+    val length = distance.toLength(Gigameter)
+
+    val formattedLength = length.format(context, converter = null)
+    val flooredLength = length.formatFloored(context)
+
+    formattedLength shouldBe "1.00جيجامتر"
+    flooredLength shouldBe "1جيجامتر"
+  }
+
+  @Test @Config(qualifiers = "ar") fun `miles are reversed for RTL locales`() {
+    val distance = Distance.of(1, Mile)
+    val length = distance.toLength(Mile)
+
+    val formattedLength = length.format(context, converter = null)
+    val flooredLength = length.formatFloored(context)
+
+    formattedLength shouldBe "1ميل"
+    flooredLength shouldBe "1ميل"
+  }
+
+  @Test @Config(qualifiers = "ar") fun `yards are reversed for RTL locales`() {
+    val distance = Distance.of(1, Yard)
+    val length = distance.toLength(Yard)
+
+    val formattedLength = length.format(context, converter = null)
+    val flooredLength = length.formatFloored(context)
+
+    formattedLength shouldBe "1ياردة"
+    flooredLength shouldBe "1ياردة"
+  }
+
+  @Test @Config(qualifiers = "ar") fun `feet are reversed for RTL locales`() {
+    val distance = Distance.of(1, Foot)
+    val length = distance.toLength(Foot)
+
+    val formattedLength = length.format(context, converter = null)
+    val flooredLength = length.formatFloored(context)
+
+    formattedLength shouldBe "1قدم"
+    flooredLength shouldBe "1قدم"
+  }
+
+  @Test @Config(qualifiers = "ar") fun `inches are reversed for RTL locales`() {
+    val distance = Distance.of(1, Inch)
+    val length = distance.toLength(Inch)
+
+    val formattedLength = length.format(context, converter = null)
+    val flooredLength = length.formatFloored(context)
+
+    formattedLength shouldBe "1بوصة"
+    flooredLength shouldBe "1بوصة"
   }
 }

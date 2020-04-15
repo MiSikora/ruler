@@ -29,6 +29,7 @@ internal object AutoLengthFormatter : LengthFormatter {
           .withMiles(separator)
           .withYards(separator)
           .withFeet(separator)
+          .withInches(separator)
           .build()
           .format(distance, context)
       else -> null

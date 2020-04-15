@@ -139,7 +139,7 @@ class ImperialDistanceFormatterTest {
   @Test @Config(qualifiers = "ar") fun `parts are reversed for RTL locales`() {
     val formattedDistance = ImperialDistanceFormatter.full.format(Distance.zero, context)
 
-    formattedDistance shouldBe "0in 0ft 0yd 0mi"
+    formattedDistance shouldBe "0بوصة 0قدم 0ياردة 0ميل"
   }
 
   @Test fun `zero miles are printed when no mile length is present for miles formatter`() {
