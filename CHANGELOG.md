@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.5.2 *(2020-04-15)*
+----------------------------
+
+* Add Arabic translations.
+* Fix a bug with no inches displayed for 0 length.
+
 Version 0.5.1 *(2020-03-01)*
 ----------------------------
 
