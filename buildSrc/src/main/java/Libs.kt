@@ -11,9 +11,9 @@ object Libs {
 
   object AndroidX {
     object Test {
-      const val Version = "1.0.0"
+      const val Version = "1.2.0"
 
-      const val Core = "androidx.test:core:$Version"
+      const val CoreKtx = "androidx.test:core-ktx:$Version"
     }
   }
 
