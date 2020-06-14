@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.5.3 *(2020-06-14)*
+----------------------------
+
+* Update Kotlin to 1.3.72.
+* Fix a bug with library test not running as a part of 'check' task.
+* Fix a bug with long to double conversion when computing distances.
+
 Version 0.5.2 *(2020-04-15)*
 ----------------------------
 

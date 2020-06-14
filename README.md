@@ -27,13 +27,13 @@ android {
 To integrate it with your app you need to add a dependency to you project.
 
 ```groovy
-debugImplementation "io.mehow.ruler:ruler:0.5.2"
+debugImplementation "io.mehow.ruler:ruler:0.5.3"
 ```
 
 If you use Android you can use Android artifact.
 
 ```groovy
-debugImplementation "io.mehow.ruler:android:0.5.2"
+debugImplementation "io.mehow.ruler:android:0.5.3"
 ```
 
 ## License
