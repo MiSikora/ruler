@@ -15,7 +15,7 @@ dependencies {
   implementation(Libs.Kotlin.StdLibJdk7)
 
   testImplementation(Libs.JUnit)
-  testImplementation(Libs.KotlinTest.Assertions)
+  testImplementation(Libs.Kotest.Assertions)
   testImplementation(Libs.AndroidX.Test.CoreKtx)
   testImplementation(Libs.Robolectric)
 }

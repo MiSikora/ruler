@@ -1,12 +1,16 @@
 package io.mehow.ruler
 
-import io.kotlintest.matchers.numerics.shouldBeZero
-import io.kotlintest.properties.assertAll
-import io.kotlintest.properties.forAll
-import io.kotlintest.shouldBe
-import io.kotlintest.shouldNotThrowAny
-import io.kotlintest.shouldThrow
-import io.kotlintest.specs.BehaviorSpec
+import io.kotest.assertions.throwables.shouldNotThrowAny
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.comparables.shouldBeEqualComparingTo
+import io.kotest.matchers.comparables.shouldBeGreaterThan
+import io.kotest.matchers.comparables.shouldBeLessThan
+import io.kotest.matchers.shouldBe
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.long
+import io.kotest.property.arbitrary.numericDoubles
+import io.kotest.property.checkAll
 import java.math.RoundingMode.DOWN
 import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
@@ -20,7 +24,7 @@ class DistanceSpec : BehaviorSpec({
     }
 
     Then("it should not have any nanometers") {
-      zeroDistance.nanosPart.shouldBeZero()
+      zeroDistance.nanosPart shouldBe 0L
     }
 
     When("I add it to itself") {
@@ -41,7 +45,7 @@ class DistanceSpec : BehaviorSpec({
 
     When("I add a distance to it") {
       Then("it should be equal to that distance") {
-        assertAll(DistanceGenerator()) { distance ->
+        checkAll(DistanceGenerator()) { distance ->
           val newDistance = zeroDistance + distance
           newDistance shouldBe distance
         }
@@ -76,7 +80,7 @@ class DistanceSpec : BehaviorSpec({
 
     When("I add any distance from it") {
       Then("it does not fail") {
-        assertAll(DistanceGenerator(Distance.zero)) { distance ->
+        checkAll(DistanceGenerator(Distance.zero)) { distance ->
           shouldNotThrowAny { minDistance + distance }
         }
       }
@@ -110,7 +114,7 @@ class DistanceSpec : BehaviorSpec({
 
     When("I remove any distance from it") {
       Then("it does not fail") {
-        assertAll(DistanceGenerator(Distance.zero)) { distance ->
+        checkAll(DistanceGenerator(Distance.zero)) { distance ->
           shouldNotThrowAny { maxDistance - distance }
         }
       }
@@ -120,7 +124,7 @@ class DistanceSpec : BehaviorSpec({
   Given("two distances") {
     When("they are added") {
       Then("nanometer parts should carry over for overflow") {
-        assertAll(LongGenerator(0L, 999_999_999), LongGenerator(0L, 999_999_999)) { nano1, nano2 ->
+        checkAll(Arb.long(0L, 999_999_999), Arb.long(0L, 999_999_999)) { nano1, nano2 ->
           val totalNanometers = nano1 + nano2
           val shouldCarryOver = totalNanometers >= 1_000_000_000
           val distance = Distance.create(nanometers = nano1) + Distance.create(nanometers = nano2)
@@ -133,7 +137,7 @@ class DistanceSpec : BehaviorSpec({
 
     When("they are subtracted") {
       Then("nanometer parts should carry over for overflow") {
-        assertAll(LongGenerator(0L, 999_999_999), LongGenerator(0L, 999_999_999)) { nano1, nano2 ->
+        checkAll(Arb.long(0L, 999_999_999), Arb.long(0L, 999_999_999)) { nano1, nano2 ->
           val nanoDiff = nano1 - nano2
           val shouldCarryOver = nanoDiff < 0
           val distance = Distance.create(1, nano1) - Distance.create(0, nano2)
@@ -145,20 +149,20 @@ class DistanceSpec : BehaviorSpec({
     }
 
     Then("they can be compared to each other") {
-      forAll(
-          LongGenerator(MIN_VALUE, MAX_VALUE),
-          LongGenerator(0L, 999_999_999),
-          LongGenerator(MIN_VALUE, MAX_VALUE),
-          LongGenerator(0L, 999_999_999)
+      checkAll(
+        Arb.long(MIN_VALUE, MAX_VALUE),
+        Arb.long(0L, 999_999_999),
+        Arb.long(MIN_VALUE, MAX_VALUE),
+        Arb.long(0L, 999_999_999)
       ) { meter1, nano1, meter2, nano2 ->
         val distance1 = Distance.create(meter1, nano1)
         val distance2 = Distance.create(meter2, nano2)
 
-        return@forAll when {
-          meter1 > meter2 -> distance1 > distance2
-          meter1 == meter2 && nano1 > nano2 -> distance1 > distance2
-          meter1 == meter2 && nano1 == nano2 -> distance1.compareTo(distance2) == 0
-          else -> distance1 < distance2
+        when {
+          meter1 > meter2 -> distance1 shouldBeGreaterThan distance2
+          meter1 == meter2 && nano1 > nano2 -> distance1 shouldBeGreaterThan distance2
+          meter1 == meter2 && nano1 == nano2 -> distance1 shouldBeEqualComparingTo distance2
+          else -> distance1 shouldBeLessThan distance2
         }
       }
     }
@@ -167,16 +171,16 @@ class DistanceSpec : BehaviorSpec({
   Given("a distance") {
     When("I multiply it by a natural number") {
       Then("the result is correct") {
-        assertAll(
-            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-            LongGenerator(0, 500_000)
-        ) { distance, multiplicant ->
-          val meters = distance.exactTotalMeters * multiplicant.toBigDecimal()
+        checkAll(
+          DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
+          Arb.long(0, 500_000)
+        ) { distance, multiplicand ->
+          val meters = distance.exactTotalMeters * multiplicand.toBigDecimal()
           val storedMeters = meters.toBigInteger().longValueExact()
           val nanometers = (meters - storedMeters.toBigDecimal()) * 1_000_000_000.toBigDecimal()
           val expected = Distance.create(storedMeters, nanometers.toLong())
 
-          val multipliedDistance = distance * multiplicant
+          val multipliedDistance = distance * multiplicand
 
           multipliedDistance shouldBe expected
         }
@@ -185,17 +189,17 @@ class DistanceSpec : BehaviorSpec({
 
     When("I multiply it by a real number") {
       Then("the result is correct") {
-        assertAll(
-            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-            DoubleGenerator(0.0, 500_000.0)
-        ) { distance, multiplicant ->
-          val meters = distance.exactTotalMeters * multiplicant.toBigDecimal()
+        checkAll(
+          DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
+          Arb.numericDoubles(0.0, 500_000.0)
+        ) { distance, multiplicand ->
+          val meters = distance.exactTotalMeters * multiplicand.toBigDecimal()
           val nanos = meters.movePointRight(9).toBigInteger()
           val divRem = nanos.divideAndRemainder(1_000_000_000.toBigInteger())
           check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
           val expected = Distance.create(divRem[0].toLong(), divRem[1].toLong())
 
-          val multipliedDistance = distance * multiplicant
+          val multipliedDistance = distance * multiplicand
 
           multipliedDistance shouldBe expected
         }
@@ -204,9 +208,9 @@ class DistanceSpec : BehaviorSpec({
 
     When("I divide it by a natural number") {
       Then("the result is correct") {
-        assertAll(
-            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-            LongGenerator(1, 500_000)
+        checkAll(
+          DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
+          Arb.long(1, 500_000)
         ) { distance, divisor ->
           val meters = distance.exactTotalMeters.divide(divisor.toBigDecimal(), DOWN)
           val nanos = meters.movePointRight(9).toBigIntegerExact()
@@ -223,9 +227,9 @@ class DistanceSpec : BehaviorSpec({
 
     When("I divide it by a real number") {
       Then("the result is correct") {
-        assertAll(
-            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-            DoubleGenerator(0.000_001, 500_000.0)
+        checkAll(
+          DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
+          Arb.numericDoubles(0.000_001, 500_000.0)
         ) { distance, divisor ->
           val meters = distance.exactTotalMeters.divide(divisor.toBigDecimal(), DOWN)
           val nanos = meters.movePointRight(9).toBigInteger()

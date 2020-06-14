@@ -21,12 +21,14 @@ object Libs {
 
   const val Robolectric = "org.robolectric:robolectric:4.3.1"
 
-  object KotlinTest {
-    const val Version = "3.4.2"
+  object Kotest {
+    const val Version = "4.0.6"
 
-    const val Runner = "io.kotlintest:kotlintest-runner-junit5:$Version"
+    const val RunnerJunit5 = "io.kotest:kotest-runner-junit5-jvm:$Version"
 
-    const val Assertions = "io.kotlintest:kotlintest-assertions:$Version"
+    const val Assertions = "io.kotest:kotest-assertions-core-jvm:$Version"
+
+    const val Property = "io.kotest:kotest-property-jvm:$Version"
   }
 
   const val MavenPublishGradlePlugin = "com.vanniktech:gradle-maven-publish-plugin:0.11.1"

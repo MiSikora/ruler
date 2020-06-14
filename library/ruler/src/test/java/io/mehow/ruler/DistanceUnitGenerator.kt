@@ -1,22 +1,14 @@
 package io.mehow.ruler
 
-import io.kotlintest.properties.Gen
-import kotlin.random.Random
+import io.kotest.property.Exhaustive
 
-object DistanceUnitGenerator : Gen<LengthUnit<*>> {
-  override fun constants(): Iterable<LengthUnit<*>> {
-    val siLengthUnits: Iterable<LengthUnit<*>> = SiLengthUnit.values().toList()
-    val imperialLengthUnits: Iterable<LengthUnit<*>> = ImperialLengthUnit.values().toList()
-    return siLengthUnits + imperialLengthUnits
-  }
-
-  override fun random() = generateSequence {
-    val useSi = Random.nextBoolean()
-    @Suppress("UnnecessaryVariable")
-    val lengthUnit: LengthUnit<*> = if (useSi) SiLengthUnit.values().random()
-    else ImperialLengthUnit.values().random()
-    return@generateSequence lengthUnit
-  }
+object DistanceUnitGenerator : Exhaustive<LengthUnit<*>>() {
+  override val values: List<LengthUnit<*>>
+    get() {
+      val siLengthUnits: Iterable<LengthUnit<*>> = SiLengthUnit.values().toList()
+      val imperialLengthUnits: Iterable<LengthUnit<*>> = ImperialLengthUnit.values().toList()
+      return siLengthUnits + imperialLengthUnits
+    }
 
   fun createLength(distance: Distance, unit: LengthUnit<*>) = when (unit) {
     is SiLengthUnit -> distance.toLength(unit)

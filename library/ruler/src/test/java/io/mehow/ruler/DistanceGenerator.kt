@@ -1,29 +1,33 @@
 package io.mehow.ruler
 
-import io.kotlintest.properties.Gen
+import io.kotest.property.Arb
+import io.kotest.property.RandomSource
+import io.kotest.property.Sample
 import kotlin.random.Random
 
 class DistanceGenerator(
   private val min: Distance = Distance.min,
   private val max: Distance = Distance.max
-) : Gen<Distance> {
-  override fun constants() = listOf(min, max)
+) : Arb<Distance>() {
+  override fun values(rs: RandomSource) = generateSequence {
+    Sample(createDistance(rs.random))
+  }
 
-  override fun random() = generateSequence { createDistance() }
+  override fun edgecases() = listOf(min, max)
 
-  private fun createDistance(): Distance {
+  private fun createDistance(random: Random): Distance {
     val meters = if (min.metersPart == max.metersPart) min.metersPart
-    else Random.nextLong(min.metersPart, max.metersPart)
+    else random.nextLong(min.metersPart, max.metersPart)
 
     val nanometers = when {
-      meters > min.metersPart -> Random.nextLong(1_000_000_000)
-      meters < max.metersPart -> Random.nextLong(1_000_000_000)
-      meters == max.metersPart && meters == min.metersPart -> Random.nextLong(min.nanosPart, max.nanosPart)
-      meters == min.metersPart -> Random.nextLong(min.nanosPart, 1_000_000_000)
-      meters == max.metersPart -> Random.nextLong(0, max.nanosPart)
+      meters > min.metersPart -> random.nextLong(1_000_000_000)
+      meters < max.metersPart -> random.nextLong(1_000_000_000)
+      meters == max.metersPart && meters == min.metersPart -> random.nextLong(min.nanosPart, max.nanosPart)
+      meters == min.metersPart -> random.nextLong(min.nanosPart, 1_000_000_000)
+      meters == max.metersPart -> random.nextLong(0, max.nanosPart)
       else -> error("Unexpected range: min=${min.metersPart}, max=${max.metersPart}, value=${meters}")
     }
     val candidate = Distance.create(meters, nanometers)
-    return if (candidate in min..max) candidate else createDistance()
+    return if (candidate in min..max) candidate else createDistance(random)
   }
 }
