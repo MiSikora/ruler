@@ -21,7 +21,8 @@ complexity:
     threshold: 20
   LongParameterList:
     active: true
-    threshold: 5
+    functionThreshold: 5
+    constructorThreshold: 5
   NestedBlockDepth:
     active: true
   StringLiteralDuplication:
