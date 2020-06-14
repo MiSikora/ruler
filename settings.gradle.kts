@@ -1,2 +1,2 @@
 include(":library:ruler")
-//include(":library:android")
+include(":library:android")
