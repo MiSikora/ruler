@@ -19,7 +19,7 @@ object Libs {
 
   const val JUnit = "junit:junit:4.13"
 
-  const val Robolectric = "org.robolectric:robolectric:4.3"
+  const val Robolectric = "org.robolectric:robolectric:4.3.1"
 
   object KotlinTest {
     const val Version = "3.4.2"
