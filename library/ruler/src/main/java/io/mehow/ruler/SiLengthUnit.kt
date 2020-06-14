@@ -42,8 +42,8 @@ enum class SiLengthUnit(
     }
   };
 
-  override fun toDistance(value: Double): Distance {
-    return create(value.toBigDecimal() * meterRatio)
+  override fun toDistance(value: BigDecimal): Distance {
+    return create(value * meterRatio)
   }
 
   override fun toMeasuredLength(meters: BigDecimal): BigDecimal {

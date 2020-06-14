@@ -17,8 +17,8 @@ enum class ImperialLengthUnit(
     }
   };
 
-  override fun toDistance(value: Double): Distance {
-    return Distance.create(value.toBigDecimal() * meterRatio)
+  override fun toDistance(value: BigDecimal): Distance {
+    return Distance.create(value * meterRatio)
   }
 
   override fun toMeasuredLength(meters: BigDecimal): BigDecimal {
