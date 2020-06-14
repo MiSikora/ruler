@@ -36,7 +36,7 @@ allprojects {
   group = properties["GROUP"]!!
   version = properties["VERSION_NAME"]!!
 
-      tasks.withType<Test> {
+  tasks.withType<Test> {
     testLogging {
       events("skipped", "failed", "passed")
     }
@@ -51,9 +51,9 @@ allprojects {
     kotlinOptions {
       jvmTarget = "1.8"
       freeCompilerArgs = listOf(
-          "-progressive",
-          "-XXLanguage:+NewInference",
-          "-Xjvm-default=enable"
+        "-progressive",
+        "-XXLanguage:+NewInference",
+        "-Xjvm-default=enable"
       )
     }
   }
