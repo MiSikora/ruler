@@ -119,7 +119,7 @@ private fun BehaviorSpec.checkSiUnit(unit: SiLengthUnit) {
           val distance = Distance.of(value, unit)
           val length = distance.toLength(unit)
 
-          length.measuredLength shouldBeEqualComparingTo value.toBigDecimal()
+          length.measure shouldBeEqualComparingTo value.toBigDecimal()
         }
       }
     }
@@ -205,7 +205,7 @@ private fun BehaviorSpec.checkImperialUnit(
           val distance = Distance.of(value, unit)
           val length = distance.toLength(unit)
 
-          length.measuredLength shouldBeEqualComparingTo value.toBigDecimal()
+          length.measure shouldBeEqualComparingTo value.toBigDecimal()
         }
       }
     }

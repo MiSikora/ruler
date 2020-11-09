@@ -5,7 +5,5 @@ import java.math.BigDecimal
 interface LengthUnit<T> : Comparable<T>, Iterable<T> where T : Enum<T>, T : LengthUnit<T> {
   val meterRatio: BigDecimal
 
-  fun toMeasuredLength(meters: BigDecimal): BigDecimal
-
   fun appliesRangeTo(meters: BigDecimal): Boolean
 }

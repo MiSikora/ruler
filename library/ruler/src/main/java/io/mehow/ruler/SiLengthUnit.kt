@@ -1,7 +1,6 @@
 package io.mehow.ruler
 
 import java.math.BigDecimal
-import java.math.RoundingMode.DOWN
 import kotlin.Double.Companion.MAX_VALUE
 
 enum class SiLengthUnit(
@@ -40,10 +39,6 @@ enum class SiLengthUnit(
       return meters >= super.applicableRange.start
     }
   };
-
-  override fun toMeasuredLength(meters: BigDecimal): BigDecimal {
-    return meters.divide(meterRatio, 9, DOWN)
-  }
 
   override fun appliesRangeTo(meters: BigDecimal): Boolean {
     return meters >= applicableRange.start && meters < applicableRange.endInclusive

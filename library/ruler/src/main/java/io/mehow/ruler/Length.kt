@@ -11,12 +11,14 @@ import io.mehow.ruler.SiLengthUnit.Meter
 import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
+import java.math.BigDecimal
+import java.math.RoundingMode.DOWN
 
 class Length<T> internal constructor(
   val distance: Distance,
   val unit: T,
 ) : Comparable<Length<*>> where T : Enum<T>, T : LengthUnit<T> {
-  val measuredLength = unit.toMeasuredLength(distance.exactTotalMeters)
+  val measure: BigDecimal = distance.exactTotalMeters.divide(unit.meterRatio, 9, DOWN)
 
   fun <R> withUnit(unit: R): Length<R> where R : Enum<R>, R : LengthUnit<R> {
     return Length(distance, unit)
@@ -113,7 +115,7 @@ class Length<T> internal constructor(
   }
 
   override fun toString(): String {
-    return "Length(measuredLength=$measuredLength, unit=$unit)"
+    return "Length(measure=$measure, unit=$unit)"
   }
 
   companion object {
