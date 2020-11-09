@@ -8,7 +8,7 @@ import android.content.Context
   context: Context,
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
-  formatter: LengthFormatter = Ruler.formatter
+  formatter: LengthFormatter = Ruler.formatter,
 ): String {
   val length = if (converter == null) this else {
     val convertedLength = with(converter) { convert(context) }
@@ -23,7 +23,7 @@ import android.content.Context
 
 @JvmOverloads fun Length<*>.formatFloored(
   context: Context,
-  separator: String = ""
+  separator: String = "",
 ): String {
   return format(context, separator, null, Ruler.flooredFormatter)
 }

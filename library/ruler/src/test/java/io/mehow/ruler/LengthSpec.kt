@@ -176,7 +176,7 @@ private fun BehaviorSpec.checkSiUnit(unit: SiLengthUnit) {
 
 private fun BehaviorSpec.checkImperialUnit(
   unit: ImperialLengthUnit,
-  maxRange: Long
+  maxRange: Long,
 ) {
   Given("$unit distance") {
     When("I auto unit it") {

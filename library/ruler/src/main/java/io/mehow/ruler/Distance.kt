@@ -20,7 +20,7 @@ import kotlin.Long.Companion.MIN_VALUE
 
 class Distance private constructor(
   val metersPart: Long = 0L,
-  val nanosPart: Long = 0L
+  val nanosPart: Long = 0L,
 ) : Comparable<Distance> {
   val exactTotalMeters = metersPart.toBigDecimal() +
       (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
@@ -140,7 +140,7 @@ class Distance private constructor(
 
     @JvmStatic fun create(
       meters: Long = 0,
-      nanometers: Long = 0
+      nanometers: Long = 0,
     ): Distance {
       var meterPart = nanometers / nanosInMeter
       var nanoPart = nanometers % nanosInMeter
