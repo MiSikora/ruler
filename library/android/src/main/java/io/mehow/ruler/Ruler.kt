@@ -3,7 +3,7 @@ package io.mehow.ruler
 import android.content.Context
 
 object Ruler {
-  private val converters = mutableListOf<LengthConverter>()
+  internal val converters = mutableListOf<LengthConverter>()
 
   @JvmStatic fun addConverter(converter: LengthConverter) = synchronized(this) {
     converters += converter
@@ -22,7 +22,7 @@ object Ruler {
     }
   }
 
-  private val formatters = mutableListOf<LengthFormatter>()
+  internal val formatters = mutableListOf<LengthFormatter>()
 
   @JvmStatic fun addFormatter(formatter: LengthFormatter) = synchronized(this) {
     formatters += formatter
@@ -58,7 +58,7 @@ object Ruler {
       synchronized(this) { func(ukCountryCode) }
     }
 
-  private val flooredFormatters = mutableListOf<LengthFormatter>()
+  internal val flooredFormatters = mutableListOf<LengthFormatter>()
 
   @JvmStatic fun addFlooredFormatter(formatter: LengthFormatter) = synchronized(this) {
     flooredFormatters += formatter

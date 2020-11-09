@@ -3,7 +3,7 @@ package io.mehow.ruler
 import android.content.Context
 import android.content.res.Configuration
 import androidx.test.core.app.ApplicationProvider
-import io.kotlintest.shouldBe
+import io.kotest.matchers.shouldBe
 import io.mehow.ruler.ImperialLengthUnit.Foot
 import io.mehow.ruler.ImperialLengthUnit.Inch
 import io.mehow.ruler.ImperialLengthUnit.Mile

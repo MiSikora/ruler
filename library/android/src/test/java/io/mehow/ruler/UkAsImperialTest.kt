@@ -3,7 +3,7 @@ package io.mehow.ruler
 import android.content.Context
 import android.content.res.Configuration
 import androidx.test.core.app.ApplicationProvider
-import io.kotlintest.shouldBe
+import io.kotest.matchers.shouldBe
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

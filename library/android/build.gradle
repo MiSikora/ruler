@@ -1,0 +1,24 @@
+plugins {
+  id "com.android.library"
+  id "org.jetbrains.kotlin.android"
+}
+
+android {
+  resourcePrefix "io_mehow_ruler_"
+
+  testOptions {
+    unitTests.includeAndroidResources true
+  }
+}
+
+dependencies {
+  api project(":library:ruler")
+
+  testImplementation libs.junit
+  testImplementation libs.kotest.assertions
+  testImplementation libs.android.xTestCoreKtx
+  testImplementation libs.robolectric
+  testImplementation libs.junit
+}
+
+apply from: "$rootDir/gradle/gradle-mvn-push.gradle"
