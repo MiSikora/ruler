@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "Dependencies"
+    open-pull-requests-limit: 99
+
+  - package-ecosystem: "gradle"
+    directory: "library/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "Dependencies"
+    open-pull-requests-limit: 99
