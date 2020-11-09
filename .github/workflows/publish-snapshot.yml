@@ -35,3 +35,8 @@ jobs:
 
       - name: Stop Gradle
         run: ./gradlew --stop
+
+      - name: Publish Website
+        uses: mhausenblas/mkdocs-deploy-gh-pages@1.16
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -45,3 +45,19 @@ jobs:
             ./library/*/build/libs/!(*-sources|*-javadoc).jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Release Notes
+        id: release-notes
+        uses: ffurrer2/extract-release-notes@v1
+        with:
+          changelog_file: ./docs/changelog.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: ${{ steps.release-notes.outputs.release_notes }}
+          files: |
+            ./library/*/build/outputs/aar/*.aar
+            ./library/*/build/libs/!(*-sources|*-javadoc).jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
