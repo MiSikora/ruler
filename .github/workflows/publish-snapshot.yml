@@ -1,0 +1,37 @@
+name: Snapshot
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish-snapshot:
+    if: ${{ github.repository == 'MiSikora/Ruler' }}
+    name: Publish Snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Cache Gradle Dirs
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches/
+            ~/.gradle/wrapper/
+          key: cache-gradle-${{ hashFiles('**/*.gradle', '**/gradle-wrapper.properties') }}
+          restore-keys: cache-gradle-
+
+      - name: Deploy Snapshot
+        env:
+          ORG_GRADLE_PROJECT_SONATYPE_NEXUS_USERNAME: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
+          ORG_GRADLE_PROJECT_SONATYPE_NEXUS_PASSWORD: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
+        run: ./gradlew uploadArchives --no-daemon --no-parallel --stacktrace
+
+      - name: Stop Gradle
+        run: ./gradlew --stop

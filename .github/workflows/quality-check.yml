@@ -1,0 +1,84 @@
+name: Quality Check
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'library/docs/**'
+      - '**.md'
+      - '.github/CODEOWNERS'
+  pull_request:
+    paths-ignore:
+      - 'library/docs/**'
+      - '**.md'
+      - '.github/CODEOWNERS'
+
+jobs:
+  tests:
+    if: ${{ github.repository == 'MiSikora/Ruler' }}
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Cache Gradle Dirs
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches/
+            ~/.gradle/wrapper/
+          key: cache-gradle-${{ hashFiles('**/*.gradle', '**/gradle-wrapper.properties') }}
+          restore-keys: cache-gradle-
+
+      - name: Run Tests
+        run: ./gradlew test --stacktrace
+
+      - name: Stop Gradle
+        run: ./gradlew --stop
+
+  detekt:
+    if: ${{ github.repository == 'MiSikora/Ruler' }}
+    name: Detekt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Cache Gradle Dirs
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches/
+            ~/.gradle/wrapper/
+          key: cache-gradle-${{ hashFiles('**/*.gradle', '**/gradle-wrapper.properties') }}
+          restore-keys: cache-gradle-
+
+      - name: Run Detekt
+        run: ./gradlew detekt --stacktrace
+
+      - name: Stop Gradle
+        run: ./gradlew --stop
+
+  lint:
+    if: ${{ github.repository == 'MiSikora/Ruler' }}
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Cache Gradle Dirs
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches/
+            ~/.gradle/wrapper/
+          key: cache-gradle-${{ hashFiles('**/*.gradle', '**/gradle-wrapper.properties') }}
+          restore-keys: cache-gradle-
+
+      - name: Run Lint
+        run: ./gradlew lint --stacktrace
+
+      - name: Stop Gradle
+        run: ./gradlew --stop
