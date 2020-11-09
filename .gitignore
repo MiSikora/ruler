@@ -1,14 +1,15 @@
 # IDEA
 *.iml
 /.idea/
+!/.idea/codeStyles/
+!/.idea/codeStyles/*
 
 # Gradle
 .gradle/
 build/
 /reports/
 
-# Gradle Androide
-
+# Gradle Android
 /local.properties
 /captures
 
