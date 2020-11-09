@@ -1,0 +1,13 @@
+plugins {
+  id "org.jetbrains.kotlin.jvm"
+}
+
+test.useJUnitPlatform()
+
+dependencies {
+  testImplementation libs.kotest.runnerJunit5
+  testImplementation libs.kotest.assertions
+  testImplementation libs.kotest.property
+}
+
+apply from: "$rootDir/gradle/gradle-mvn-push.gradle"
