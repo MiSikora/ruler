@@ -10,7 +10,7 @@ import io.mehow.ruler.SiLengthUnit.Meter
   context: Context,
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
-  formatter: LengthFormatter = Ruler.formatter
+  formatter: LengthFormatter = Ruler.formatter,
 ): String {
   val useImperial = context.preferredLocale.isImperial
   return if (useImperial) format(context, Yard, separator, converter, formatter)
@@ -24,14 +24,14 @@ fun <T> Distance.format(
   unit: T,
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
-  formatter: LengthFormatter = Ruler.formatter
+  formatter: LengthFormatter = Ruler.formatter,
 ): String where T : Enum<T>, T : LengthUnit<T> {
   return toLength(unit).format(context, separator, converter, formatter)
 }
 
 @JvmOverloads fun Distance.formatFloored(
   context: Context,
-  separator: String = ""
+  separator: String = "",
 ): String {
   val useImperial = context.preferredLocale.isImperial
   return if (useImperial) formatFloored(context, Yard, separator)
@@ -41,7 +41,7 @@ fun <T> Distance.format(
 @JvmOverloads fun <T> Distance.formatFloored(
   context: Context,
   unit: T,
-  separator: String = ""
+  separator: String = "",
 ): String where T : Enum<T>, T : LengthUnit<T> {
   return toLength(unit).formatFloored(context, separator)
 }

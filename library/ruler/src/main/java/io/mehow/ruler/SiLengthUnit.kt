@@ -7,7 +7,7 @@ import kotlin.Double.Companion.MAX_VALUE
 
 enum class SiLengthUnit(
   private val applicableRange: ClosedRange<BigDecimal>,
-  private val meterRatio: BigDecimal
+  private val meterRatio: BigDecimal,
 ) : LengthUnit<SiLengthUnit> {
   Nanometer(
       0.0.toBigDecimal()..0.000_001.toBigDecimal(),

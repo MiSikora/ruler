@@ -8,7 +8,7 @@ import java.util.Locale
 
 class ImperialDistanceFormatter internal constructor(
   private val formatters: Set<PartFormatter>,
-  private val partsSeparator: String
+  private val partsSeparator: String,
 ) {
   fun format(distance: Distance, context: Context): String {
     val reverseOrder = context.preferredLocale.isRtl
@@ -20,8 +20,8 @@ class ImperialDistanceFormatter internal constructor(
   }
 
   private fun formatParts(distance: Distance, context: Context, reverseOrder: Boolean): String {
-    val lowestHierarchy = formatters.map(PartFormatter::hierarchy).max()!!
-    val highestHierarchy = formatters.map(PartFormatter::hierarchy).min()!!
+    val lowestHierarchy = formatters.map(PartFormatter::hierarchy).maxOrNull()!!
+    val highestHierarchy = formatters.map(PartFormatter::hierarchy).minOrNull()!!
 
     val lengthMap = formatters.associateWith { formatter ->
       val isBasePart = formatter.hierarchy == highestHierarchy
@@ -42,7 +42,7 @@ class ImperialDistanceFormatter internal constructor(
     context: Context,
     length: BigInteger,
     totalLength: BigInteger,
-    lowestAvailableHierarchy: Int
+    lowestAvailableHierarchy: Int,
   ): String? {
     return when {
       canPrintData(length) -> format(context, length.toLong())
@@ -53,7 +53,7 @@ class ImperialDistanceFormatter internal constructor(
 
   private fun PartFormatter.shouldPrintData(
     totalLength: BigInteger,
-    lowestHierarchy: Int
+    lowestHierarchy: Int,
   ): Boolean {
     return totalLength == BigInteger.ZERO && hierarchy == lowestHierarchy
   }
@@ -87,28 +87,28 @@ class ImperialDistanceFormatter internal constructor(
 
     @JvmOverloads fun withMiles(
       valueSeparator: String = "",
-      printZeros: Boolean = false
+      printZeros: Boolean = false,
     ): Builder {
       return append(PartFormatter.Miles(valueSeparator, printZeros))
     }
 
     @JvmOverloads fun withYards(
       valueSeparator: String = "",
-      printZeros: Boolean = false
+      printZeros: Boolean = false,
     ): Builder {
       return append(PartFormatter.Yards(valueSeparator, printZeros))
     }
 
     @JvmOverloads fun withFeet(
       valueSeparator: String = "",
-      printZeros: Boolean = false
+      printZeros: Boolean = false,
     ): Builder {
       return append(PartFormatter.Feet(valueSeparator, printZeros))
     }
 
     @JvmOverloads fun withInches(
       valueSeparator: String = "",
-      printZeros: Boolean = false
+      printZeros: Boolean = false,
     ): Builder {
       return append(PartFormatter.Inches(valueSeparator, printZeros))
     }
@@ -148,7 +148,7 @@ internal sealed class PartFormatter {
 
   class Miles(
     override val separator: String,
-    override val printZeros: Boolean
+    override val printZeros: Boolean,
   ) : PartFormatter() {
     override val hierarchy = 0
     override val resource = R.string.io_mehow_ruler_miles_part
@@ -164,7 +164,7 @@ internal sealed class PartFormatter {
 
   class Yards(
     override val separator: String,
-    override val printZeros: Boolean
+    override val printZeros: Boolean,
   ) : PartFormatter() {
     override val hierarchy = 1
     override val resource = R.string.io_mehow_ruler_yards_part
@@ -180,7 +180,7 @@ internal sealed class PartFormatter {
 
   class Feet(
     override val separator: String,
-    override val printZeros: Boolean
+    override val printZeros: Boolean,
   ) : PartFormatter() {
     override val hierarchy = 2
     override val resource = R.string.io_mehow_ruler_feet_part
@@ -196,7 +196,7 @@ internal sealed class PartFormatter {
 
   class Inches(
     override val separator: String,
-    override val printZeros: Boolean
+    override val printZeros: Boolean,
   ) : PartFormatter() {
     override val hierarchy = 3
     override val resource = R.string.io_mehow_ruler_inches_part

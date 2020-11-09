@@ -29,11 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-@file:Suppress("ComplexMethod", "StringLiteralDuplication", "ComplexCondition")
-
 package io.mehow.ruler
-
-import kotlin.Long.Companion.MIN_VALUE
 
 internal fun Long.safeAdd(b: Long): Long {
   val sum = this + b
@@ -49,47 +45,4 @@ internal fun Long.safeSubtract(b: Long): Long {
     throw ArithmeticException("Subtraction overflows a long: $this - $b")
   }
   return result
-}
-
-internal fun Long.safeMultiply(b: Int): Long {
-  when (b) {
-    -1 -> {
-      if (this == MIN_VALUE) {
-        throw ArithmeticException("Multiplication overflows a long: $this * $b")
-      }
-      return -this
-    }
-    0 -> return 0L
-    1 -> return this
-  }
-  val total = this * b
-  if (total / b != this) {
-    throw ArithmeticException("Multiplication overflows a long: $this * $b")
-  }
-  return total
-}
-
-internal fun Long.safeMultiply(b: Long): Long {
-  if (b == 1L) {
-    return this
-  }
-  if (this == 1L) {
-    return b
-  }
-  if (this == 0L || b == 0L) {
-    return 0
-  }
-  val total = this * b
-  if (total / b != this || this == MIN_VALUE && b == -1L || b == MIN_VALUE && this == -1L) {
-    throw ArithmeticException("Multiplication overflows a long: $this * $b")
-  }
-  return total
-}
-
-internal fun Long.floorDiv(b: Long): Long {
-  return if (this >= 0) this / b else (this + 1) / b - 1
-}
-
-internal fun Long.floorMod(b: Long): Long {
-  return (this % b + b) % b
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build.VERSION
 import java.util.Locale
 
+@Suppress("DEPRECATION")
 internal val Context.preferredLocale: Locale
   get() {
     val configuration = resources.configuration

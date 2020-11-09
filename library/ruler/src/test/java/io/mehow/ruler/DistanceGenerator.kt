@@ -7,11 +7,9 @@ import kotlin.random.Random
 
 class DistanceGenerator(
   private val min: Distance = Distance.min,
-  private val max: Distance = Distance.max
+  private val max: Distance = Distance.max,
 ) : Arb<Distance>() {
-  override fun values(rs: RandomSource) = generateSequence {
-    Sample(createDistance(rs.random))
-  }
+  override fun sample(rs: RandomSource) = Sample(createDistance(rs.random))
 
   override fun edgecases() = listOf(min, max)
 

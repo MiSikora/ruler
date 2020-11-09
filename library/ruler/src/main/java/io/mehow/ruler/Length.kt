@@ -14,7 +14,7 @@ import io.mehow.ruler.SiLengthUnit.Nanometer
 
 class Length<T> internal constructor(
   val distance: Distance,
-  val unit: T
+  val unit: T,
 ) : Comparable<Length<*>> where T : Enum<T>, T : LengthUnit<T> {
   val measuredLength = unit.toMeasuredLength(distance.exactTotalMeters)
 

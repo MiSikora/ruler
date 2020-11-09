@@ -6,7 +6,7 @@ import kotlin.Double.Companion.MAX_VALUE
 
 enum class ImperialLengthUnit(
   private val applicableRange: ClosedRange<BigDecimal>,
-  private val meterRatio: BigDecimal
+  private val meterRatio: BigDecimal,
 ) : LengthUnit<ImperialLengthUnit> {
   Inch(0.0.toBigDecimal()..0.3_048.toBigDecimal(), 0.0_254.toBigDecimal()),
   Foot(0.3_048.toBigDecimal()..0.9_144.toBigDecimal(), 0.3_048.toBigDecimal()),
