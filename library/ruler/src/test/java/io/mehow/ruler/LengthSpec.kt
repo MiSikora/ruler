@@ -26,16 +26,16 @@ class LengthSpec : BehaviorSpec({
     When("they are added") {
       Then("unit of the left operand is preserved") {
         checkAll(
-          DistanceGenerator(
-            min = Distance.create(MIN_VALUE / 2 + 1, 500_000_000),
-            max = Distance.create(MAX_VALUE / 2 - 1, 500_000_000)
-          ),
-          DistanceUnitGenerator,
-          DistanceGenerator(
-            min = Distance.create(MIN_VALUE / 2 + 1, 500_000_000),
-            max = Distance.create(MAX_VALUE / 2 - 1, 500_000_000)
-          ),
-          DistanceUnitGenerator
+            DistanceGenerator(
+                min = Distance.create(MIN_VALUE / 2 + 1, 500_000_000),
+                max = Distance.create(MAX_VALUE / 2 - 1, 500_000_000)
+            ),
+            DistanceUnitGenerator,
+            DistanceGenerator(
+                min = Distance.create(MIN_VALUE / 2 + 1, 500_000_000),
+                max = Distance.create(MAX_VALUE / 2 - 1, 500_000_000)
+            ),
+            DistanceUnitGenerator
         ) { distance1, unit1, distance2, unit2 ->
           val length1 = DistanceUnitGenerator.createLength(distance1, unit1)
           val length2 = DistanceUnitGenerator.createLength(distance2, unit2)
@@ -50,16 +50,16 @@ class LengthSpec : BehaviorSpec({
     When("they are subtracted") {
       Then("unit of the left operand is preserved") {
         checkAll(
-          DistanceGenerator(
-            min = Distance.ofMeters(MIN_VALUE / 2 + 1),
-            max = Distance.ofMeters(MAX_VALUE / 2 - 1)
-          ),
-          DistanceUnitGenerator,
-          DistanceGenerator(
-            min = Distance.ofMeters(MIN_VALUE / 2 + 1),
-            max = Distance.ofMeters(MAX_VALUE / 2 - 1)
-          ),
-          DistanceUnitGenerator
+            DistanceGenerator(
+                min = Distance.ofMeters(MIN_VALUE / 2 + 1),
+                max = Distance.ofMeters(MAX_VALUE / 2 - 1)
+            ),
+            DistanceUnitGenerator,
+            DistanceGenerator(
+                min = Distance.ofMeters(MIN_VALUE / 2 + 1),
+                max = Distance.ofMeters(MAX_VALUE / 2 - 1)
+            ),
+            DistanceUnitGenerator
         ) { distance1, unit1, distance2, unit2 ->
           val length1 = DistanceUnitGenerator.createLength(distance1, unit1)
           val length2 = DistanceUnitGenerator.createLength(distance2, unit2)
@@ -182,7 +182,7 @@ private fun BehaviorSpec.checkImperialUnit(
     When("I auto unit it") {
       Then("it uses $unit as a unit") {
         checkAll(
-          DistanceGenerator(Distance.of(1, unit), Distance.of(maxRange, unit))
+            DistanceGenerator(Distance.of(1, unit), Distance.of(maxRange, unit))
         ) { distance ->
           val length = distance.toLength(ImperialLengthUnit.values().random()).withAutoUnit()
 
@@ -190,7 +190,7 @@ private fun BehaviorSpec.checkImperialUnit(
         }
 
         checkAll(
-          DistanceGenerator(Distance.of(-maxRange, unit), Distance.of(-1, unit))
+            DistanceGenerator(Distance.of(-maxRange, unit), Distance.of(-1, unit))
         ) { distance ->
           val length = distance.toLength(ImperialLengthUnit.values().random()).withAutoUnit()
 

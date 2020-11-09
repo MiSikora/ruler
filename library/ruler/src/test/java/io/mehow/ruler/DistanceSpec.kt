@@ -150,10 +150,10 @@ class DistanceSpec : BehaviorSpec({
 
     Then("they can be compared to each other") {
       checkAll(
-        Arb.long(MIN_VALUE, MAX_VALUE),
-        Arb.long(0L, 999_999_999),
-        Arb.long(MIN_VALUE, MAX_VALUE),
-        Arb.long(0L, 999_999_999)
+          Arb.long(MIN_VALUE, MAX_VALUE),
+          Arb.long(0L, 999_999_999),
+          Arb.long(MIN_VALUE, MAX_VALUE),
+          Arb.long(0L, 999_999_999)
       ) { meter1, nano1, meter2, nano2 ->
         val distance1 = Distance.create(meter1, nano1)
         val distance2 = Distance.create(meter2, nano2)
@@ -172,8 +172,8 @@ class DistanceSpec : BehaviorSpec({
     When("I multiply it by a natural number") {
       Then("the result is correct") {
         checkAll(
-          DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-          Arb.long(0, 500_000)
+            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
+            Arb.long(0, 500_000)
         ) { distance, multiplicand ->
           val meters = distance.exactTotalMeters * multiplicand.toBigDecimal()
           val storedMeters = meters.toBigInteger().longValueExact()
@@ -190,8 +190,8 @@ class DistanceSpec : BehaviorSpec({
     When("I multiply it by a real number") {
       Then("the result is correct") {
         checkAll(
-          DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-          Arb.numericDoubles(0.0, 500_000.0)
+            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
+            Arb.numericDoubles(0.0, 500_000.0)
         ) { distance, multiplicand ->
           val meters = distance.exactTotalMeters * multiplicand.toBigDecimal()
           val nanos = meters.movePointRight(9).toBigInteger()
@@ -209,8 +209,8 @@ class DistanceSpec : BehaviorSpec({
     When("I divide it by a natural number") {
       Then("the result is correct") {
         checkAll(
-          DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-          Arb.long(1, 500_000)
+            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
+            Arb.long(1, 500_000)
         ) { distance, divisor ->
           val meters = distance.exactTotalMeters.divide(divisor.toBigDecimal(), DOWN)
           val nanos = meters.movePointRight(9).toBigIntegerExact()
@@ -228,8 +228,8 @@ class DistanceSpec : BehaviorSpec({
     When("I divide it by a real number") {
       Then("the result is correct") {
         checkAll(
-          DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-          Arb.numericDoubles(0.000_001, 500_000.0)
+            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
+            Arb.numericDoubles(0.000_001, 500_000.0)
         ) { distance, divisor ->
           val meters = distance.exactTotalMeters.divide(divisor.toBigDecimal(), DOWN)
           val nanos = meters.movePointRight(9).toBigInteger()
