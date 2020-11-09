@@ -157,7 +157,7 @@ class Distance private constructor(
       return Distance(totalMeters, totalNanometers)
     }
 
-    @JvmStatic fun of(value: Long, unit: LengthUnit<*>) = unit.toDistance(value)
+    @JvmStatic fun of(value: Long, unit: LengthUnit<*>) = create(value.toBigDecimal() * unit.meterRatio)
 
     @JvmStatic fun ofGigameters(value: Long) = of(value, Gigameter)
 
@@ -181,7 +181,7 @@ class Distance private constructor(
 
     @JvmStatic fun ofInches(value: Long) = of(value, Inch)
 
-    @JvmStatic fun of(value: Double, unit: LengthUnit<*>) = unit.toDistance(value)
+    @JvmStatic fun of(value: Double, unit: LengthUnit<*>) = create(value.toBigDecimal() * unit.meterRatio)
 
     @JvmStatic fun ofGigameters(value: Double) = of(value, Gigameter)
 

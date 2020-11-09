@@ -10,8 +10,6 @@ import kotlin.Long.Companion.MAX_VALUE
 
 class ImperialLengthUnitSpec : BehaviorSpec({
   Given("inches") {
-    val unit = Inch
-
     Then("distance can be created from it") {
       listOf(
           0L to Distance.zero,
@@ -23,18 +21,13 @@ class ImperialLengthUnitSpec : BehaviorSpec({
           131_296L to Distance.create(meters = 3_334, nanometers = 918_400_000),
           MAX_VALUE to Distance.create(meters = 234_273_649_736_111_305, nanometers = 497_800_000)
       ).forEach { (inches, expected) ->
-        unit.toDistance(inches) shouldBe expected
         Distance.ofInches(inches) shouldBe expected
-
-        unit.toDistance(-inches) shouldBe -expected
         Distance.ofInches(-inches) shouldBe -expected
       }
     }
   }
 
   Given("feet") {
-    val unit = Foot
-
     Then("distance can be created from it") {
       listOf(
           0L to Distance.zero,
@@ -46,18 +39,13 @@ class ImperialLengthUnitSpec : BehaviorSpec({
           131_296L to Distance.create(meters = 40_019, nanometers = 20_800_000),
           MAX_VALUE to Distance.create(meters = 2_811_283_796_833_335_665, nanometers = 973_600_000)
       ).forEach { (feet, expected) ->
-        unit.toDistance(feet) shouldBe expected
         Distance.ofFeet(feet) shouldBe expected
-
-        unit.toDistance(-feet) shouldBe -expected
         Distance.ofFeet(-feet) shouldBe -expected
       }
     }
   }
 
   Given("yards") {
-    val unit = Yard
-
     Then("distance can be created from it") {
       listOf(
           0L to Distance.zero,
@@ -69,18 +57,13 @@ class ImperialLengthUnitSpec : BehaviorSpec({
           131_296L to Distance.create(meters = 120_057, nanometers = 62_400_000),
           MAX_VALUE to Distance.create(meters = 8_433_851_390_500_006_997, nanometers = 920_800_000)
       ).forEach { (yards, expected) ->
-        unit.toDistance(yards) shouldBe expected
         Distance.ofYards(yards) shouldBe expected
-
-        unit.toDistance(-yards) shouldBe -expected
         Distance.ofYards(-yards) shouldBe -expected
       }
     }
   }
 
   Given("miles") {
-    val unit = Mile
-
     When("value does not overflow") {
       Then("distance can be created from it") {
         listOf(
@@ -92,10 +75,7 @@ class ImperialLengthUnitSpec : BehaviorSpec({
             1_680L to Distance.create(meters = 2_703_697, nanometers = 920_000_000),
             131_296L to Distance.create(meters = 211_300_429, nanometers = 824_000_000)
         ).forEach { (miles, expected) ->
-          unit.toDistance(miles) shouldBe expected
           Distance.ofMiles(miles) shouldBe expected
-
-          unit.toDistance(-miles) shouldBe -expected
           Distance.ofMiles(-miles) shouldBe -expected
         }
       }

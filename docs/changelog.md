@@ -6,10 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `meterRatio` property to the `LengthUnit` interface.
+
 ### Changed
 - `io.mehow.ruler:android` to `io.mehow.ruler:ruler-android` artifact.
 - Changelog format follows now [Keep a Changelog](https://keepachangelog.com/) format. Format is applied retroactively to this file.
 - Upgrade to Kotlin `1.4.10`.
+
+### Removed
+- `toDistance()` methods from `LengthUnit` interface.
+- `-Xjvm-default=enable` compiler argument is no longer required.
 
 ## [0.5.3] - 2020-06-14
 

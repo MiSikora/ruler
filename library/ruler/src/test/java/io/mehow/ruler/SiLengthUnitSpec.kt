@@ -5,125 +5,76 @@ import io.kotest.matchers.shouldBe
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.long
 import io.kotest.property.checkAll
-import io.mehow.ruler.SiLengthUnit.Gigameter
-import io.mehow.ruler.SiLengthUnit.Kilometer
-import io.mehow.ruler.SiLengthUnit.Megameter
-import io.mehow.ruler.SiLengthUnit.Meter
-import io.mehow.ruler.SiLengthUnit.Micrometer
-import io.mehow.ruler.SiLengthUnit.Millimeter
-import io.mehow.ruler.SiLengthUnit.Nanometer
 import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
 
 class SiLengthUnitSpec : BehaviorSpec({
   Given("nanometers") {
-    val unit = Nanometer
-
     Then("length can be created from it") {
       checkAll(Arb.long()) { value ->
         val expectedLength = Distance.create(value / 1_000_000_000, value % 1_000_000_000)
-
-        val length1 = unit.toDistance(value)
-        val length2 = Distance.ofNanometers(value)
-
-        length1 shouldBe expectedLength
-        length2 shouldBe expectedLength
+        val length = Distance.ofNanometers(value)
+        length shouldBe expectedLength
       }
     }
   }
 
   Given("micrometers") {
-    val unit = Micrometer
-
     Then("length can be created from it") {
       checkAll(Arb.long()) { value ->
         val expectedLength = Distance.create(value / 1_000_000, (value % 1_000_000) * 1_000)
-
-        val length1 = unit.toDistance(value)
-        val length2 = Distance.ofMicrometers(value)
-
-        length1 shouldBe expectedLength
-        length2 shouldBe expectedLength
+        val length = Distance.ofMicrometers(value)
+        length shouldBe expectedLength
       }
     }
   }
 
   Given("millimeters") {
-    val unit = Millimeter
-
     Then("length can be created from it") {
       checkAll(Arb.long()) { value ->
         val expectedLength = Distance.create(value / 1_000, (value % 1_000) * 1_000_000)
-
-        val length1 = unit.toDistance(value)
-        val length2 = Distance.ofMillimeters(value)
-
-        length1 shouldBe expectedLength
-        length2 shouldBe expectedLength
+        val length = Distance.ofMillimeters(value)
+        length shouldBe expectedLength
       }
     }
   }
 
   Given("meters") {
-    val unit = Meter
-
     Then("length can be created from it") {
       checkAll(Arb.long()) { value ->
         val expectedLength = Distance.create(value)
-
-        val length1 = unit.toDistance(value)
-        val length2 = Distance.ofMeters(value)
-
-        length1 shouldBe expectedLength
-        length2 shouldBe expectedLength
+        val length = Distance.ofMeters(value)
+        length shouldBe expectedLength
       }
     }
   }
 
   Given("kilometers") {
-    val unit = Kilometer
-
     Then("length can be created from it") {
       checkAll(Arb.long(MIN_VALUE / 1_000, MAX_VALUE / 1_000)) { value ->
         val expectedLength = Distance.create(value * 1_000)
-
-        val length1 = unit.toDistance(value)
-        val length2 = Distance.ofKilometers(value)
-
-        length1 shouldBe expectedLength
-        length2 shouldBe expectedLength
+        val length = Distance.ofKilometers(value)
+        length shouldBe expectedLength
       }
     }
   }
 
   Given("megameters") {
-    val unit = Megameter
-
     Then("length can be created from it") {
       checkAll(Arb.long(MIN_VALUE / 1_000_000, MAX_VALUE / 1_000_000)) { value ->
         val expectedLength = Distance.create(value * 1_000_000)
-
-        val length1 = unit.toDistance(value)
-        val length2 = Distance.ofMegameters(value)
-
-        length1 shouldBe expectedLength
-        length2 shouldBe expectedLength
+        val length = Distance.ofMegameters(value)
+        length shouldBe expectedLength
       }
     }
   }
 
   Given("gigameters") {
-    val unit = Gigameter
-
     Then("length can be created from it") {
       checkAll(Arb.long(MIN_VALUE / 1_000_000_000, MAX_VALUE / 1_000_000_000)) { value ->
         val expectedLength = Distance.create(value * 1_000_000_000)
-
-        val length1 = unit.toDistance(value)
-        val length2 = Distance.ofGigameters(value)
-
-        length1 shouldBe expectedLength
-        length2 shouldBe expectedLength
+        val length = Distance.ofGigameters(value)
+        length shouldBe expectedLength
       }
     }
   }

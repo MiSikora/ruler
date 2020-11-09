@@ -118,7 +118,7 @@ class Length<T> internal constructor(
 
   companion object {
     @JvmStatic fun <T> of(value: Long, unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> {
-      return Length(unit.toDistance(value), unit)
+      return Length(Distance.of(value, unit), unit)
     }
 
     @JvmStatic fun ofGigameters(value: Long) = of(value, Gigameter)
@@ -144,7 +144,7 @@ class Length<T> internal constructor(
     @JvmStatic fun ofInches(value: Long) = of(value, Inch)
 
     @JvmStatic fun <T> of(value: Double, unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> {
-      return Length(unit.toDistance(value), unit)
+      return Length(Distance.of(value, unit), unit)
     }
 
     @JvmStatic fun ofGigameters(value: Double) = of(value, Gigameter)
