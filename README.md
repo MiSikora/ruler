@@ -1,10 +1,30 @@
-# Ruler
+# Ruler 📐
 
-Distance measurements library for Java and Android.
+![Quality Check CI](https://github.com/MiSikora/Ruler/workflows/Quality%20Check/badge.svg?branch=master&event=push)
+![Snapshot CI](https://github.com/MiSikora/Ruler/workflows/Snapshot/badge.svg?branch=master&event=push)
+[<img src="https://img.shields.io/maven-central/v/io.mehow.ruler/ruler.svg?label=latest%20release"/>](https://search.maven.org/search?q=g:io.mehow.ruler)
+[<img src="https://img.shields.io/nexus/s/https/oss.sonatype.org/io.mehow.ruler/ruler.svg?label=latest%20snapshot"/>](https://oss.sonatype.org/content/repositories/snapshots/io/mehow/ruler/)
+![GitHub License](https://img.shields.io/github/license/MiSikora/Ruler)
 
-## Integration
+Distance measurements library for Kotlin and Android.
 
-Ruler requires Java 8 bytecode. To enable Java 8 desugaring configure it in your Gradle script.
+Please visit [project website](https://misikora.github.io/Ruler/) for the full documentation and the [changelog](https://misikora.github.io/Ruler/changelog/).
+
+## TLDR
+
+Add Laboratory dependency to your project.
+
+```groovy
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation "io.mehow.ruler:ruler-android:0.5.3"
+}
+```
+
+Enable Java 8 support.
 
 ```groovy
 android {
@@ -12,23 +32,44 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
-  // For Kotlin projects
+
   kotlinOptions {
     jvmTarget = "1.8"
+    freeCompilerArgs += "-Xjvm-default=enable"
   }
 }
 ```
 
-To integrate it with your app you need to add a dependency to you project.
+Define a distance and manipulate it.
 
-```groovy
-debugImplementation "io.mehow.ruler:ruler:0.5.3"
+```kotlin
+// Distance is dimensionless.
+val distanceFromMeters: Distance = Distance.ofMeters(100)
+val distanceFromYards: Distance = Distance.ofYards(50)
+
+// Length has a unit attached to it
+val metersLength: Length<SiLengthUnit.Meter> = distanceFromMeters.toLength(SiLengthUnit.Meter)
+val inchesLength: Length<ImperialLengthUnit.Inch> = distanceFromMeters.toLength(ImperialLengthUnit.Inch)
+
+// metersLength and inchesLength represent the same distance but with a different units attached to them
+check(metersLength - inchesLength == Length.ofMeters(0))
 ```
 
-If you use Android you can use Android artifact.
+Print distances and lengths in a human-readable way based on Locale.
 
-```groovy
-debugImplementation "io.mehow.ruler:android:0.5.3"
+```kotlin
+fun main(context: Context) {
+  val distance = Distance.ofMeters(100)
+  val length = distance.toLength(Meter)
+
+  // Assumes en_US Locale on a device.
+
+  // Prints "109yd 1ft 1in"
+  val humanReadableDistance: String = distance.format(context)
+
+  // Prints "109yd 1ft 1in"
+  val humanReadableLength: String = length.format(context)
+}
 ```
 
 ## License

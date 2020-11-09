@@ -1,10 +1,46 @@
 # Ruler
 
-Distance measurements library for Java and Android.
+![Ruler](images/ruler_logo.svg){: style="width:400px" }
 
-## Integration
+Distance measurements library for Kotlin and Android.
 
-Ruler requires Java 8 bytecode. To enable Java 8 desugaring configure it in your Gradle script.
+## TLDR
+
+Define a distance and manipulate it.
+
+```kotlin
+// Distance is dimensionless.
+val distanceFromMeters: Distance = Distance.ofMeters(100)
+val distanceFromYards: Distance = Distance.ofYards(50)
+
+// Length has a unit attached to it
+val metersLength: Length<SiLengthUnit.Meter> = distanceFromMeters.toLength(SiLengthUnit.Meter)
+val inchesLength: Length<ImperialLengthUnit.Inch> = distanceFromMeters.toLength(ImperialLengthUnit.Inch)
+
+// metersLength and inchesLength represent the same distance but with a different units attached to them
+check(metersLength - inchesLength == Length.ofMeters(0))
+```
+
+Android artifact allows to show a user formatted distances and lengths using appropriate Locale if available.
+
+```kotlin
+fun main(context: Context) {
+  val distance = Distance.ofMeters(100)
+  val length = distance.toLength(Meter)
+
+  // Assumes en_US Locale on a device.
+
+  // Prints "109yd 1ft 1in"
+  val humanReadableDistance: String = distance.format(context)
+
+  // Prints "109yd 1ft 1in"
+  val humanReadableLength: String = length.format(context)
+}
+```
+
+## Requirements
+
+Laboratory requires [Java 8 bytecode](https://developer.android.com/studio/write/java8-support) support. You can enable it with the following configuration in a `build.gradle` file.
 
 ```groovy
 android {
@@ -12,24 +48,47 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
-  // For Kotlin projects
+
   kotlinOptions {
     jvmTarget = "1.8"
   }
 }
 ```
 
-To integrate it with your app you need to add a dependency to you project.
+Also, you have to enable [default methods generation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-default/) by Kotlin compiler. You can do this by adding a compiler flag in a `build.gradle` file.
 
 ```groovy
-debugImplementation "io.mehow.ruler:ruler:0.5.3"
+android {
+  kotlinOptions {
+    freeCompilerArgs += "-Xjvm-default=enable"
+  }
+}
 ```
 
-If you use Android you can use Android artifact.
+## Get Ruler
+
+Ruler is published to [Maven Central Repository](https://search.maven.org/search?q=io.mehow.ruler).
 
 ```groovy
-debugImplementation "io.mehow.ruler:android:0.5.3"
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation "io.mehow.ruler:ruler:0.5.3"
+}
 ```
+
+Snapshots of the development version are available on [Sonatype's snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/io/mehow/ruler/).
+
+Here is the list of all available artifacts that Laboratory library provides.
+
+- **`io.mehow.ruler:ruler:0.5.3`**: Core of the library. Defines classes and interfaces that represent distances.
+- **`io.mehow.ruler:ruler-android:0.5.3`**: Provides distance formatters for Android platform that can present them to a user in a meaningful way.
+
+## Attribution
+
+Logo icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/).
 
 ## License
 

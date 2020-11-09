@@ -1,68 +1,100 @@
-Change Log
-==========
+# Changelog
+All notable changes to this project will be documented in this document.
 
-Version 0.5.3 *(2020-06-14)*
-----------------------------
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-* Update Kotlin to 1.3.72.
-* Fix a bug with library test not running as a part of 'check' task.
-* Fix a bug with long to double conversion when computing distances.
+## [Unreleased]
 
-Version 0.5.2 *(2020-04-15)*
-----------------------------
+### Changed
+- `io.mehow.ruler:android` to `io.mehow.ruler:ruler-android` artifact.
+- Changelog format follows now [Keep a Changelog](https://keepachangelog.com/) format. Format is applied retroactively to this file.
+- Upgrade to Kotlin `1.4.10`.
 
-* Add Arabic translations.
-* Fix a bug with no inches displayed for 0 length.
+## [0.5.3] - 2020-06-14
 
-Version 0.5.1 *(2020-03-01)*
-----------------------------
+### Changed
+- Upgrade to Kotlin `1.3.72`.
 
-* Fix wrong unit displayed for feet.
-* Remove 'totalMeters' property that approximates distance.
+### Fixed
+- Long to double conversion when computing distances.
 
-Version 0.5.0 *(2020-02-29)*
-----------------------------
+## [0.5.2] - 2020-04-15
 
-* Add support for floored formatting of any length units.
-* Allow to set globally if UK should use imperial or SI units.
+### Added
+- Arabic language support.
 
-Version 0.4.1 *(2020-02-07)*
-----------------------------
+### Fixed
+- Fix a bug with no inches displayed for 0 length.
 
-* Add support for negative distances.
-* Add support for floored SI unit lengths formatting.
+## [0.5.1] - 2020-03-01
 
-Version 0.4.0 *(2020-02-05)*
-----------------------------
+### Removed
+- Remove `totalMeters` property from `Distance` that approximates it.
 
-* Add Ruler class as a central point for distance and length formatting.
-* And imperial unit formatter.
+### Fixed
+- Fix wrong unit displayed for feet.
 
-Version 0.3.2 *(2020-02-03)*
-----------------------------
+## [0.5.0] - 2020-02-29
 
-* Fix issue with high precision Float and Double multiplication.
+### Added
+- Support for floored formatting of any length units.
+- Allow to set globally if UK should use imperial or SI units.
 
-Version 0.3.1 *(2020-02-03)*
-----------------------------
+## [0.4.1] - 2020-02-07
 
-* Make library JDK 7 compatible.
+### Added
+- Support for negative distances.
+- Support for floored SI unit lengths formatting. It displays only whole parts of a unit.
 
-Version 0.3.0 *(2020-02-03)*
-----------------------------
+## [0.4.0] - 2020-02-05
 
-* Swap names of Distance and Length classes.
-* Use Long as underlying Distance primitive. It is more suitable for application that have UI interaction and distance of ~975 light years seems sufficient for most day-to-day applications.
-* Add Distance (old Length) formatter for Android.
-* Add basic math operators like multiplication and division.
-* Add Double factories to Distance (old Length).
+### Added
+- `Ruler` class as a central point for distance and length formatting.
+- Imperial unit formatter. It allows to display measurements in a imperial-friendly format. For example `105ft 12in`
 
-Version 0.2.0 *(2020-02-03)*
-----------------------------
+## [0.3.2] 2020-02-03
 
-* Make formatting API more flexible.
+### Fixed
+- Fix issue with high precision Float and Double multiplication.
 
-Version 0.1.0 *(2020-02-02)*
-----------------------------
+## [0.3.1] - 2020-02-03
 
-* Initial release.
+### Fixed
+- Make library JDK 7 compatible.
+
+## [0.3.0] - 2020-02-03
+
+### Added
+- Add `Distance` (old `Length`) formatter for Android.
+- Add basic math operators like multiplication and division.
+- Add Double factories to `Distance` (old `Length`).
+
+### Changed
+- Swap names of `Distance` and `Length` classes.
+- Use Long as an underlying `Distance` primitive. It is more suitable for application that have UI interaction and distance of ~975 light years seems sufficient for most day-to-day applications.
+
+## [0.2.0] - 2020-02-03
+
+### Changed
+- `DistanceUnitCoercer` changed to `DistanceConverter`.
+- `Distance` constructor is no longer public.
+- `length` in `Distance` is no longer public.
+- `meters` and `nanometers` properties renamed respectively to `metersPart` and `nanometersParts` in `Length` class.
+
+## [0.1.0] - 2020-02-02
+
+- Initial release.
+
+[Unreleased]: https://github.com/MiSikora/Ruler/compare/0.5.3...HEAD
+[0.5.3]: https://github.com/MiSikora/Ruler/releases/tag/0.5.3
+[0.5.2]: https://github.com/MiSikora/Ruler/releases/tag/0.5.2
+[0.5.1]: https://github.com/MiSikora/Ruler/releases/tag/0.5.1
+[0.5.0]: https://github.com/MiSikora/Ruler/releases/tag/0.5.0
+[0.4.1]: https://github.com/MiSikora/Ruler/releases/tag/0.4.1
+[0.4.0]: https://github.com/MiSikora/Ruler/releases/tag/0.4.0
+[0.3.2]: https://github.com/MiSikora/Ruler/releases/tag/0.3.2
+[0.3.1]: https://github.com/MiSikora/Ruler/releases/tag/0.3.1
+[0.3.0]: https://github.com/MiSikora/Ruler/releases/tag/0.3.0
+[0.2.0]: https://github.com/MiSikora/Ruler/releases/tag/0.2.0
+[0.1.0]: https://github.com/MiSikora/Ruler/releases/tag/0.1.0
