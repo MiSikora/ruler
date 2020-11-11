@@ -13,9 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `io.mehow.ruler:android` to `io.mehow.ruler:ruler-android` artifact.
 - Changelog format follows now [Keep a Changelog](https://keepachangelog.com/) format. Format is applied retroactively to this file.
-- Upgrade to Kotlin `1.4.10`.
 - `Length` `measureLength` property to `measure`.
 - `Distance.min`, `Distance.zero` and `Distance.max` respectively to `Distance.Min`, `Distance.Zero` and `Distance.Max`. They are now available as fields from Java.
+- Upgrade to Kotlin `1.4.10`.
 
 ### Removed
 - `toDistance()` methods from `LengthUnit` interface.
