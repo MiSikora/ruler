@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2020-11-11
+
 ### Added
 - `meterRatio` property to `LengthUnit` interface.
 - `contains` function to to `LengthUnit` interface. This allows to use `in` sugar syntax.
@@ -98,7 +100,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[Unreleased]: https://github.com/MiSikora/Ruler/compare/0.5.3...HEAD
+[Unreleased]: https://github.com/MiSikora/Ruler/compare/0.6.0...HEAD
+[0.6.0]: https://github.com/MiSikora/Ruler/releases/tag/0.6.0
 [0.5.3]: https://github.com/MiSikora/Ruler/releases/tag/0.5.3
 [0.5.2]: https://github.com/MiSikora/Ruler/releases/tag/0.5.2
 [0.5.1]: https://github.com/MiSikora/Ruler/releases/tag/0.5.1

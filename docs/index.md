@@ -75,7 +75,7 @@ repositories {
 }
 
 dependencies {
-  implementation "io.mehow.ruler:ruler:0.5.3"
+  implementation "io.mehow.ruler:ruler:0.6.0"
 }
 ```
 
@@ -83,8 +83,8 @@ Snapshots of the development version are available on [Sonatype's snapshots repo
 
 Here is the list of all available artifacts that Laboratory library provides.
 
-- **`io.mehow.ruler:ruler:0.5.3`**: Core of the library. Defines classes and interfaces that represent distances.
-- **`io.mehow.ruler:ruler-android:0.5.3`**: Provides distance formatters for Android platform that can present them to a user in a meaningful way.
+- **`io.mehow.ruler:ruler:0.6.0`**: Core of the library. Defines classes and interfaces that represent distances.
+- **`io.mehow.ruler:ruler-android:0.6.0`**: Provides distance formatters for Android platform that can present them to a user in a meaningful way.
 
 ## Attribution
 
