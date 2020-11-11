@@ -6,8 +6,8 @@ import io.kotest.property.Sample
 import kotlin.random.Random
 
 class DistanceGenerator(
-  private val min: Distance = Distance.min,
-  private val max: Distance = Distance.max,
+  private val min: Distance = Distance.Min,
+  private val max: Distance = Distance.Max,
 ) : Arb<Distance>() {
   override fun sample(rs: RandomSource) = Sample(createDistance(rs.random))
 

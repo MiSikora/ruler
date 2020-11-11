@@ -56,7 +56,7 @@ class Distance private constructor(
 
   operator fun times(multiplicand: Long): Distance {
     return when (multiplicand) {
-      0L -> zero
+      0L -> Zero
       1L -> this
       else -> create(exactTotalMeters * multiplicand.toBigDecimal())
     }
@@ -68,7 +68,7 @@ class Distance private constructor(
 
   operator fun times(multiplicand: Double): Distance {
     return when (multiplicand) {
-      0.0 -> zero
+      0.0 -> Zero
       1.0 -> this
       else -> create(exactTotalMeters * multiplicand.toBigDecimal())
     }
@@ -122,11 +122,11 @@ class Distance private constructor(
     private const val nanosInMeter = 1_000_000_000L
     private val bigNanosInMeter = nanosInMeter.toBigInteger()
 
-    @JvmStatic val min = Distance(MIN_VALUE, 0L)
+    @JvmField val Min = Distance(MIN_VALUE, 0L)
 
-    @JvmStatic val zero = Distance()
+    @JvmField val Zero = Distance()
 
-    @JvmStatic val max = Distance(MAX_VALUE, nanosInMeter - 1)
+    @JvmField val Max = Distance(MAX_VALUE, nanosInMeter - 1)
 
     internal fun create(meters: BigDecimal): Distance {
       val nanos = meters.movePointRight(9).toBigInteger()

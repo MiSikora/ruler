@@ -221,7 +221,7 @@ class FlooredDistanceFormatterTest {
   }
 
   @Test fun `nanometers are formatting zeros properly`() {
-    val distance = Distance.zero
+    val distance = Distance.Zero
 
     val formattedDistance = distance.formatFloored(context, Nanometer)
 

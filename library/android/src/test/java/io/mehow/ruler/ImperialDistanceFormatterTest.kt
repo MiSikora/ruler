@@ -18,7 +18,7 @@ class ImperialDistanceFormatterTest {
         Distance.ofFeet(2) +
         Distance.ofInches(7)
 
-    val formattedDistance = ImperialDistanceFormatter.full.format(distance, context)
+    val formattedDistance = ImperialDistanceFormatter.Full.format(distance, context)
 
     formattedDistance shouldBe "10mi 11yd 2ft 7in"
   }
@@ -28,7 +28,7 @@ class ImperialDistanceFormatterTest {
         .withMiles(printZeros = true)
         .build()
 
-    val distanceWithZero = zeroFormatter.format(Distance.zero, context)
+    val distanceWithZero = zeroFormatter.format(Distance.Zero, context)
 
     distanceWithZero shouldBe "0mi"
   }
@@ -92,7 +92,7 @@ class ImperialDistanceFormatterTest {
         .withMiles(printZeros = true)
         .build()
 
-    val formattedDistance = formatter.format(Distance.zero, context)
+    val formattedDistance = formatter.format(Distance.Zero, context)
 
     formattedDistance shouldBe "0in 0ft 0yd 0mi"
   }
@@ -137,7 +137,7 @@ class ImperialDistanceFormatterTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `parts are reversed for RTL locales`() {
-    val formattedDistance = ImperialDistanceFormatter.full.format(Distance.zero, context)
+    val formattedDistance = ImperialDistanceFormatter.Full.format(Distance.Zero, context)
 
     formattedDistance shouldBe "0بوصة 0قدم 0ياردة 0ميل"
   }
@@ -179,7 +179,7 @@ class ImperialDistanceFormatterTest {
   }
 
   @Test fun `zero inches are printed when no inch length is present for inches formatter`() {
-    val distance = Distance.zero
+    val distance = Distance.Zero
     val formatter = ImperialDistanceFormatter.Builder()
         .withMiles(printZeros = false)
         .withYards(printZeros = false)

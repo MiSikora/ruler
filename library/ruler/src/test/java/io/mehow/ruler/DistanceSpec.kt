@@ -17,7 +17,7 @@ import kotlin.Long.Companion.MIN_VALUE
 
 class DistanceSpec : BehaviorSpec({
   Given("zero distance") {
-    val zeroDistance = Distance.zero
+    val zeroDistance = Distance.Zero
 
     Then("it should not have any meters") {
       zeroDistance.metersPart shouldBe 0L
@@ -54,7 +54,7 @@ class DistanceSpec : BehaviorSpec({
   }
 
   Given("min distance") {
-    val minDistance = Distance.min
+    val minDistance = Distance.Min
 
     Then("it should have minimum value of meters") {
       minDistance.metersPart shouldBe MIN_VALUE
@@ -71,7 +71,7 @@ class DistanceSpec : BehaviorSpec({
     }
 
     When("I add zero distance to it") {
-      val newDistance = minDistance + Distance.zero
+      val newDistance = minDistance + Distance.Zero
 
       Then("it stays the same") {
         newDistance shouldBe minDistance
@@ -80,7 +80,7 @@ class DistanceSpec : BehaviorSpec({
 
     When("I add any distance from it") {
       Then("it does not fail") {
-        checkAll(DistanceGenerator(Distance.zero)) { distance ->
+        checkAll(DistanceGenerator(Distance.Zero)) { distance ->
           shouldNotThrowAny { minDistance + distance }
         }
       }
@@ -88,7 +88,7 @@ class DistanceSpec : BehaviorSpec({
   }
 
   Given("max distance") {
-    val maxDistance = Distance.max
+    val maxDistance = Distance.Max
 
     Then("it should have maximum value of meters") {
       maxDistance.metersPart shouldBe MAX_VALUE
@@ -105,7 +105,7 @@ class DistanceSpec : BehaviorSpec({
     }
 
     When("I add zero distance to it") {
-      val newDistance = maxDistance + Distance.zero
+      val newDistance = maxDistance + Distance.Zero
 
       Then("it stays the same") {
         newDistance shouldBe maxDistance
@@ -114,7 +114,7 @@ class DistanceSpec : BehaviorSpec({
 
     When("I remove any distance from it") {
       Then("it does not fail") {
-        checkAll(DistanceGenerator(Distance.zero)) { distance ->
+        checkAll(DistanceGenerator(Distance.Zero)) { distance ->
           shouldNotThrowAny { maxDistance - distance }
         }
       }
