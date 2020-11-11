@@ -15,8 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `io.mehow.ruler:android` to `io.mehow.ruler:ruler-android` artifact.
 - Changelog format follows now [Keep a Changelog](https://keepachangelog.com/) format. Format is applied retroactively to this file.
-- `Length` `measureLength` property to `measure`.
+- `Length.measureLength` property to `measure`.
 - `Distance.min`, `Distance.zero` and `Distance.max` respectively to `Distance.Min`, `Distance.Zero` and `Distance.Max`. They are now available as fields from Java.
+- `ImperialDistanceFormatter.basic` and `ImperialDistanceFormatter.full` to `ImperialDistanceFormatter.Basic` and `ImperialDistanceFormatter.Full` respectively.
 - Upgrade to Kotlin `1.4.10`.
 
 ### Removed
