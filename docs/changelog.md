@@ -51,7 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `Ruler` class as a central point for distance and length formatting.
-- Imperial unit formatter. It allows to display measurements in a imperial-friendly format. For example `105ft 12in`
+- Imperial unit formatter. It allows to display measurements in a imperial-friendly format. For example `105ft 12in`.
 
 ## [0.3.2] 2020-02-03
 
