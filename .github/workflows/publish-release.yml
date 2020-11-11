@@ -47,13 +47,3 @@ jobs:
             ./library/*/build/libs/!(*-sources|*-javadoc).jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          body: ${{ steps.release-notes.outputs.release_notes }}
-          files: |
-            ./library/*/build/outputs/aar/*.aar
-            ./library/*/build/libs/!(*-sources|*-javadoc).jar
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
