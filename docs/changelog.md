@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- `meterRatio` property to the `LengthUnit` interface.
+- `meterRatio` property to `LengthUnit` interface.
+- `contains` function to to `LengthUnit` interface. This allows to use `in` sugar syntax.
 
 ### Changed
 - `io.mehow.ruler:android` to `io.mehow.ruler:ruler-android` artifact.
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `toDistance()` methods from `LengthUnit` interface.
 - `-Xjvm-default=enable` compiler argument is no longer required.
 - `toMeasuredLength()` function from `LengthUnit` interface.
+- `appliesRangeTo()` function from `LengthUnit` interface.
 
 ## [0.5.3] - 2020-06-14
 

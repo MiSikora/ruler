@@ -1,47 +1,52 @@
 package io.mehow.ruler
 
 import java.math.BigDecimal
-import kotlin.Double.Companion.MAX_VALUE
 
 enum class SiLengthUnit(
-  private val applicableRange: ClosedRange<BigDecimal>,
   override val meterRatio: BigDecimal,
+  private val lowerBound: BigDecimal,
+  private val upperBound: BigDecimal?,
 ) : LengthUnit<SiLengthUnit> {
   Nanometer(
-      0.0.toBigDecimal()..0.000_001.toBigDecimal(),
-      0.000_000_001.toBigDecimal(),
+      meterRatio = 0.000_000_001.toBigDecimal(),
+      lowerBound = 0.0.toBigDecimal(),
+      upperBound = 0.000_001.toBigDecimal(),
   ),
   Micrometer(
-      0.000_001.toBigDecimal()..0.001.toBigDecimal(),
-      0.000_001.toBigDecimal(),
+      meterRatio = 0.000_001.toBigDecimal(),
+      lowerBound = 0.000_001.toBigDecimal(),
+      upperBound = 0.001.toBigDecimal(),
   ),
   Millimeter(
-      0.001.toBigDecimal()..1.0.toBigDecimal(),
-      0.001.toBigDecimal(),
+      meterRatio = 0.001.toBigDecimal(),
+      lowerBound = 0.001.toBigDecimal(),
+      upperBound = 1.0.toBigDecimal(),
   ),
   Meter(
-      1.0.toBigDecimal()..1_000.0.toBigDecimal(),
-      1.0.toBigDecimal(),
+      meterRatio = 1.0.toBigDecimal(),
+      lowerBound = 1.0.toBigDecimal(),
+      upperBound = 1_000.0.toBigDecimal(),
   ),
   Kilometer(
-      1_000.0.toBigDecimal()..1_000_000.0.toBigDecimal(),
-      1_000.0.toBigDecimal(),
+      meterRatio = 1_000.0.toBigDecimal(),
+      lowerBound = 1_000.0.toBigDecimal(),
+      upperBound = 1_000_000.0.toBigDecimal(),
   ),
   Megameter(
-      1_000_000.0.toBigDecimal()..1_000_000_000.0.toBigDecimal(),
-      1_000_000.0.toBigDecimal(),
+      meterRatio = 1_000_000.0.toBigDecimal(),
+      lowerBound = 1_000_000.0.toBigDecimal(),
+      upperBound = 1_000_000_000.0.toBigDecimal(),
   ),
   Gigameter(
-      1_000_000_000.0.toBigDecimal()..MAX_VALUE.toBigDecimal(),
-      1_000_000_000.0.toBigDecimal(),
-  ) {
-    override fun appliesRangeTo(meters: BigDecimal): Boolean {
-      return meters >= super.applicableRange.start
-    }
-  };
+      meterRatio = 1_000_000_000.0.toBigDecimal(),
+      lowerBound = 1_000_000_000.0.toBigDecimal(),
+      upperBound = null,
+  );
 
-  override fun appliesRangeTo(meters: BigDecimal): Boolean {
-    return meters >= applicableRange.start && meters < applicableRange.endInclusive
+  override operator fun contains(meters: BigDecimal): Boolean {
+    val inLowerBound = meters >= lowerBound
+    val inUpperBound = upperBound == null || meters < upperBound
+    return inLowerBound && inUpperBound
   }
 
   override fun iterator() = values.iterator()

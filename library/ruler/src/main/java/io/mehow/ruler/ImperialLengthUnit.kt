@@ -1,35 +1,37 @@
 package io.mehow.ruler
 
 import java.math.BigDecimal
-import kotlin.Double.Companion.MAX_VALUE
 
 enum class ImperialLengthUnit(
-  private val applicableRange: ClosedRange<BigDecimal>,
   override val meterRatio: BigDecimal,
+  private val lowerBound: BigDecimal,
+  private val upperBound: BigDecimal?,
 ) : LengthUnit<ImperialLengthUnit> {
   Inch(
-      0.0.toBigDecimal()..0.3_048.toBigDecimal(),
-      0.0_254.toBigDecimal(),
+      meterRatio = 0.0_254.toBigDecimal(),
+      lowerBound = 0.0.toBigDecimal(),
+      upperBound = 0.3_048.toBigDecimal(),
   ),
   Foot(
-      0.3_048.toBigDecimal()..0.9_144.toBigDecimal(),
-      0.3_048.toBigDecimal(),
+      meterRatio = 0.3_048.toBigDecimal(),
+      lowerBound = 0.3_048.toBigDecimal(),
+      upperBound = 0.9_144.toBigDecimal(),
   ),
   Yard(
-      0.9_144.toBigDecimal()..1_609.3.toBigDecimal(),
-      0.9_144.toBigDecimal(),
+      meterRatio = 0.9_144.toBigDecimal(),
+      lowerBound = 0.9_144.toBigDecimal(),
+      upperBound = 1_609.3.toBigDecimal(),
   ),
   Mile(
-      1_609.3.toBigDecimal()..MAX_VALUE.toBigDecimal(),
-      1_609.344.toBigDecimal(),
-  ) {
-    override fun appliesRangeTo(meters: BigDecimal): Boolean {
-      return meters >= super.applicableRange.start
-    }
-  };
+      meterRatio = 1_609.344.toBigDecimal(),
+      lowerBound = 1_609.3.toBigDecimal(),
+      upperBound = null,
+  );
 
-  override fun appliesRangeTo(meters: BigDecimal): Boolean {
-    return meters >= applicableRange.start && meters < applicableRange.endInclusive
+  override operator fun contains(meters: BigDecimal): Boolean {
+    val inLowerBound = meters >= lowerBound
+    val inUpperBound = upperBound == null || meters < upperBound
+    return inLowerBound && inUpperBound
   }
 
   override fun iterator() = values.iterator()

@@ -25,7 +25,7 @@ class Length<T> internal constructor(
   }
 
   fun withAutoUnit(): Length<T> {
-    return withUnit(unit.single { it.appliesRangeTo(distance.exactTotalMeters.abs()) })
+    return withUnit(unit.single { distance.exactTotalMeters.abs() in it })
   }
 
   @JvmSynthetic fun coerceUnitIn(range: ClosedRange<T>): Length<T> {
