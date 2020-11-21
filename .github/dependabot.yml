@@ -9,7 +9,7 @@ updates:
     open-pull-requests-limit: 99
 
   - package-ecosystem: "gradle"
-    directory: "library/"
+    directory: "/"
     schedule:
       interval: "daily"
     labels:
