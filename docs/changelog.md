@@ -6,8 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `AutoLengthFormatter` to the public API.
+- `FlooredLengthFormatter` to the public API.
+- `AutoFitLengthConverter` to the public API.
+
 ### Changed
-- Upgrade to Kotlin `1.4.20`
+- Upgrade to Kotlin `1.4.21`.
 
 ## [0.6.0] - 2020-11-11
 
