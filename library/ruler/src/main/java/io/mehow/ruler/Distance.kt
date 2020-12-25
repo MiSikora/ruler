@@ -28,14 +28,14 @@ public class Distance private constructor(
 
   public operator fun plus(other: Distance): Distance = create(
       metersPart.safeAdd(other.metersPart),
-      nanosPart.safeAdd(other.nanosPart)
+      nanosPart.safeAdd(other.nanosPart),
   )
 
   public operator fun plus(length: Length<*>): Distance = this + length.distance
 
   public operator fun minus(other: Distance): Distance = create(
       metersPart.safeSubtract(other.metersPart),
-      nanosPart.safeSubtract(other.nanosPart)
+      nanosPart.safeSubtract(other.nanosPart),
   )
 
   public operator fun minus(length: Length<*>): Distance = this - length.distance
