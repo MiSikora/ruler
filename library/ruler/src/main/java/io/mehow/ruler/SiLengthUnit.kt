@@ -48,10 +48,4 @@ public enum class SiLengthUnit(
     val inUpperBound = upperBound == null || meters < upperBound
     return inLowerBound && inUpperBound
   }
-
-  override fun iterator(): Iterator<SiLengthUnit> = values.iterator()
-
-  public companion object {
-    private val values = values().toList()
-  }
 }

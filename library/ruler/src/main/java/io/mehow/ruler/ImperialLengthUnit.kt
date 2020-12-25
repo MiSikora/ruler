@@ -33,10 +33,4 @@ public enum class ImperialLengthUnit(
     val inUpperBound = upperBound == null || meters < upperBound
     return inLowerBound && inUpperBound
   }
-
-  override fun iterator(): Iterator<ImperialLengthUnit> = values.iterator()
-
-  public companion object {
-    private val values = values().toList()
-  }
 }

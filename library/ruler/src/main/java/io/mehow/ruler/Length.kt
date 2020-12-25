@@ -25,7 +25,7 @@ public class Length<T> internal constructor(
   }
 
   public fun withAutoUnit(): Length<T> {
-    return withUnit(unit.single { distance.meters.abs() in it })
+    return withUnit(unit.javaClass.enumConstants.single { distance.meters.abs() in it })
   }
 
   @JvmSynthetic public fun coerceUnitIn(range: ClosedRange<T>): Length<T> {
