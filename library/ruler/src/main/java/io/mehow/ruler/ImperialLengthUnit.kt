@@ -20,11 +20,11 @@ public enum class ImperialLengthUnit(
   Yard(
       meterRatio = 0.9_144.toBigDecimal(),
       lowerBound = 0.9_144.toBigDecimal(),
-      upperBound = 1_609.3.toBigDecimal(),
+      upperBound = 1_609.344.toBigDecimal(),
   ),
   Mile(
       meterRatio = 1_609.344.toBigDecimal(),
-      lowerBound = 1_609.3.toBigDecimal(),
+      lowerBound = 1_609.344.toBigDecimal(),
       upperBound = null,
   );
 
