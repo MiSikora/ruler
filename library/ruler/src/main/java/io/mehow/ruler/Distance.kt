@@ -60,7 +60,7 @@ public class Distance private constructor(
   public operator fun div(divisor: Int): Distance = this / divisor.toLong()
 
   public operator fun div(divisor: Long): Distance = when (divisor) {
-    0L -> throw IllegalArgumentException("Cannot divide by 0.")
+    0L -> throw ArithmeticException("Cannot divide by 0.")
     1L -> this
     else -> create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
   }
@@ -68,7 +68,7 @@ public class Distance private constructor(
   public operator fun div(divisor: Float): Distance = this / divisor.toDouble()
 
   public operator fun div(divisor: Double): Distance = when (divisor) {
-    0.0 -> throw IllegalArgumentException("Cannot divide by 0.")
+    0.0 -> throw ArithmeticException("Cannot divide by 0.")
     1.0 -> this
     else -> create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
   }
@@ -100,7 +100,9 @@ public class Distance private constructor(
     internal fun create(meters: BigDecimal): Distance {
       val nanos = meters.movePointRight(9).toBigInteger()
       val divRem = nanos.divideAndRemainder(nanosInMeter.toBigInteger())
-      check(divRem[0].bitLength() <= 63) { "Exceeded distance capacity: $nanos" }
+      if (divRem[0].bitLength() > 63) {
+        throw ArithmeticException("Exceeded distance capacity: $nanos nm.")
+      }
       val storedMeters = divRem[0].toLong()
       val storedNanometers = divRem[1].toLong()
       return create(storedMeters, storedNanometers)
@@ -119,8 +121,8 @@ public class Distance private constructor(
 
       val totalMeters = meters.safeAdd(meterPart)
       val totalNanometers = nanoPart
-
-      require(totalNanometers in 0..999_999_999) { "Nanometers must be between 0 and 1m" }
+          .takeIf { it in 0..999_999_999 }
+          ?: throw ArithmeticException("Exceeded nanometers capacity: $nanoPart nm")
 
       return Distance(totalMeters, totalNanometers)
     }

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AutoFitLengthConverter` to the public API.
 
 ### Changed
+- `Distance` and `Length` throw now `ArithmeticException` in case of failures due to overflows or math operations.
 - Upgrade to Kotlin `1.4.21`.
 
 ## [0.6.0] - 2020-11-11
