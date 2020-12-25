@@ -22,8 +22,7 @@ public class Distance private constructor(
   public val metersPart: Long = 0L,
   public val nanosPart: Long = 0L,
 ) : Comparable<Distance> {
-  public val exactTotalMeters: BigDecimal =
-    metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
+  public val meters: BigDecimal = metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
 
   public fun <T> toLength(unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> = Length(this, unit)
 
@@ -46,7 +45,7 @@ public class Distance private constructor(
   public operator fun times(multiplicand: Long): Distance = when (multiplicand) {
     0L -> Zero
     1L -> this
-    else -> create(exactTotalMeters * multiplicand.toBigDecimal())
+    else -> create(meters * multiplicand.toBigDecimal())
   }
 
   public operator fun times(multiplicand: Float): Distance = this * multiplicand.toDouble()
@@ -54,7 +53,7 @@ public class Distance private constructor(
   public operator fun times(multiplicand: Double): Distance = when (multiplicand) {
     0.0 -> Zero
     1.0 -> this
-    else -> create(exactTotalMeters * multiplicand.toBigDecimal())
+    else -> create(meters * multiplicand.toBigDecimal())
   }
 
   public operator fun div(divisor: Int): Distance = this / divisor.toLong()
@@ -62,7 +61,7 @@ public class Distance private constructor(
   public operator fun div(divisor: Long): Distance = when (divisor) {
     0L -> throw ArithmeticException("Cannot divide by 0.")
     1L -> this
-    else -> create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
+    else -> create(meters.divide(divisor.toBigDecimal(), DOWN))
   }
 
   public operator fun div(divisor: Float): Distance = this / divisor.toDouble()
@@ -70,7 +69,7 @@ public class Distance private constructor(
   public operator fun div(divisor: Double): Distance = when (divisor) {
     0.0 -> throw ArithmeticException("Cannot divide by 0.")
     1.0 -> this
-    else -> create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
+    else -> create(meters.divide(divisor.toBigDecimal(), DOWN))
   }
 
   public operator fun unaryMinus(): Distance = this * -1

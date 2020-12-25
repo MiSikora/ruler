@@ -60,7 +60,7 @@ public object FlooredLengthFormatter : LengthFormatter {
     }
 
   private fun ImperialLengthUnit.unitsPart(distance: Distance): Long {
-    val inches = (distance.exactTotalMeters * inchesInMeter).toLong()
+    val inches = (distance.meters * inchesInMeter).toLong()
     return when (this) {
       Inch -> inches
       Foot -> inches / 12

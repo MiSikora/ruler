@@ -18,14 +18,14 @@ public class Length<T> internal constructor(
   public val distance: Distance,
   public val unit: T,
 ) : Comparable<Length<*>> where T : Enum<T>, T : LengthUnit<T> {
-  public val measure: BigDecimal = distance.exactTotalMeters.divide(unit.meterRatio, 9, DOWN)
+  public val measure: BigDecimal = distance.meters.divide(unit.meterRatio, 9, DOWN)
 
   public fun <R> withUnit(unit: R): Length<R> where R : Enum<R>, R : LengthUnit<R> {
     return Length(distance, unit)
   }
 
   public fun withAutoUnit(): Length<T> {
-    return withUnit(unit.single { distance.exactTotalMeters.abs() in it })
+    return withUnit(unit.single { distance.meters.abs() in it })
   }
 
   @JvmSynthetic public fun coerceUnitIn(range: ClosedRange<T>): Length<T> {

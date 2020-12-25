@@ -215,28 +215,28 @@ internal sealed class PartFormatter {
 
 internal val Distance.totalMiles: BigInteger
   get() {
-    return (exactTotalMeters / 1_609.344.toBigDecimal()).toBigInteger()
+    return (meters / 1_609.344.toBigDecimal()).toBigInteger()
   }
 
 internal val Distance.milesPart get() = totalMiles
 
 internal val Distance.totalYards: BigInteger
   get() {
-    return (exactTotalMeters / 0.9_144.toBigDecimal()).toBigInteger()
+    return (meters / 0.9_144.toBigDecimal()).toBigInteger()
   }
 
 internal val Distance.yardsPart get() = totalYards % 1_760.toBigInteger()
 
 internal val Distance.totalFeet: BigInteger
   get() {
-    return (exactTotalMeters / 0.3_048.toBigDecimal()).toBigInteger()
+    return (meters / 0.3_048.toBigDecimal()).toBigInteger()
   }
 
 internal val Distance.feetPart get() = totalFeet % 3.toBigInteger()
 
 internal val Distance.totalInches: BigInteger
   get() {
-    return (exactTotalMeters / 0.0_254.toBigDecimal()).toBigInteger()
+    return (meters / 0.0_254.toBigDecimal()).toBigInteger()
   }
 
 internal val Distance.inchesPart get() = totalInches % 12.toBigInteger()
