@@ -7,7 +7,7 @@ import io.mehow.ruler.SiLengthUnit.Meter
 
 public object AutoFitLengthConverter : LengthConverter {
   @Suppress("UNCHECKED_CAST")
-  override fun Length<*>.convert(context: Context): Length<*>? {
+  override fun Length<*>.convert(context: Context): Length<*> {
     val length = if (context.preferredLocale.isImperial) withUnit(Yard) else withUnit(Meter)
     val autoLength = length.withAutoUnit()
     return when (autoLength.unit) {
