@@ -25,99 +25,68 @@ public class Distance private constructor(
   public val exactTotalMeters: BigDecimal =
     metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
 
-  public fun <T> toLength(unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> {
-    return Length(this, unit)
+  public fun <T> toLength(unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> = Length(this, unit)
+
+  public operator fun plus(other: Distance): Distance = create(
+      metersPart.safeAdd(other.metersPart),
+      nanosPart.safeAdd(other.nanosPart)
+  )
+
+  public operator fun plus(length: Length<*>): Distance = this + length.distance
+
+  public operator fun minus(other: Distance): Distance = create(
+      metersPart.safeSubtract(other.metersPart),
+      nanosPart.safeSubtract(other.nanosPart)
+  )
+
+  public operator fun minus(length: Length<*>): Distance = this - length.distance
+
+  public operator fun times(multiplicand: Int): Distance = this * multiplicand.toLong()
+
+  public operator fun times(multiplicand: Long): Distance = when (multiplicand) {
+    0L -> Zero
+    1L -> this
+    else -> create(exactTotalMeters * multiplicand.toBigDecimal())
   }
 
-  public operator fun plus(other: Distance): Distance {
-    return create(
-        metersPart.safeAdd(other.metersPart),
-        nanosPart.safeAdd(other.nanosPart)
-    )
+  public operator fun times(multiplicand: Float): Distance = this * multiplicand.toDouble()
+
+  public operator fun times(multiplicand: Double): Distance = when (multiplicand) {
+    0.0 -> Zero
+    1.0 -> this
+    else -> create(exactTotalMeters * multiplicand.toBigDecimal())
   }
 
-  public operator fun plus(length: Length<*>): Distance {
-    return this + length.distance
+  public operator fun div(divisor: Int): Distance = this / divisor.toLong()
+
+  public operator fun div(divisor: Long): Distance = when (divisor) {
+    0L -> throw IllegalArgumentException("Cannot divide by 0.")
+    1L -> this
+    else -> create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
   }
 
-  public operator fun minus(other: Distance): Distance {
-    return create(
-        metersPart.safeSubtract(other.metersPart),
-        nanosPart.safeSubtract(other.nanosPart)
-    )
+  public operator fun div(divisor: Float): Distance = this / divisor.toDouble()
+
+  public operator fun div(divisor: Double): Distance = when (divisor) {
+    0.0 -> throw IllegalArgumentException("Cannot divide by 0.")
+    1.0 -> this
+    else -> create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
   }
 
-  public operator fun minus(length: Length<*>): Distance {
-    return this - length.distance
-  }
-
-  public operator fun times(multiplicand: Int): Distance {
-    return this * multiplicand.toLong()
-  }
-
-  public operator fun times(multiplicand: Long): Distance {
-    return when (multiplicand) {
-      0L -> Zero
-      1L -> this
-      else -> create(exactTotalMeters * multiplicand.toBigDecimal())
-    }
-  }
-
-  public operator fun times(multiplicand: Float): Distance {
-    return this * multiplicand.toDouble()
-  }
-
-  public operator fun times(multiplicand: Double): Distance {
-    return when (multiplicand) {
-      0.0 -> Zero
-      1.0 -> this
-      else -> create(exactTotalMeters * multiplicand.toBigDecimal())
-    }
-  }
-
-  public operator fun div(divisor: Int): Distance {
-    return this / divisor.toLong()
-  }
-
-  public operator fun div(divisor: Long): Distance {
-    require(divisor != 0L) { "Cannot divide by 0." }
-
-    return if (divisor == 1L) this
-    else create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
-  }
-
-  public operator fun div(divisor: Float): Distance {
-    return this / divisor.toDouble()
-  }
-
-  public operator fun div(divisor: Double): Distance {
-    require(divisor != 0.0) { "Cannot divide by 0" }
-
-    return if (divisor == 1.0) this
-    else create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
-  }
-
-  public operator fun unaryMinus(): Distance {
-    return this * -1
-  }
+  public operator fun unaryMinus(): Distance = this * -1
 
   override fun compareTo(other: Distance): Int {
     val cmp = metersPart.compareTo(other.metersPart)
     return if (cmp != 0) cmp else nanosPart.compareTo(other.nanosPart)
   }
 
-  override fun equals(other: Any?): Boolean {
-    if (other !is Distance) return false
-    return metersPart == other.metersPart && nanosPart == other.nanosPart
-  }
+  override fun equals(other: Any?): Boolean = other is Distance &&
+      metersPart == other.metersPart &&
+      nanosPart == other.nanosPart
 
-  override fun hashCode(): Int {
-    return 31 * metersPart.hashCode() + nanosPart.hashCode()
-  }
+  override fun hashCode(): Int = 31 * metersPart.hashCode() + nanosPart.hashCode()
 
-  override fun toString(): String {
-    return "Distance(meters=$metersPart, nanometers=$nanosPart)"
-  }
+  override fun toString(): String = "Distance(meters=$metersPart, nanometers=$nanosPart)"
 
   public companion object {
     private const val nanosInMeter = 1_000_000_000L
