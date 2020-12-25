@@ -18,43 +18,44 @@ import java.math.RoundingMode.DOWN
 import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
 
-class Distance private constructor(
-  val metersPart: Long = 0L,
-  val nanosPart: Long = 0L,
+public class Distance private constructor(
+  public val metersPart: Long = 0L,
+  public val nanosPart: Long = 0L,
 ) : Comparable<Distance> {
-  val exactTotalMeters = metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
+  public val exactTotalMeters: BigDecimal =
+    metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
 
-  fun <T> toLength(unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> {
+  public fun <T> toLength(unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> {
     return Length(this, unit)
   }
 
-  operator fun plus(other: Distance): Distance {
+  public operator fun plus(other: Distance): Distance {
     return create(
         metersPart.safeAdd(other.metersPart),
         nanosPart.safeAdd(other.nanosPart)
     )
   }
 
-  operator fun plus(length: Length<*>): Distance {
+  public operator fun plus(length: Length<*>): Distance {
     return this + length.distance
   }
 
-  operator fun minus(other: Distance): Distance {
+  public operator fun minus(other: Distance): Distance {
     return create(
         metersPart.safeSubtract(other.metersPart),
         nanosPart.safeSubtract(other.nanosPart)
     )
   }
 
-  operator fun minus(length: Length<*>): Distance {
+  public operator fun minus(length: Length<*>): Distance {
     return this - length.distance
   }
 
-  operator fun times(multiplicand: Int): Distance {
+  public operator fun times(multiplicand: Int): Distance {
     return this * multiplicand.toLong()
   }
 
-  operator fun times(multiplicand: Long): Distance {
+  public operator fun times(multiplicand: Long): Distance {
     return when (multiplicand) {
       0L -> Zero
       1L -> this
@@ -62,11 +63,11 @@ class Distance private constructor(
     }
   }
 
-  operator fun times(multiplicand: Float): Distance {
+  public operator fun times(multiplicand: Float): Distance {
     return this * multiplicand.toDouble()
   }
 
-  operator fun times(multiplicand: Double): Distance {
+  public operator fun times(multiplicand: Double): Distance {
     return when (multiplicand) {
       0.0 -> Zero
       1.0 -> this
@@ -74,29 +75,29 @@ class Distance private constructor(
     }
   }
 
-  operator fun div(divisor: Int): Distance {
+  public operator fun div(divisor: Int): Distance {
     return this / divisor.toLong()
   }
 
-  operator fun div(divisor: Long): Distance {
+  public operator fun div(divisor: Long): Distance {
     require(divisor != 0L) { "Cannot divide by 0." }
 
     return if (divisor == 1L) this
     else create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
   }
 
-  operator fun div(divisor: Float): Distance {
+  public operator fun div(divisor: Float): Distance {
     return this / divisor.toDouble()
   }
 
-  operator fun div(divisor: Double): Distance {
+  public operator fun div(divisor: Double): Distance {
     require(divisor != 0.0) { "Cannot divide by 0" }
 
     return if (divisor == 1.0) this
     else create(exactTotalMeters.divide(divisor.toBigDecimal(), DOWN))
   }
 
-  operator fun unaryMinus(): Distance {
+  public operator fun unaryMinus(): Distance {
     return this * -1
   }
 
@@ -118,26 +119,25 @@ class Distance private constructor(
     return "Distance(meters=$metersPart, nanometers=$nanosPart)"
   }
 
-  companion object {
+  public companion object {
     private const val nanosInMeter = 1_000_000_000L
-    private val bigNanosInMeter = nanosInMeter.toBigInteger()
 
-    @JvmField val Min = Distance(MIN_VALUE, 0L)
+    @JvmField public val Min: Distance = Distance(MIN_VALUE, 0L)
 
-    @JvmField val Zero = Distance()
+    @JvmField public val Zero: Distance = Distance()
 
-    @JvmField val Max = Distance(MAX_VALUE, nanosInMeter - 1)
+    @JvmField public val Max: Distance = Distance(MAX_VALUE, nanosInMeter - 1)
 
     internal fun create(meters: BigDecimal): Distance {
       val nanos = meters.movePointRight(9).toBigInteger()
-      val divRem = nanos.divideAndRemainder(bigNanosInMeter)
+      val divRem = nanos.divideAndRemainder(nanosInMeter.toBigInteger())
       check(divRem[0].bitLength() <= 63) { "Exceeded distance capacity: $nanos" }
       val storedMeters = divRem[0].toLong()
       val storedNanometers = divRem[1].toLong()
       return create(storedMeters, storedNanometers)
     }
 
-    @JvmStatic fun create(
+    @JvmStatic public fun create(
       meters: Long = 0,
       nanometers: Long = 0,
     ): Distance {
@@ -156,52 +156,56 @@ class Distance private constructor(
       return Distance(totalMeters, totalNanometers)
     }
 
-    @JvmStatic fun of(value: Long, unit: LengthUnit<*>) = create(value.toBigDecimal() * unit.meterRatio)
+    @JvmStatic public fun of(value: Long, unit: LengthUnit<*>): Distance = create(
+        meters = value.toBigDecimal() * unit.meterRatio,
+    )
 
-    @JvmStatic fun ofGigameters(value: Long) = of(value, Gigameter)
+    @JvmStatic public fun ofGigameters(value: Long): Distance = of(value, Gigameter)
 
-    @JvmStatic fun ofMegameters(value: Long) = of(value, Megameter)
+    @JvmStatic public fun ofMegameters(value: Long): Distance = of(value, Megameter)
 
-    @JvmStatic fun ofKilometers(value: Long) = of(value, Kilometer)
+    @JvmStatic public fun ofKilometers(value: Long): Distance = of(value, Kilometer)
 
-    @JvmStatic fun ofMeters(value: Long) = of(value, Meter)
+    @JvmStatic public fun ofMeters(value: Long): Distance = of(value, Meter)
 
-    @JvmStatic fun ofMillimeters(value: Long) = of(value, Millimeter)
+    @JvmStatic public fun ofMillimeters(value: Long): Distance = of(value, Millimeter)
 
-    @JvmStatic fun ofMicrometers(value: Long) = of(value, Micrometer)
+    @JvmStatic public fun ofMicrometers(value: Long): Distance = of(value, Micrometer)
 
-    @JvmStatic fun ofNanometers(value: Long) = of(value, Nanometer)
+    @JvmStatic public fun ofNanometers(value: Long): Distance = of(value, Nanometer)
 
-    @JvmStatic fun ofMiles(value: Long) = of(value, Mile)
+    @JvmStatic public fun ofMiles(value: Long): Distance = of(value, Mile)
 
-    @JvmStatic fun ofYards(value: Long) = of(value, Yard)
+    @JvmStatic public fun ofYards(value: Long): Distance = of(value, Yard)
 
-    @JvmStatic fun ofFeet(value: Long) = of(value, Foot)
+    @JvmStatic public fun ofFeet(value: Long): Distance = of(value, Foot)
 
-    @JvmStatic fun ofInches(value: Long) = of(value, Inch)
+    @JvmStatic public fun ofInches(value: Long): Distance = of(value, Inch)
 
-    @JvmStatic fun of(value: Double, unit: LengthUnit<*>) = create(value.toBigDecimal() * unit.meterRatio)
+    @JvmStatic public fun of(value: Double, unit: LengthUnit<*>): Distance = create(
+        meters = value.toBigDecimal() * unit.meterRatio,
+    )
 
-    @JvmStatic fun ofGigameters(value: Double) = of(value, Gigameter)
+    @JvmStatic public fun ofGigameters(value: Double): Distance = of(value, Gigameter)
 
-    @JvmStatic fun ofMegameters(value: Double) = of(value, Megameter)
+    @JvmStatic public fun ofMegameters(value: Double): Distance = of(value, Megameter)
 
-    @JvmStatic fun ofKilometers(value: Double) = of(value, Kilometer)
+    @JvmStatic public fun ofKilometers(value: Double): Distance = of(value, Kilometer)
 
-    @JvmStatic fun ofMeters(value: Double) = of(value, Meter)
+    @JvmStatic public fun ofMeters(value: Double): Distance = of(value, Meter)
 
-    @JvmStatic fun ofMillimeters(value: Double) = of(value, Millimeter)
+    @JvmStatic public fun ofMillimeters(value: Double): Distance = of(value, Millimeter)
 
-    @JvmStatic fun ofMicrometers(value: Double) = of(value, Micrometer)
+    @JvmStatic public fun ofMicrometers(value: Double): Distance = of(value, Micrometer)
 
-    @JvmStatic fun ofNanometers(value: Double) = of(value, Nanometer)
+    @JvmStatic public fun ofNanometers(value: Double): Distance = of(value, Nanometer)
 
-    @JvmStatic fun ofMiles(value: Double) = of(value, Mile)
+    @JvmStatic public fun ofMiles(value: Double): Distance = of(value, Mile)
 
-    @JvmStatic fun ofYards(value: Double) = of(value, Yard)
+    @JvmStatic public fun ofYards(value: Double): Distance = of(value, Yard)
 
-    @JvmStatic fun ofFeet(value: Double) = of(value, Foot)
+    @JvmStatic public fun ofFeet(value: Double): Distance = of(value, Foot)
 
-    @JvmStatic fun ofInches(value: Double) = of(value, Inch)
+    @JvmStatic public fun ofInches(value: Double): Distance = of(value, Inch)
   }
 }

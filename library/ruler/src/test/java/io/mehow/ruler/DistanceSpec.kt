@@ -15,7 +15,7 @@ import java.math.RoundingMode.DOWN
 import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
 
-class DistanceSpec : BehaviorSpec({
+internal class DistanceSpec : BehaviorSpec({
   Given("zero distance") {
     val zeroDistance = Distance.Zero
 

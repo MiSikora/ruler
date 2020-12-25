@@ -9,7 +9,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-class ImperialDistanceFormatterTest {
+internal class ImperialDistanceFormatterTest {
   private val context: Context get() = ApplicationProvider.getApplicationContext()
 
   @Test fun `all distance parts are properly formatted`() {

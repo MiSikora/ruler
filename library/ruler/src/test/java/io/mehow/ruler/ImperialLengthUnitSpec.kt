@@ -4,7 +4,7 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import kotlin.Long.Companion.MAX_VALUE
 
-class ImperialLengthUnitSpec : BehaviorSpec({
+internal class ImperialLengthUnitSpec : BehaviorSpec({
   Given("inches") {
     Then("distance can be created from it") {
       listOf(

@@ -13,7 +13,7 @@ import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 
-object FlooredLengthFormatter : LengthFormatter {
+public object FlooredLengthFormatter : LengthFormatter {
   override fun Length<*>.format(context: Context, separator: String): String? {
     return when (unit) {
       is SiLengthUnit -> {

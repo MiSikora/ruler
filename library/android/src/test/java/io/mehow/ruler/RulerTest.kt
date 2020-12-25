@@ -23,7 +23,7 @@ import org.robolectric.annotation.Config
 import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
-class RulerTest {
+internal class RulerTest {
   @get:Rule val rulerRule = RulerRule
   private val context: Context get() = ApplicationProvider.getApplicationContext()
 

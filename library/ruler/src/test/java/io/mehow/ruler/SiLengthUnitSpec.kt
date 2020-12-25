@@ -8,7 +8,7 @@ import io.kotest.property.checkAll
 import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
 
-class SiLengthUnitSpec : BehaviorSpec({
+internal class SiLengthUnitSpec : BehaviorSpec({
   Given("nanometers") {
     Then("length can be created from it") {
       checkAll(Arb.long()) { value ->

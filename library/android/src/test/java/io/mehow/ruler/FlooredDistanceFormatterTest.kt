@@ -21,7 +21,7 @@ import org.robolectric.RobolectricTestRunner
 import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
-class FlooredDistanceFormatterTest {
+internal class FlooredDistanceFormatterTest {
   private val context: Context get() = ApplicationProvider.getApplicationContext()
 
   @Test fun `meters are used as a default formatting SI unit`() {

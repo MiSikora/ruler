@@ -2,6 +2,6 @@ package io.mehow.ruler
 
 import android.content.Context
 
-interface LengthConverter {
-  fun Length<*>.convert(context: Context): Length<*>?
+public interface LengthConverter {
+  public fun Length<*>.convert(context: Context): Length<*>?
 }

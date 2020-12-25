@@ -21,7 +21,7 @@ import io.mehow.ruler.SiLengthUnit.Nanometer
 import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
 
-class LengthSpec : BehaviorSpec({
+internal class LengthSpec : BehaviorSpec({
   Given("two lengths") {
     When("they are added") {
       Then("unit of the left operand is preserved") {

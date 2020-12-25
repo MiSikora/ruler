@@ -4,7 +4,7 @@ package io.mehow.ruler
 
 import android.content.Context
 
-@JvmOverloads fun Length<*>.format(
+@JvmOverloads public fun Length<*>.format(
   context: Context,
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
@@ -21,7 +21,7 @@ import android.content.Context
   return text
 }
 
-@JvmOverloads fun Length<*>.formatFloored(
+@JvmOverloads public fun Length<*>.formatFloored(
   context: Context,
   separator: String = "",
 ): String {

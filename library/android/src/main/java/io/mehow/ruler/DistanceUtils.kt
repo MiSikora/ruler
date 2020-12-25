@@ -6,7 +6,7 @@ import android.content.Context
 import io.mehow.ruler.ImperialLengthUnit.Yard
 import io.mehow.ruler.SiLengthUnit.Meter
 
-@JvmOverloads fun Distance.format(
+@JvmOverloads public fun Distance.format(
   context: Context,
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
@@ -19,7 +19,7 @@ import io.mehow.ruler.SiLengthUnit.Meter
 
 @Suppress("LongParameterList")
 @JvmOverloads
-fun <T> Distance.format(
+public fun <T> Distance.format(
   context: Context,
   unit: T,
   separator: String = "",
@@ -29,7 +29,7 @@ fun <T> Distance.format(
   return toLength(unit).format(context, separator, converter, formatter)
 }
 
-@JvmOverloads fun Distance.formatFloored(
+@JvmOverloads public fun Distance.formatFloored(
   context: Context,
   separator: String = "",
 ): String {
@@ -38,7 +38,7 @@ fun <T> Distance.format(
   else formatFloored(context, Meter, separator)
 }
 
-@JvmOverloads fun <T> Distance.formatFloored(
+@JvmOverloads public fun <T> Distance.formatFloored(
   context: Context,
   unit: T,
   separator: String = "",

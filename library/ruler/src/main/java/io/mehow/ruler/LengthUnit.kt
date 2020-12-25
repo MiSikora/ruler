@@ -2,8 +2,8 @@ package io.mehow.ruler
 
 import java.math.BigDecimal
 
-interface LengthUnit<T> : Comparable<T>, Iterable<T> where T : LengthUnit<T>, T : Enum<T> {
-  val meterRatio: BigDecimal
+public interface LengthUnit<T> : Comparable<T>, Iterable<T> where T : LengthUnit<T>, T : Enum<T> {
+  public val meterRatio: BigDecimal
 
-  operator fun contains(meters: BigDecimal): Boolean
+  public operator fun contains(meters: BigDecimal): Boolean
 }

@@ -5,7 +5,7 @@ import io.kotest.property.RandomSource
 import io.kotest.property.Sample
 import kotlin.random.Random
 
-class DistanceGenerator(
+internal class DistanceGenerator(
   private val min: Distance = Distance.Min,
   private val max: Distance = Distance.Max,
 ) : Arb<Distance>() {

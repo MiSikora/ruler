@@ -13,7 +13,7 @@ import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 
-object AutoLengthFormatter : LengthFormatter {
+public object AutoLengthFormatter : LengthFormatter {
   @Volatile internal var useImperialFormatter = true
 
   override fun Length<*>.format(context: Context, separator: String): String? {

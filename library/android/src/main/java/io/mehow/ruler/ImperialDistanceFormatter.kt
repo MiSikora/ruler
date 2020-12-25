@@ -6,16 +6,16 @@ import android.view.View
 import java.math.BigInteger
 import java.util.Locale
 
-class ImperialDistanceFormatter internal constructor(
+public class ImperialDistanceFormatter internal constructor(
   private val formatters: Set<PartFormatter>,
   private val partsSeparator: String,
 ) {
-  fun format(distance: Distance, context: Context): String {
+  public fun format(distance: Distance, context: Context): String {
     val reverseOrder = context.preferredLocale.isRtl
     return formatParts(distance, context, reverseOrder)
   }
 
-  fun format(length: Length<ImperialLengthUnit>, context: Context): String {
+  public fun format(length: Length<ImperialLengthUnit>, context: Context): String {
     return format(length.distance, context)
   }
 
@@ -62,14 +62,14 @@ class ImperialDistanceFormatter internal constructor(
     return printZeros || part != BigInteger.ZERO
   }
 
-  companion object {
-    @JvmField val Basic = Builder()
+  public companion object {
+    @JvmField public val Basic: ImperialDistanceFormatter = Builder()
         .withMiles()
         .withYards()
         .withFeet()
         .build()
 
-    @JvmField val Full = Builder()
+    @JvmField public val Full: ImperialDistanceFormatter = Builder()
         .withMiles(printZeros = true)
         .withYards(printZeros = true)
         .withFeet(printZeros = true)
@@ -82,38 +82,40 @@ class ImperialDistanceFormatter internal constructor(
       return TextUtils.getLayoutDirectionFromLocale(this) == View.LAYOUT_DIRECTION_RTL
     }
 
-  class Builder private constructor(private val formatters: Set<PartFormatter>) {
-    constructor() : this(emptySet())
+  public class Builder private constructor(
+    private val formatters: Set<PartFormatter>,
+  ) {
+    public constructor() : this(emptySet())
 
-    @JvmOverloads fun withMiles(
+    @JvmOverloads public fun withMiles(
       valueSeparator: String = "",
       printZeros: Boolean = false,
     ): Builder {
       return append(PartFormatter.Miles(valueSeparator, printZeros))
     }
 
-    @JvmOverloads fun withYards(
+    @JvmOverloads public fun withYards(
       valueSeparator: String = "",
       printZeros: Boolean = false,
     ): Builder {
       return append(PartFormatter.Yards(valueSeparator, printZeros))
     }
 
-    @JvmOverloads fun withFeet(
+    @JvmOverloads public fun withFeet(
       valueSeparator: String = "",
       printZeros: Boolean = false,
     ): Builder {
       return append(PartFormatter.Feet(valueSeparator, printZeros))
     }
 
-    @JvmOverloads fun withInches(
+    @JvmOverloads public fun withInches(
       valueSeparator: String = "",
       printZeros: Boolean = false,
     ): Builder {
       return append(PartFormatter.Inches(valueSeparator, printZeros))
     }
 
-    fun build(partsSeparator: String = " "): ImperialDistanceFormatter {
+    public fun build(partsSeparator: String = " "): ImperialDistanceFormatter {
       return ImperialDistanceFormatter(formatters, partsSeparator)
     }
 

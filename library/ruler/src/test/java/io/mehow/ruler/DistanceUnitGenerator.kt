@@ -2,7 +2,7 @@ package io.mehow.ruler
 
 import io.kotest.property.Exhaustive
 
-object DistanceUnitGenerator : Exhaustive<LengthUnit<*>>() {
+internal object DistanceUnitGenerator : Exhaustive<LengthUnit<*>>() {
   override val values: List<LengthUnit<*>>
     get() {
       val siLengthUnits: Iterable<LengthUnit<*>> = SiLengthUnit.values().toList()

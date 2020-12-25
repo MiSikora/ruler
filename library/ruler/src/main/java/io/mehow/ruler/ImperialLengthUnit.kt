@@ -2,7 +2,7 @@ package io.mehow.ruler
 
 import java.math.BigDecimal
 
-enum class ImperialLengthUnit(
+public enum class ImperialLengthUnit(
   override val meterRatio: BigDecimal,
   private val lowerBound: BigDecimal,
   private val upperBound: BigDecimal?,
@@ -34,9 +34,9 @@ enum class ImperialLengthUnit(
     return inLowerBound && inUpperBound
   }
 
-  override fun iterator() = values.iterator()
+  override fun iterator(): Iterator<ImperialLengthUnit> = values.iterator()
 
-  companion object {
+  public companion object {
     private val values = values().toList()
   }
 }

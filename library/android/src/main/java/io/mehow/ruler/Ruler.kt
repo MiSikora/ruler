@@ -2,14 +2,14 @@ package io.mehow.ruler
 
 import android.content.Context
 
-object Ruler {
+public object Ruler {
   internal val converters = mutableListOf<LengthConverter>()
 
-  @JvmStatic fun addConverter(converter: LengthConverter) = synchronized(this) {
+  @JvmStatic public fun addConverter(converter: LengthConverter): Unit = synchronized(this) {
     converters += converter
   }
 
-  @JvmStatic fun removeConverter(converter: LengthConverter) = synchronized(this) {
+  @JvmStatic public fun removeConverter(converter: LengthConverter): Unit = synchronized(this) {
     converters -= converter
   }
 
@@ -24,11 +24,11 @@ object Ruler {
 
   internal val formatters = mutableListOf<LengthFormatter>()
 
-  @JvmStatic fun addFormatter(formatter: LengthFormatter) = synchronized(this) {
+  @JvmStatic public fun addFormatter(formatter: LengthFormatter): Unit = synchronized(this) {
     formatters += formatter
   }
 
-  @JvmStatic fun removeFormatter(formatter: LengthFormatter) = synchronized(this) {
+  @JvmStatic public fun removeFormatter(formatter: LengthFormatter): Unit = synchronized(this) {
     formatters -= formatter
   }
 
@@ -41,7 +41,7 @@ object Ruler {
     }
   }
 
-  @JvmStatic var useImperialFormatter
+  @JvmStatic public var useImperialFormatter: Boolean
     get() = AutoLengthFormatter.useImperialFormatter
     set(value) {
       AutoLengthFormatter.useImperialFormatter = value
@@ -51,7 +51,7 @@ object Ruler {
   internal val imperialCountryCodes get() = mutableImperialCountries.toSet()
 
   private const val ukCountryCode = "GB"
-  @JvmStatic var isUkImperial
+  @JvmStatic public var isUkImperial: Boolean
     get() = ukCountryCode in imperialCountryCodes
     set(value) {
       val func = if (value) mutableImperialCountries::add else mutableImperialCountries::remove
@@ -60,11 +60,11 @@ object Ruler {
 
   internal val flooredFormatters = mutableListOf<LengthFormatter>()
 
-  @JvmStatic fun addFlooredFormatter(formatter: LengthFormatter) = synchronized(this) {
+  @JvmStatic public fun addFlooredFormatter(formatter: LengthFormatter): Unit = synchronized(this) {
     flooredFormatters += formatter
   }
 
-  @JvmStatic fun removeFlooredFormatter(formatter: LengthFormatter) = synchronized(this) {
+  @JvmStatic public fun removeFlooredFormatter(formatter: LengthFormatter): Unit = synchronized(this) {
     flooredFormatters -= formatter
   }
 

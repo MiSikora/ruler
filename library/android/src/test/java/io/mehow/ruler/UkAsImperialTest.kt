@@ -11,7 +11,7 @@ import org.robolectric.RobolectricTestRunner
 import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
-class UkAsImperialTest {
+internal class UkAsImperialTest {
   @get:Rule val rulerRule = RulerRule
   private val context: Context get() = ApplicationProvider.getApplicationContext()
 

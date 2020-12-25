@@ -46,6 +46,8 @@ allprojects {
       jvmTarget = "1.8"
       freeCompilerArgs += [
           "-progressive",
+          // TODO: Remove API in tests https://youtrack.jetbrains.com/issue/KT-42718
+          "-Xexplicit-api=strict",
       ]
     }
   }
