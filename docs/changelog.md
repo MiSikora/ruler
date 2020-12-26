@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Companion objects of `SiLengthUnit` and `ImperialLengthUnit`.
 - `contains` function from `LengthUnit` interface.
+- Explicit Java support with `@Jvm*` annotations.
 
 ### Fixed
 - Wrong lower meter bound of `Miles` unit.

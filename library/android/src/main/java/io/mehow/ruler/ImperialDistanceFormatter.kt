@@ -56,13 +56,13 @@ public class ImperialDistanceFormatter internal constructor(
   private fun PartFormatter.canPrintData(part: BigInteger): Boolean = printZeros || part != BigInteger.ZERO
 
   public companion object {
-    @JvmField public val Basic: ImperialDistanceFormatter = Builder()
+    public val Basic: ImperialDistanceFormatter = Builder()
         .withMiles()
         .withYards()
         .withFeet()
         .build()
 
-    @JvmField public val Full: ImperialDistanceFormatter = Builder()
+    public val Full: ImperialDistanceFormatter = Builder()
         .withMiles(printZeros = true)
         .withYards(printZeros = true)
         .withFeet(printZeros = true)
@@ -78,29 +78,29 @@ public class ImperialDistanceFormatter internal constructor(
   ) {
     public constructor() : this(emptySet())
 
-    @JvmOverloads public fun withMiles(
+    public fun withMiles(
       valueSeparator: String = "",
       printZeros: Boolean = false,
     ): Builder = append(PartFormatter.Miles(valueSeparator, printZeros))
 
-    @JvmOverloads public fun withYards(
+    public fun withYards(
       valueSeparator: String = "",
       printZeros: Boolean = false,
     ): Builder = append(PartFormatter.Yards(valueSeparator, printZeros))
 
-    @JvmOverloads public fun withFeet(
+    public fun withFeet(
       valueSeparator: String = "",
       printZeros: Boolean = false,
     ): Builder = append(PartFormatter.Feet(valueSeparator, printZeros))
 
-    @JvmOverloads public fun withInches(
+    public fun withInches(
       valueSeparator: String = "",
       printZeros: Boolean = false,
     ): Builder = append(PartFormatter.Inches(valueSeparator, printZeros))
 
     public fun build(partsSeparator: String = " "): ImperialDistanceFormatter = ImperialDistanceFormatter(
         formatters,
-        partsSeparator
+        partsSeparator,
     )
 
     private fun append(formatter: PartFormatter): Builder = Builder(formatters + formatter)

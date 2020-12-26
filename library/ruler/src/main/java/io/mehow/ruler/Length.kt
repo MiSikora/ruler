@@ -24,7 +24,7 @@ public class Length<T> internal constructor(
 
   public fun withAutoUnit(): Length<T> = withUnit(unit.javaClass.enumConstants.single { distance in it })
 
-  @JvmSynthetic public fun coerceUnitIn(range: ClosedRange<T>): Length<T> = when {
+  public fun coerceUnitIn(range: ClosedRange<T>): Length<T> = when {
     range.isEmpty() -> throw IllegalArgumentException("Range cannot be empty!")
     unit > range.endInclusive -> Length(distance, range.endInclusive)
     unit < range.start -> Length(distance, range.start)
@@ -80,58 +80,58 @@ public class Length<T> internal constructor(
   override fun toString(): String = "Length(measure=$measure, unit=$unit)"
 
   public companion object {
-    @JvmStatic public fun <T> of(
+    public fun <T> of(
       value: Long,
       unit: T,
     ): Length<T> where T : Enum<T>, T : LengthUnit<T> = Length(Distance.of(value, unit), unit)
 
-    @JvmStatic public fun ofGigameters(value: Long): Length<SiLengthUnit> = of(value, Gigameter)
+    public fun ofGigameters(value: Long): Length<SiLengthUnit> = of(value, Gigameter)
 
-    @JvmStatic public fun ofMegameters(value: Long): Length<SiLengthUnit> = of(value, Megameter)
+    public fun ofMegameters(value: Long): Length<SiLengthUnit> = of(value, Megameter)
 
-    @JvmStatic public fun ofKilometers(value: Long): Length<SiLengthUnit> = of(value, Kilometer)
+    public fun ofKilometers(value: Long): Length<SiLengthUnit> = of(value, Kilometer)
 
-    @JvmStatic public fun ofMeters(value: Long): Length<SiLengthUnit> = of(value, Meter)
+    public fun ofMeters(value: Long): Length<SiLengthUnit> = of(value, Meter)
 
-    @JvmStatic public fun ofMillimeters(value: Long): Length<SiLengthUnit> = of(value, Millimeter)
+    public fun ofMillimeters(value: Long): Length<SiLengthUnit> = of(value, Millimeter)
 
-    @JvmStatic public fun ofMicrometers(value: Long): Length<SiLengthUnit> = of(value, Micrometer)
+    public fun ofMicrometers(value: Long): Length<SiLengthUnit> = of(value, Micrometer)
 
-    @JvmStatic public fun ofNanometers(value: Long): Length<SiLengthUnit> = of(value, Nanometer)
+    public fun ofNanometers(value: Long): Length<SiLengthUnit> = of(value, Nanometer)
 
-    @JvmStatic public fun ofMiles(value: Long): Length<ImperialLengthUnit> = of(value, Mile)
+    public fun ofMiles(value: Long): Length<ImperialLengthUnit> = of(value, Mile)
 
-    @JvmStatic public fun ofYards(value: Long): Length<ImperialLengthUnit> = of(value, Yard)
+    public fun ofYards(value: Long): Length<ImperialLengthUnit> = of(value, Yard)
 
-    @JvmStatic public fun ofFeet(value: Long): Length<ImperialLengthUnit> = of(value, Foot)
+    public fun ofFeet(value: Long): Length<ImperialLengthUnit> = of(value, Foot)
 
-    @JvmStatic public fun ofInches(value: Long): Length<ImperialLengthUnit> = of(value, Inch)
+    public fun ofInches(value: Long): Length<ImperialLengthUnit> = of(value, Inch)
 
-    @JvmStatic public fun <T> of(
+    public fun <T> of(
       value: Double,
       unit: T,
     ): Length<T> where T : Enum<T>, T : LengthUnit<T> = Length(Distance.of(value, unit), unit)
 
-    @JvmStatic public fun ofGigameters(value: Double): Length<SiLengthUnit> = of(value, Gigameter)
+    public fun ofGigameters(value: Double): Length<SiLengthUnit> = of(value, Gigameter)
 
-    @JvmStatic public fun ofMegameters(value: Double): Length<SiLengthUnit> = of(value, Megameter)
+    public fun ofMegameters(value: Double): Length<SiLengthUnit> = of(value, Megameter)
 
-    @JvmStatic public fun ofKilometers(value: Double): Length<SiLengthUnit> = of(value, Kilometer)
+    public fun ofKilometers(value: Double): Length<SiLengthUnit> = of(value, Kilometer)
 
-    @JvmStatic public fun ofMeters(value: Double): Length<SiLengthUnit> = of(value, Meter)
+    public fun ofMeters(value: Double): Length<SiLengthUnit> = of(value, Meter)
 
-    @JvmStatic public fun ofMillimeters(value: Double): Length<SiLengthUnit> = of(value, Millimeter)
+    public fun ofMillimeters(value: Double): Length<SiLengthUnit> = of(value, Millimeter)
 
-    @JvmStatic public fun ofMicrometers(value: Double): Length<SiLengthUnit> = of(value, Micrometer)
+    public fun ofMicrometers(value: Double): Length<SiLengthUnit> = of(value, Micrometer)
 
-    @JvmStatic public fun ofNanometers(value: Double): Length<SiLengthUnit> = of(value, Nanometer)
+    public fun ofNanometers(value: Double): Length<SiLengthUnit> = of(value, Nanometer)
 
-    @JvmStatic public fun ofMiles(value: Double): Length<ImperialLengthUnit> = of(value, Mile)
+    public fun ofMiles(value: Double): Length<ImperialLengthUnit> = of(value, Mile)
 
-    @JvmStatic public fun ofYards(value: Double): Length<ImperialLengthUnit> = of(value, Yard)
+    public fun ofYards(value: Double): Length<ImperialLengthUnit> = of(value, Yard)
 
-    @JvmStatic public fun ofFeet(value: Double): Length<ImperialLengthUnit> = of(value, Foot)
+    public fun ofFeet(value: Double): Length<ImperialLengthUnit> = of(value, Foot)
 
-    @JvmStatic public fun ofInches(value: Double): Length<ImperialLengthUnit> = of(value, Inch)
+    public fun ofInches(value: Double): Length<ImperialLengthUnit> = of(value, Inch)
   }
 }
