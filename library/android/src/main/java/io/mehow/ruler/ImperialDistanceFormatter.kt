@@ -7,9 +7,11 @@ import java.math.BigInteger
 import java.util.Locale
 
 public class ImperialDistanceFormatter internal constructor(
-  private val formatters: Set<PartFormatter>,
-  private val partsSeparator: String,
+  builder: Builder,
 ) {
+  private val formatters = builder.formatters
+  private val partsSeparator = builder.partsSeparator
+
   public fun format(distance: Distance, context: Context): String = formatParts(
       distance,
       context,
@@ -74,36 +76,36 @@ public class ImperialDistanceFormatter internal constructor(
     get() = TextUtils.getLayoutDirectionFromLocale(this) == View.LAYOUT_DIRECTION_RTL
 
   public class Builder private constructor(
-    private val formatters: Set<PartFormatter>,
+    internal val formatters: Set<PartFormatter>,
+    internal val partsSeparator: String,
   ) {
-    public constructor() : this(emptySet())
+    public constructor() : this(emptySet(), " ")
 
     public fun withMiles(
       valueSeparator: String = "",
       printZeros: Boolean = false,
-    ): Builder = append(PartFormatter.Miles(valueSeparator, printZeros))
+    ): Builder = include(PartFormatter.Miles(valueSeparator, printZeros))
 
     public fun withYards(
       valueSeparator: String = "",
       printZeros: Boolean = false,
-    ): Builder = append(PartFormatter.Yards(valueSeparator, printZeros))
+    ): Builder = include(PartFormatter.Yards(valueSeparator, printZeros))
 
     public fun withFeet(
       valueSeparator: String = "",
       printZeros: Boolean = false,
-    ): Builder = append(PartFormatter.Feet(valueSeparator, printZeros))
+    ): Builder = include(PartFormatter.Feet(valueSeparator, printZeros))
 
     public fun withInches(
       valueSeparator: String = "",
       printZeros: Boolean = false,
-    ): Builder = append(PartFormatter.Inches(valueSeparator, printZeros))
+    ): Builder = include(PartFormatter.Inches(valueSeparator, printZeros))
 
-    public fun build(partsSeparator: String = " "): ImperialDistanceFormatter = ImperialDistanceFormatter(
-        formatters,
-        partsSeparator,
-    )
+    public fun withPartsSeparator(separator: String): Builder = Builder(formatters, separator)
 
-    private fun append(formatter: PartFormatter): Builder = Builder(formatters + formatter)
+    public fun build(): ImperialDistanceFormatter = ImperialDistanceFormatter(this)
+
+    private fun include(formatter: PartFormatter): Builder = Builder(formatters + formatter, partsSeparator)
   }
 }
 
