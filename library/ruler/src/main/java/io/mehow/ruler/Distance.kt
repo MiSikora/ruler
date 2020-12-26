@@ -1,5 +1,3 @@
-@file:Suppress("StringLiteralDuplication")
-
 package io.mehow.ruler
 
 import io.mehow.ruler.ImperialLengthUnit.Foot
@@ -18,62 +16,116 @@ import java.math.RoundingMode.DOWN
 import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
 
+/**
+ * Meter–based numerical representation of how far apart two points are, such as '150.5 meters'. This class
+ * can hold negative values to represent the direction.
+ *
+ * This class models a quantity of space in terms of meters and nanometers. Physical distance
+ * could be of infinite length. For practicality, the distance can have values between [Long.MIN_VALUE]
+ * and [Long.MAX_VALUE] meters, which is approximately -975 and 975 light years. An attempt to create a distance
+ * out of these bounds will throw an exception.
+ */
 public class Distance private constructor(
   internal val metersPart: Long = 0L,
   internal val nanosPart: Long = 0L,
 ) : Comparable<Distance> {
   public val meters: BigDecimal = metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
 
-  public fun <T> toLength(unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> = Length(this, unit)
+  /**
+   * Converts this distance to a [Length] with [unit].
+   */
+  public fun <T> toLength(unit: T): Length<T> where T : LengthUnit<T>, T : Enum<T> = Length(this, unit)
 
+  /**
+   * Adds specified distance to this distance.
+   */
   public operator fun plus(other: Distance): Distance = create(
       metersPart.safeAdd(other.metersPart),
       nanosPart.safeAdd(other.nanosPart),
   )
 
+  /**
+   * Adds specified [Length] to this distance.
+   */
   public operator fun plus(length: Length<*>): Distance = this + length.distance
 
+  /**
+   * Subtracts specified distance from this distance.
+   */
   public operator fun minus(other: Distance): Distance = create(
       metersPart.safeSubtract(other.metersPart),
       nanosPart.safeSubtract(other.nanosPart),
   )
 
+  /**
+   * Subtracts specified [Length] from this distance.
+   */
   public operator fun minus(length: Length<*>): Distance = this - length.distance
 
+  /**
+   * Multiplies this distance by specified value.
+   */
   public operator fun times(multiplicand: Int): Distance = this * multiplicand.toLong()
 
+  /**
+   * Multiplies this distance by specified value.
+   */
   public operator fun times(multiplicand: Long): Distance = when (multiplicand) {
     0L -> Zero
     1L -> this
     else -> create(meters * multiplicand.toBigDecimal())
   }
 
+  /**
+   * Multiplies this distance by specified value.
+   */
   public operator fun times(multiplicand: Float): Distance = this * multiplicand.toDouble()
 
+  /**
+   * Multiplies this distance by specified value.
+   */
   public operator fun times(multiplicand: Double): Distance = when (multiplicand) {
     0.0 -> Zero
     1.0 -> this
     else -> create(meters * multiplicand.toBigDecimal())
   }
 
+  /**
+   * Divides this distance by specified value.
+   */
   public operator fun div(divisor: Int): Distance = this / divisor.toLong()
 
+  /**
+   * Divides this distance by specified value.
+   */
   public operator fun div(divisor: Long): Distance = when (divisor) {
     0L -> throw ArithmeticException("Cannot divide by 0.")
     1L -> this
     else -> create(meters.divide(divisor.toBigDecimal(), DOWN))
   }
 
+  /**
+   * Divides this distance by specified value.
+   */
   public operator fun div(divisor: Float): Distance = this / divisor.toDouble()
 
+  /**
+   * Divides this distance by specified value.
+   */
   public operator fun div(divisor: Double): Distance = when (divisor) {
     0.0 -> throw ArithmeticException("Cannot divide by 0.")
     1.0 -> this
     else -> create(meters.divide(divisor.toBigDecimal(), DOWN))
   }
 
+  /**
+   * Negates this distance.
+   */
   public operator fun unaryMinus(): Distance = this * -1
 
+  /**
+   * Compares this distance based on the space quantity.
+   */
   override fun compareTo(other: Distance): Int {
     val cmp = metersPart.compareTo(other.metersPart)
     return if (cmp != 0) cmp else nanosPart.compareTo(other.nanosPart)
@@ -85,15 +137,24 @@ public class Distance private constructor(
 
   override fun hashCode(): Int = 31 * metersPart.hashCode() + nanosPart.hashCode()
 
-  override fun toString(): String = "Distance(meters=${meters})"
+  override fun toString(): String = "Distance(meters=$meters)"
 
   public companion object {
     private const val nanosInMeter = 1_000_000_000L
 
+    /**
+     * Constant for a minimal possible distance to express by this class.
+     */
     public val Min: Distance = Distance(MIN_VALUE, 0L)
 
+    /**
+     * Constant for a distance of zero.
+     */
     public val Zero: Distance = Distance()
 
+    /**
+     * Constant for a maximal possible distance to express by this class.
+     */
     public val Max: Distance = Distance(MAX_VALUE, nanosInMeter - 1)
 
     internal fun create(meters: BigDecimal): Distance {
@@ -126,56 +187,128 @@ public class Distance private constructor(
       return Distance(totalMeters, totalNanometers)
     }
 
+    /**
+     * Creates a distance representing a value in the specified unit.
+     */
     public fun of(value: Long, unit: LengthUnit<*>): Distance = create(
         meters = value.toBigDecimal() * unit.meterRatio,
     )
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Gigameter].
+     */
     public fun ofGigameters(value: Long): Distance = of(value, Gigameter)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Megameter].
+     */
     public fun ofMegameters(value: Long): Distance = of(value, Megameter)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Kilometer].
+     */
     public fun ofKilometers(value: Long): Distance = of(value, Kilometer)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Meter].
+     */
     public fun ofMeters(value: Long): Distance = of(value, Meter)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Millimeter].
+     */
     public fun ofMillimeters(value: Long): Distance = of(value, Millimeter)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Micrometer].
+     */
     public fun ofMicrometers(value: Long): Distance = of(value, Micrometer)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Nanometer].
+     */
     public fun ofNanometers(value: Long): Distance = of(value, Nanometer)
 
+    /**
+     * Creates a distance representing a value expressed in [ImperialLengthUnit.Mile].
+     */
     public fun ofMiles(value: Long): Distance = of(value, Mile)
 
+    /**
+     * Creates a distance representing a value expressed in [ImperialLengthUnit.Yard].
+     */
     public fun ofYards(value: Long): Distance = of(value, Yard)
 
+    /**
+     * Creates a distance representing a value expressed in [ImperialLengthUnit.Foot].
+     */
     public fun ofFeet(value: Long): Distance = of(value, Foot)
 
+    /**
+     * Creates a distance representing a value expressed in [ImperialLengthUnit.Inch].
+     */
     public fun ofInches(value: Long): Distance = of(value, Inch)
 
+    /**
+     * Creates a distance representing a value in the specified unit.
+     */
     public fun of(value: Double, unit: LengthUnit<*>): Distance = create(
         meters = value.toBigDecimal() * unit.meterRatio,
     )
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Gigameter].
+     */
     public fun ofGigameters(value: Double): Distance = of(value, Gigameter)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Megameter].
+     */
     public fun ofMegameters(value: Double): Distance = of(value, Megameter)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Kilometer].
+     */
     public fun ofKilometers(value: Double): Distance = of(value, Kilometer)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Meter].
+     */
     public fun ofMeters(value: Double): Distance = of(value, Meter)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Millimeter].
+     */
     public fun ofMillimeters(value: Double): Distance = of(value, Millimeter)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Micrometer].
+     */
     public fun ofMicrometers(value: Double): Distance = of(value, Micrometer)
 
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Nanometer].
+     */
     public fun ofNanometers(value: Double): Distance = of(value, Nanometer)
 
+    /**
+     * Creates a distance representing a value expressed in [ImperialLengthUnit.Mile].
+     */
     public fun ofMiles(value: Double): Distance = of(value, Mile)
 
+    /**
+     * Creates a distance representing a value expressed in [ImperialLengthUnit.Yard].
+     */
     public fun ofYards(value: Double): Distance = of(value, Yard)
 
+    /**
+     * Creates a distance representing a value expressed in [ImperialLengthUnit.Foot].
+     */
     public fun ofFeet(value: Double): Distance = of(value, Foot)
 
+    /**
+     * Creates a distance representing a value expressed in [ImperialLengthUnit.Inch].
+     */
     public fun ofInches(value: Double): Distance = of(value, Inch)
   }
 }

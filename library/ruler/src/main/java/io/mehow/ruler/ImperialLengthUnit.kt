@@ -2,6 +2,9 @@ package io.mehow.ruler
 
 import java.math.BigDecimal
 
+/**
+ * Basic units from the imperial system.
+ */
 public enum class ImperialLengthUnit(
   override val meterRatio: BigDecimal,
   override val lowerBound: Distance,

@@ -2,6 +2,9 @@ package io.mehow.ruler
 
 import java.math.BigDecimal
 
+/**
+ * Meter based units.
+ */
 public enum class SiLengthUnit(
   override val meterRatio: BigDecimal,
   override val lowerBound: Distance,
