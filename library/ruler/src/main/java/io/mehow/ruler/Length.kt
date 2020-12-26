@@ -20,108 +20,70 @@ public class Length<T> internal constructor(
 ) : Comparable<Length<*>> where T : Enum<T>, T : LengthUnit<T> {
   public val measure: BigDecimal = distance.meters.divide(unit.meterRatio, 9, DOWN)
 
-  public fun <R> withUnit(unit: R): Length<R> where R : Enum<R>, R : LengthUnit<R> {
-    return Length(distance, unit)
+  public fun <R> withUnit(unit: R): Length<R> where R : Enum<R>, R : LengthUnit<R> = Length(distance, unit)
+
+  public fun withAutoUnit(): Length<T> = withUnit(unit.javaClass.enumConstants.single { distance in it })
+
+  @JvmSynthetic public fun coerceUnitIn(range: ClosedRange<T>): Length<T> = when {
+    range.isEmpty() -> throw IllegalArgumentException("Range cannot be empty!")
+    unit > range.endInclusive -> Length(distance, range.endInclusive)
+    unit < range.start -> Length(distance, range.start)
+    else -> this
   }
 
-  public fun withAutoUnit(): Length<T> {
-    return withUnit(unit.javaClass.enumConstants.single { distance in it })
+  public fun coerceUnitIn(min: T, max: T): Length<T> = coerceUnitIn(min..max)
+
+  public fun coerceUnitAtLeastTo(min: T): Length<T> = when {
+    unit < min -> Length(distance, min)
+    else -> this
   }
 
-  @JvmSynthetic public fun coerceUnitIn(range: ClosedRange<T>): Length<T> {
-    require(!range.isEmpty()) { "Range cannot be empty!" }
-    return when {
-      unit > range.endInclusive -> Length(distance, range.endInclusive)
-      unit < range.start -> Length(distance, range.start)
-      else -> this
-    }
+  public fun coerceUnitAtMostTo(max: T): Length<T> = when {
+    unit > max -> Length(distance, max)
+    else -> this
   }
 
-  public fun coerceUnitIn(min: T, max: T): Length<T> {
-    return coerceUnitIn(min..max)
-  }
+  public operator fun plus(other: Length<*>): Length<T> = (distance + other.distance).toLength(unit)
 
-  public fun coerceUnitAtLeastTo(min: T): Length<T> {
-    return if (unit < min) Length(distance, min) else this
-  }
+  public operator fun plus(distance: Distance): Length<T> = (this.distance + distance).toLength(unit)
 
-  public fun coerceUnitAtMostTo(max: T): Length<T> {
-    return if (unit > max) Length(distance, max) else this
-  }
+  public operator fun minus(other: Length<*>): Length<T> = (distance - other.distance).toLength(unit)
 
-  public operator fun plus(other: Length<*>): Length<T> {
-    return (distance + other.distance).toLength(unit)
-  }
+  public operator fun minus(distance: Distance): Length<T> = (this.distance - distance).toLength(unit)
 
-  public operator fun plus(distance: Distance): Length<T> {
-    return (this.distance + distance).toLength(unit)
-  }
+  public operator fun times(multiplicand: Int): Length<T> = (distance * multiplicand).toLength(unit)
 
-  public operator fun minus(other: Length<*>): Length<T> {
-    return (distance - other.distance).toLength(unit)
-  }
+  public operator fun times(multiplicand: Long): Length<T> = (distance * multiplicand).toLength(unit)
 
-  public operator fun minus(distance: Distance): Length<T> {
-    return (this.distance - distance).toLength(unit)
-  }
+  public operator fun times(multiplicand: Float): Length<T> = (distance * multiplicand).toLength(unit)
 
-  public operator fun times(multiplicand: Int): Length<T> {
-    return (distance * multiplicand).toLength(unit)
-  }
+  public operator fun times(multiplicand: Double): Length<T> = (distance * multiplicand).toLength(unit)
 
-  public operator fun times(multiplicand: Long): Length<T> {
-    return (distance * multiplicand).toLength(unit)
-  }
+  public operator fun div(multiplicand: Int): Length<T> = (distance / multiplicand).toLength(unit)
 
-  public operator fun times(multiplicand: Float): Length<T> {
-    return (distance * multiplicand).toLength(unit)
-  }
+  public operator fun div(multiplicand: Long): Length<T> = (distance / multiplicand).toLength(unit)
 
-  public operator fun times(multiplicand: Double): Length<T> {
-    return (distance * multiplicand).toLength(unit)
-  }
+  public operator fun div(multiplicand: Float): Length<T> = (distance / multiplicand).toLength(unit)
 
-  public operator fun div(multiplicand: Int): Length<T> {
-    return (distance / multiplicand).toLength(unit)
-  }
+  public operator fun div(multiplicand: Double): Length<T> = (distance / multiplicand).toLength(unit)
 
-  public operator fun div(multiplicand: Long): Length<T> {
-    return (distance / multiplicand).toLength(unit)
-  }
+  public operator fun unaryMinus(): Length<T> = this * -1
 
-  public operator fun div(multiplicand: Float): Length<T> {
-    return (distance / multiplicand).toLength(unit)
-  }
+  override fun compareTo(other: Length<*>): Int = distance.compareTo(other.distance)
 
-  public operator fun div(multiplicand: Double): Length<T> {
-    return (distance / multiplicand).toLength(unit)
-  }
+  override fun equals(other: Any?): Boolean = other is Length<*> &&
+      distance == other.distance &&
+      unit == other.unit
 
-  public operator fun unaryMinus(): Length<T> {
-    return this * -1
-  }
+  override fun hashCode(): Int = 31 * distance.hashCode() + unit.hashCode()
 
-  override fun compareTo(other: Length<*>): Int {
-    return distance.compareTo(other.distance)
-  }
-
-  override fun equals(other: Any?): Boolean {
-    if (other !is Length<*>) return false
-    return distance == other.distance && unit == other.unit
-  }
-
-  override fun hashCode(): Int {
-    return 31 * distance.hashCode() + unit.hashCode()
-  }
-
-  override fun toString(): String {
-    return "Length(measure=$measure, unit=$unit)"
-  }
+  override fun toString(): String = "Length(measure=$measure, unit=$unit)"
 
   public companion object {
-    @JvmStatic public fun <T> of(value: Long, unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> {
-      return Length(Distance.of(value, unit), unit)
-    }
+    @JvmStatic public fun <T> of(
+      value: Long,
+      unit: T,
+    ): Length<T> where T : Enum<T>, T : LengthUnit<T> = Length(Distance.of(value, unit), unit)
 
     @JvmStatic public fun ofGigameters(value: Long): Length<SiLengthUnit> = of(value, Gigameter)
 
@@ -145,9 +107,10 @@ public class Length<T> internal constructor(
 
     @JvmStatic public fun ofInches(value: Long): Length<ImperialLengthUnit> = of(value, Inch)
 
-    @JvmStatic public fun <T> of(value: Double, unit: T): Length<T> where T : Enum<T>, T : LengthUnit<T> {
-      return Length(Distance.of(value, unit), unit)
-    }
+    @JvmStatic public fun <T> of(
+      value: Double,
+      unit: T,
+    ): Length<T> where T : Enum<T>, T : LengthUnit<T> = Length(Distance.of(value, unit), unit)
 
     @JvmStatic public fun ofGigameters(value: Double): Length<SiLengthUnit> = of(value, Gigameter)
 
