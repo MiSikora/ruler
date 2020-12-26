@@ -6,7 +6,6 @@ import io.mehow.ruler.SiLengthUnit.Kilometer
 import io.mehow.ruler.SiLengthUnit.Meter
 
 public object AutoFitLengthConverter : LengthConverter {
-  @Suppress("UNCHECKED_CAST")
   override fun Length<*>.convert(context: Context): Length<*> = when {
     context.useImperialUnits -> withUnit(Yard).withAutoUnit()
     else -> withUnit(Meter).withAutoUnit().coerceUnitIn(Meter, Kilometer)
