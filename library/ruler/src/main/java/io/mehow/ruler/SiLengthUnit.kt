@@ -4,48 +4,43 @@ import java.math.BigDecimal
 
 public enum class SiLengthUnit(
   override val meterRatio: BigDecimal,
-  private val lowerBound: BigDecimal,
-  private val upperBound: BigDecimal?,
+  override val lowerBound: Distance,
+  override val upperBound: Distance?,
 ) : LengthUnit<SiLengthUnit> {
   Nanometer(
       meterRatio = 0.000_000_001.toBigDecimal(),
-      lowerBound = 0.0.toBigDecimal(),
-      upperBound = 0.000_001.toBigDecimal(),
+      lowerBound = Distance.Zero,
+      upperBound = Distance.create(nanometers = 1_000),
   ),
   Micrometer(
       meterRatio = 0.000_001.toBigDecimal(),
-      lowerBound = 0.000_001.toBigDecimal(),
-      upperBound = 0.001.toBigDecimal(),
+      lowerBound = Distance.create(nanometers = 1_000),
+      upperBound = Distance.create(nanometers = 1_000_000),
   ),
   Millimeter(
       meterRatio = 0.001.toBigDecimal(),
-      lowerBound = 0.001.toBigDecimal(),
-      upperBound = 1.0.toBigDecimal(),
+      lowerBound = Distance.create(nanometers = 1_000_000),
+      upperBound = Distance.create(meters = 1),
   ),
   Meter(
       meterRatio = 1.0.toBigDecimal(),
-      lowerBound = 1.0.toBigDecimal(),
-      upperBound = 1_000.0.toBigDecimal(),
+      lowerBound = Distance.create(meters = 1),
+      upperBound = Distance.create(meters = 1_000),
   ),
   Kilometer(
       meterRatio = 1_000.0.toBigDecimal(),
-      lowerBound = 1_000.0.toBigDecimal(),
-      upperBound = 1_000_000.0.toBigDecimal(),
+      lowerBound = Distance.create(meters = 1_000),
+      upperBound = Distance.create(meters = 1_000_000),
   ),
   Megameter(
       meterRatio = 1_000_000.0.toBigDecimal(),
-      lowerBound = 1_000_000.0.toBigDecimal(),
-      upperBound = 1_000_000_000.0.toBigDecimal(),
+      lowerBound = Distance.create(meters = 1_000_000),
+      upperBound = Distance.create(meters = 1_000_000_000),
   ),
   Gigameter(
       meterRatio = 1_000_000_000.0.toBigDecimal(),
-      lowerBound = 1_000_000_000.0.toBigDecimal(),
+      lowerBound = Distance.create(meters = 1_000_000_000),
       upperBound = null,
-  );
-
-  override operator fun contains(meters: BigDecimal): Boolean {
-    val inLowerBound = meters >= lowerBound
-    val inUpperBound = upperBound == null || meters < upperBound
-    return inLowerBound && inUpperBound
-  }
+  ),
+  ;
 }

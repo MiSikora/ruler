@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AutoLengthFormatter` to the public API.
 - `FlooredLengthFormatter` to the public API.
 - `AutoFitLengthConverter` to the public API.
+- `lowerBound` property to `LengthUnit` interface.
+- `upperBound` property to `LengthUnit` interface.
 
 ### Changed
 - `Distance` and `Length` throw now `ArithmeticException` in case of failures due to overflows or math operations.
@@ -19,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - Companion objects of `SiLengthUnit` and `ImperialLengthUnit`.
+- `contains` function from `LengthUnit` interface.
 
 ### Fixed
 - Wrong lower meter bound of `Miles` unit.

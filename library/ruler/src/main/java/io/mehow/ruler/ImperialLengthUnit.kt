@@ -4,33 +4,28 @@ import java.math.BigDecimal
 
 public enum class ImperialLengthUnit(
   override val meterRatio: BigDecimal,
-  private val lowerBound: BigDecimal,
-  private val upperBound: BigDecimal?,
+  override val lowerBound: Distance,
+  override val upperBound: Distance?,
 ) : LengthUnit<ImperialLengthUnit> {
   Inch(
       meterRatio = 0.0_254.toBigDecimal(),
-      lowerBound = 0.0.toBigDecimal(),
-      upperBound = 0.3_048.toBigDecimal(),
+      lowerBound = Distance.Zero,
+      upperBound = Distance.create(nanometers = 304_800_000),
   ),
   Foot(
       meterRatio = 0.3_048.toBigDecimal(),
-      lowerBound = 0.3_048.toBigDecimal(),
-      upperBound = 0.9_144.toBigDecimal(),
+      lowerBound = Distance.create(nanometers = 304_800_000),
+      upperBound = Distance.create(nanometers = 914_400_000),
   ),
   Yard(
       meterRatio = 0.9_144.toBigDecimal(),
-      lowerBound = 0.9_144.toBigDecimal(),
-      upperBound = 1_609.344.toBigDecimal(),
+      lowerBound = Distance.create(nanometers = 914_400_000),
+      upperBound = Distance.create(meters = 1_609, nanometers = 344_000_000),
   ),
   Mile(
       meterRatio = 1_609.344.toBigDecimal(),
-      lowerBound = 1_609.344.toBigDecimal(),
+      lowerBound = Distance.create(meters = 1_609, nanometers = 344_000_000),
       upperBound = null,
-  );
-
-  override operator fun contains(meters: BigDecimal): Boolean {
-    val inLowerBound = meters >= lowerBound
-    val inUpperBound = upperBound == null || meters < upperBound
-    return inLowerBound && inUpperBound
-  }
+  ),
+  ;
 }
