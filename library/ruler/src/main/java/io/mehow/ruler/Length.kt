@@ -121,22 +121,22 @@ public class Length<T> internal constructor(
   /**
    * Divides this length by specified value.
    */
-  public operator fun div(multiplicand: Int): Length<T> = (distance / multiplicand).toLength(unit)
+  public operator fun div(divisor: Int): Length<T> = (distance / divisor).toLength(unit)
 
   /**
    * Divides this length by specified value.
    */
-  public operator fun div(multiplicand: Long): Length<T> = (distance / multiplicand).toLength(unit)
+  public operator fun div(divisor: Long): Length<T> = (distance / divisor).toLength(unit)
 
   /**
    * Divides this length by specified value.
    */
-  public operator fun div(multiplicand: Float): Length<T> = (distance / multiplicand).toLength(unit)
+  public operator fun div(divisor: Float): Length<T> = (distance / divisor).toLength(unit)
 
   /**
    * Divides this length by specified value.
    */
-  public operator fun div(multiplicand: Double): Length<T> = (distance / multiplicand).toLength(unit)
+  public operator fun div(divisor: Double): Length<T> = (distance / divisor).toLength(unit)
 
   /**
    * Negates this length.
