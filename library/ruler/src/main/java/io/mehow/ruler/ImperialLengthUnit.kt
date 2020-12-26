@@ -8,17 +8,17 @@ public enum class ImperialLengthUnit(
   override val upperBound: Distance?,
 ) : LengthUnit<ImperialLengthUnit> {
   Inch(
-      meterRatio = 0.0_254.toBigDecimal(),
+      meterRatio = 0.025_4.toBigDecimal(),
       lowerBound = Distance.Zero,
       upperBound = Distance.create(nanometers = 304_800_000),
   ),
   Foot(
-      meterRatio = 0.3_048.toBigDecimal(),
+      meterRatio = 0.304_8.toBigDecimal(),
       lowerBound = Distance.create(nanometers = 304_800_000),
       upperBound = Distance.create(nanometers = 914_400_000),
   ),
   Yard(
-      meterRatio = 0.9_144.toBigDecimal(),
+      meterRatio = 0.914_4.toBigDecimal(),
       lowerBound = Distance.create(nanometers = 914_400_000),
       upperBound = Distance.create(meters = 1_609, nanometers = 344_000_000),
   ),

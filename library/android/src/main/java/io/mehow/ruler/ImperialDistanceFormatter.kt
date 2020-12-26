@@ -203,16 +203,16 @@ internal val Distance.totalMiles: BigInteger
 internal val Distance.milesPart get() = totalMiles
 
 internal val Distance.totalYards: BigInteger
-  get() = (meters / 0.9_144.toBigDecimal()).toBigInteger()
+  get() = (meters / 0.914_4.toBigDecimal()).toBigInteger()
 
 internal val Distance.yardsPart get() = totalYards % 1_760.toBigInteger()
 
 internal val Distance.totalFeet: BigInteger
-  get() = (meters / 0.3_048.toBigDecimal()).toBigInteger()
+  get() = (meters / 0.304_8.toBigDecimal()).toBigInteger()
 
 internal val Distance.feetPart get() = totalFeet % 3.toBigInteger()
 
 internal val Distance.totalInches: BigInteger
-  get() = (meters / 0.0_254.toBigDecimal()).toBigInteger()
+  get() = (meters / 0.025_4.toBigDecimal()).toBigInteger()
 
 internal val Distance.inchesPart get() = totalInches % 12.toBigInteger()
