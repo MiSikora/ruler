@@ -14,12 +14,10 @@ public object Ruler {
   }
 
   internal val converter = object : LengthConverter {
-    override fun Length<*>.convert(context: Context): Length<*>? {
-      return converters.toList()
-          .asSequence()
-          .map { convert(context) }
-          .firstOrNull() ?: with(AutoFitLengthConverter) { convert(context) }
-    }
+    override fun Length<*>.convert(context: Context): Length<*> = converters.toList()
+        .asSequence()
+        .map { convert(context) }
+        .firstOrNull() ?: with(AutoFitLengthConverter) { convert(context) }
   }
 
   internal val formatters = mutableListOf<LengthFormatter>()
@@ -33,12 +31,10 @@ public object Ruler {
   }
 
   internal val formatter = object : LengthFormatter {
-    override fun Length<*>.format(context: Context, separator: String): String? {
-      return formatters.toList()
-          .asSequence()
-          .map { format(context, separator) }
-          .firstOrNull() ?: with(AutoLengthFormatter) { format(context, separator) }
-    }
+    override fun Length<*>.format(context: Context, separator: String): String? = formatters.toList()
+        .asSequence()
+        .map { format(context, separator) }
+        .firstOrNull() ?: with(AutoLengthFormatter) { format(context, separator) }
   }
 
   @JvmStatic public var useImperialFormatter: Boolean
@@ -69,11 +65,9 @@ public object Ruler {
   }
 
   internal val flooredFormatter = object : LengthFormatter {
-    override fun Length<*>.format(context: Context, separator: String): String? {
-      return flooredFormatters.toList()
-          .asSequence()
-          .map { format(context, separator) }
-          .firstOrNull() ?: with(FlooredLengthFormatter) { format(context, separator) }
-    }
+    override fun Length<*>.format(context: Context, separator: String): String? = flooredFormatters.toList()
+        .asSequence()
+        .map { format(context, separator) }
+        .firstOrNull() ?: with(FlooredLengthFormatter) { format(context, separator) }
   }
 }

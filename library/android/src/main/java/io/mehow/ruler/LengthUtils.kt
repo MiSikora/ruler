@@ -12,11 +12,11 @@ import android.content.Context
 ): String {
   val length = if (converter == null) this else {
     val convertedLength = with(converter) { convert(context) }
-    checkNotNull(convertedLength) { "Failed to convert length $convertedLength." }
+    checkNotNull(convertedLength) { "Failed to convert length: $this" }
   }
 
   val text = with(formatter) { length.format(context, separator) }
-  checkNotNull(text) { "Failed to format length $length." }
+  checkNotNull(text) { "Failed to format length: $length" }
 
   return text
 }
@@ -24,6 +24,4 @@ import android.content.Context
 @JvmOverloads public fun Length<*>.formatFloored(
   context: Context,
   separator: String = "",
-): String {
-  return format(context, separator, null, Ruler.flooredFormatter)
-}
+): String = format(context, separator, null, Ruler.flooredFormatter)

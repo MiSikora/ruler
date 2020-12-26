@@ -10,14 +10,13 @@ public class ImperialDistanceFormatter internal constructor(
   private val formatters: Set<PartFormatter>,
   private val partsSeparator: String,
 ) {
-  public fun format(distance: Distance, context: Context): String {
-    val reverseOrder = context.preferredLocale.isRtl
-    return formatParts(distance, context, reverseOrder)
-  }
+  public fun format(distance: Distance, context: Context): String = formatParts(
+      distance,
+      context,
+      reverseOrder = context.preferredLocale.isRtl
+  )
 
-  public fun format(length: Length<ImperialLengthUnit>, context: Context): String {
-    return format(length.distance, context)
-  }
+  public fun format(length: Length<ImperialLengthUnit>, context: Context): String = format(length.distance, context)
 
   private fun formatParts(distance: Distance, context: Context, reverseOrder: Boolean): String {
     val lowestHierarchy = formatters.map(PartFormatter::hierarchy).maxOrNull()!!
@@ -43,24 +42,18 @@ public class ImperialDistanceFormatter internal constructor(
     length: BigInteger,
     totalLength: BigInteger,
     lowestAvailableHierarchy: Int,
-  ): String? {
-    return when {
-      canPrintData(length) -> format(context, length.toLong())
-      shouldPrintData(totalLength, lowestAvailableHierarchy) -> format(context, 0L)
-      else -> null
-    }
+  ) = when {
+    canPrintData(length) -> format(context, length.toLong())
+    shouldPrintData(totalLength, lowestAvailableHierarchy) -> format(context, 0L)
+    else -> null
   }
 
   private fun PartFormatter.shouldPrintData(
     totalLength: BigInteger,
     lowestHierarchy: Int,
-  ): Boolean {
-    return totalLength == BigInteger.ZERO && hierarchy == lowestHierarchy
-  }
+  ) = totalLength == BigInteger.ZERO && hierarchy == lowestHierarchy
 
-  private fun PartFormatter.canPrintData(part: BigInteger): Boolean {
-    return printZeros || part != BigInteger.ZERO
-  }
+  private fun PartFormatter.canPrintData(part: BigInteger): Boolean = printZeros || part != BigInteger.ZERO
 
   public companion object {
     @JvmField public val Basic: ImperialDistanceFormatter = Builder()
@@ -78,9 +71,7 @@ public class ImperialDistanceFormatter internal constructor(
   }
 
   private val Locale.isRtl: Boolean
-    get() {
-      return TextUtils.getLayoutDirectionFromLocale(this) == View.LAYOUT_DIRECTION_RTL
-    }
+    get() = TextUtils.getLayoutDirectionFromLocale(this) == View.LAYOUT_DIRECTION_RTL
 
   public class Builder private constructor(
     private val formatters: Set<PartFormatter>,
@@ -90,38 +81,29 @@ public class ImperialDistanceFormatter internal constructor(
     @JvmOverloads public fun withMiles(
       valueSeparator: String = "",
       printZeros: Boolean = false,
-    ): Builder {
-      return append(PartFormatter.Miles(valueSeparator, printZeros))
-    }
+    ): Builder = append(PartFormatter.Miles(valueSeparator, printZeros))
 
     @JvmOverloads public fun withYards(
       valueSeparator: String = "",
       printZeros: Boolean = false,
-    ): Builder {
-      return append(PartFormatter.Yards(valueSeparator, printZeros))
-    }
+    ): Builder = append(PartFormatter.Yards(valueSeparator, printZeros))
 
     @JvmOverloads public fun withFeet(
       valueSeparator: String = "",
       printZeros: Boolean = false,
-    ): Builder {
-      return append(PartFormatter.Feet(valueSeparator, printZeros))
-    }
+    ): Builder = append(PartFormatter.Feet(valueSeparator, printZeros))
 
     @JvmOverloads public fun withInches(
       valueSeparator: String = "",
       printZeros: Boolean = false,
-    ): Builder {
-      return append(PartFormatter.Inches(valueSeparator, printZeros))
-    }
+    ): Builder = append(PartFormatter.Inches(valueSeparator, printZeros))
 
-    public fun build(partsSeparator: String = " "): ImperialDistanceFormatter {
-      return ImperialDistanceFormatter(formatters, partsSeparator)
-    }
+    public fun build(partsSeparator: String = " "): ImperialDistanceFormatter = ImperialDistanceFormatter(
+        formatters,
+        partsSeparator
+    )
 
-    private fun append(formatter: PartFormatter): Builder {
-      return Builder(formatters + formatter)
-    }
+    private fun append(formatter: PartFormatter): Builder = Builder(formatters + formatter)
   }
 }
 
@@ -131,14 +113,12 @@ internal sealed class PartFormatter {
   abstract val hierarchy: Int
   abstract val resource: Int
 
-  fun format(context: Context, distance: Long): String {
-    return context.getString(resource, distance, separator)
-  }
+  fun format(context: Context, distance: Long) = context.getString(resource, distance, separator)
 
-  fun part(distance: Distance, isBasePart: Boolean): BigInteger {
-    val extraPart = if (isBasePart) distance.extractExtraPart() else 0.toBigInteger()
-    return distance.extractPart() + extraPart
-  }
+  fun part(distance: Distance, isBasePart: Boolean) = when {
+    isBasePart -> distance.extractExtraPart()
+    else -> 0.toBigInteger()
+  } + distance.extractPart()
 
   protected abstract fun Distance.extractPart(): BigInteger
 
@@ -153,6 +133,7 @@ internal sealed class PartFormatter {
     override val printZeros: Boolean,
   ) : PartFormatter() {
     override val hierarchy = 0
+
     override val resource = R.string.io_mehow_ruler_miles_part
 
     override fun Distance.extractPart() = milesPart
@@ -169,6 +150,7 @@ internal sealed class PartFormatter {
     override val printZeros: Boolean,
   ) : PartFormatter() {
     override val hierarchy = 1
+
     override val resource = R.string.io_mehow_ruler_yards_part
 
     override fun Distance.extractPart() = yardsPart
@@ -185,6 +167,7 @@ internal sealed class PartFormatter {
     override val printZeros: Boolean,
   ) : PartFormatter() {
     override val hierarchy = 2
+
     override val resource = R.string.io_mehow_ruler_feet_part
 
     override fun Distance.extractPart() = feetPart
@@ -201,6 +184,7 @@ internal sealed class PartFormatter {
     override val printZeros: Boolean,
   ) : PartFormatter() {
     override val hierarchy = 3
+
     override val resource = R.string.io_mehow_ruler_inches_part
 
     override fun Distance.extractPart() = inchesPart
@@ -214,29 +198,21 @@ internal sealed class PartFormatter {
 }
 
 internal val Distance.totalMiles: BigInteger
-  get() {
-    return (meters / 1_609.344.toBigDecimal()).toBigInteger()
-  }
+  get() = (meters / 1_609.344.toBigDecimal()).toBigInteger()
 
 internal val Distance.milesPart get() = totalMiles
 
 internal val Distance.totalYards: BigInteger
-  get() {
-    return (meters / 0.9_144.toBigDecimal()).toBigInteger()
-  }
+  get() = (meters / 0.9_144.toBigDecimal()).toBigInteger()
 
 internal val Distance.yardsPart get() = totalYards % 1_760.toBigInteger()
 
 internal val Distance.totalFeet: BigInteger
-  get() {
-    return (meters / 0.3_048.toBigDecimal()).toBigInteger()
-  }
+  get() = (meters / 0.3_048.toBigDecimal()).toBigInteger()
 
 internal val Distance.feetPart get() = totalFeet % 3.toBigInteger()
 
 internal val Distance.totalInches: BigInteger
-  get() {
-    return (meters / 0.0_254.toBigDecimal()).toBigInteger()
-  }
+  get() = (meters / 0.0_254.toBigDecimal()).toBigInteger()
 
 internal val Distance.inchesPart get() = totalInches % 12.toBigInteger()

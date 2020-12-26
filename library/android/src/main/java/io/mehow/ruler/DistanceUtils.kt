@@ -11,10 +11,9 @@ import io.mehow.ruler.SiLengthUnit.Meter
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
   formatter: LengthFormatter = Ruler.formatter,
-): String {
-  val useImperial = context.preferredLocale.isImperial
-  return if (useImperial) format(context, Yard, separator, converter, formatter)
-  else format(context, Meter, separator, converter, formatter)
+): String = when {
+  context.useImperialUnits -> format(context, Yard, separator, converter, formatter)
+  else -> format(context, Meter, separator, converter, formatter)
 }
 
 @Suppress("LongParameterList")
@@ -25,23 +24,18 @@ public fun <T> Distance.format(
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
   formatter: LengthFormatter = Ruler.formatter,
-): String where T : Enum<T>, T : LengthUnit<T> {
-  return toLength(unit).format(context, separator, converter, formatter)
-}
+): String where T : Enum<T>, T : LengthUnit<T> = toLength(unit).format(context, separator, converter, formatter)
 
 @JvmOverloads public fun Distance.formatFloored(
   context: Context,
   separator: String = "",
-): String {
-  val useImperial = context.preferredLocale.isImperial
-  return if (useImperial) formatFloored(context, Yard, separator)
-  else formatFloored(context, Meter, separator)
+): String = when {
+  context.useImperialUnits -> formatFloored(context, Yard, separator)
+  else -> formatFloored(context, Meter, separator)
 }
 
 @JvmOverloads public fun <T> Distance.formatFloored(
   context: Context,
   unit: T,
   separator: String = "",
-): String where T : Enum<T>, T : LengthUnit<T> {
-  return toLength(unit).formatFloored(context, separator)
-}
+): String where T : Enum<T>, T : LengthUnit<T> = toLength(unit).formatFloored(context, separator)

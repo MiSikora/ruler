@@ -16,25 +16,25 @@ import io.mehow.ruler.SiLengthUnit.Nanometer
 public object AutoLengthFormatter : LengthFormatter {
   @Volatile internal var useImperialFormatter = true
 
-  override fun Length<*>.format(context: Context, separator: String): String? {
-    return when (unit) {
-      is SiLengthUnit -> {
-        val siUnit = unit as SiLengthUnit
-        context.getString(siUnit.resource, measure.toDouble(), separator)
-      }
-      is ImperialLengthUnit -> if (!useImperialFormatter) {
-        val imperialUnit = unit as ImperialLengthUnit
-        context.getString(imperialUnit.resource, measure.toDouble(), separator)
-      } else ImperialDistanceFormatter.Builder()
-          .withMiles(separator)
-          .withYards(separator)
-          .withFeet(separator)
-          .withInches(separator)
-          .build()
-          .format(distance, context)
-      else -> null
+  override fun Length<*>.format(context: Context, separator: String): String? = when (val unit = unit) {
+    is SiLengthUnit -> context.getString(unit.resource, measure.toDouble(), separator)
+    is ImperialLengthUnit -> when {
+      useImperialFormatter -> buildImperialFormatter(context, separator)
+      else -> context.getString(unit.resource, measure.toDouble(), separator)
     }
+    else -> null
   }
+
+  private fun Length<*>.buildImperialFormatter(
+    context: Context,
+    separator: String,
+  ) = ImperialDistanceFormatter.Builder()
+      .withMiles(separator)
+      .withYards(separator)
+      .withFeet(separator)
+      .withInches(separator)
+      .build()
+      .format(distance, context)
 
   private val SiLengthUnit.resource
     get() = when (this) {

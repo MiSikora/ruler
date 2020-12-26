@@ -14,19 +14,11 @@ import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 
 public object FlooredLengthFormatter : LengthFormatter {
-  override fun Length<*>.format(context: Context, separator: String): String? {
-    return when (unit) {
-      is SiLengthUnit -> {
-        val siUnit = unit as SiLengthUnit
-        context.getString(siUnit.partResource, siUnit.unitsPart(distance), separator)
-      }
-      is ImperialLengthUnit -> {
-        val imperialUnit = unit as ImperialLengthUnit
-        context.getString(imperialUnit.partResource, imperialUnit.unitsPart(distance), separator)
-      }
-      else -> null
-    }
-  }
+  override fun Length<*>.format(context: Context, separator: String): String? = when (val unit = unit) {
+    is SiLengthUnit -> unit.partResource to unit.unitsPart(distance)
+    is ImperialLengthUnit -> unit.partResource to unit.unitsPart(distance)
+    else -> null
+  }?.let { (resource, part) -> context.getString(resource, part, separator) }
 
   private val SiLengthUnit.partResource
     get() = when (this) {
@@ -39,16 +31,14 @@ public object FlooredLengthFormatter : LengthFormatter {
       Gigameter -> R.string.io_mehow_ruler_gigameters_part
     }
 
-  private fun SiLengthUnit.unitsPart(distance: Distance): Long {
-    return when (this) {
-      Nanometer -> distance.metersPart * 1_000_000_000 + distance.nanosPart
-      Micrometer -> distance.metersPart * 1_000_000 + distance.nanosPart / 1_000
-      Millimeter -> distance.metersPart * 1_000 + distance.nanosPart / 1_000_000
-      Meter -> distance.metersPart
-      Kilometer -> distance.metersPart / 1_000
-      Megameter -> distance.metersPart / 1_000_000
-      Gigameter -> distance.metersPart / 1_000_000_000
-    }
+  private fun SiLengthUnit.unitsPart(distance: Distance): Long = when (this) {
+    Nanometer -> distance.metersPart * 1_000_000_000 + distance.nanosPart
+    Micrometer -> distance.metersPart * 1_000_000 + distance.nanosPart / 1_000
+    Millimeter -> distance.metersPart * 1_000 + distance.nanosPart / 1_000_000
+    Meter -> distance.metersPart
+    Kilometer -> distance.metersPart / 1_000
+    Megameter -> distance.metersPart / 1_000_000
+    Gigameter -> distance.metersPart / 1_000_000_000
   }
 
   private val ImperialLengthUnit.partResource
