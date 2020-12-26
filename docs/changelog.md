@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Distance` and `Length` throw now `ArithmeticException` in case of failures due to overflows or math operations.
 - Rename `exactTotalMeters` property to `meters`.
 - `LengthUnit` interface no longer extends `Iterable`.
+- `LengthConverter` and `LengthFormatter` to functional interfaces.
 - Upgrade to Kotlin `1.4.21`.
 
 ### Removed
