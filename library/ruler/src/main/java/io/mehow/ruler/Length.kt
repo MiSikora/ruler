@@ -20,7 +20,11 @@ public class Length<T> internal constructor(
 ) : Comparable<Length<*>> where T : LengthUnit<T>, T : Enum<T> {
   public val measure: BigDecimal = distance.meters.divide(unit.meterRatio, 9, DOWN)
 
-  public fun <R> withUnit(unit: R): Length<R> where R : Enum<R>, R : LengthUnit<R> = Length(distance, unit)
+  @Suppress("UNCHECKED_CAST")
+  public fun <R> withUnit(unit: R): Length<R> where R : Enum<R>, R : LengthUnit<R> = when (this.unit) {
+    unit -> this as Length<R>
+    else -> Length(distance, unit)
+  }
 
   public fun withAutoUnit(): Length<T> = withUnit(unit.javaClass.enumConstants.single { distance in it })
 
