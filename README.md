@@ -12,7 +12,7 @@ Please visit [project website](https://misikora.github.io/Ruler/) for the full d
 
 ## TLDR
 
-Add Laboratory dependency to your project.
+Add Ruler dependency to your project.
 
 ```groovy
 repositories {

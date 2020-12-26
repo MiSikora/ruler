@@ -40,7 +40,7 @@ fun main(context: Context) {
 
 ## Requirements
 
-Laboratory requires [Java 8 bytecode](https://developer.android.com/studio/write/java8-support) support. You can enable it with the following configuration in a `build.gradle` file.
+Ruler requires [Java 8 bytecode](https://developer.android.com/studio/write/java8-support) support. You can enable it with the following configuration in a `build.gradle` file.
 
 ```groovy
 android {
@@ -81,7 +81,7 @@ dependencies {
 
 Snapshots of the development version are available on [Sonatype's snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/io/mehow/ruler/).
 
-Here is the list of all available artifacts that Laboratory library provides.
+Here is the list of all available artifacts that Ruler library provides.
 
 - **`io.mehow.ruler:ruler:0.6.0`**: Core of the library. Defines classes and interfaces that represent distances.
 - **`io.mehow.ruler:ruler-android:0.6.0`**: Provides distance formatters for Android platform that can present them to a user in a meaningful way.
