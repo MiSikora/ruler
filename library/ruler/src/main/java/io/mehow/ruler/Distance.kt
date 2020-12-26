@@ -107,7 +107,7 @@ public class Distance private constructor(
       return create(storedMeters, storedNanometers)
     }
 
-    public fun create(
+    internal fun create(
       meters: Long = 0,
       nanometers: Long = 0,
     ): Distance {
