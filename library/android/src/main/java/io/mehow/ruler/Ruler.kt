@@ -7,11 +7,11 @@ import io.mehow.ruler.SiLengthUnit.Meter
 public object Ruler {
   internal val converters = mutableListOf<LengthConverter>()
 
-  public fun addConverter(converter: LengthConverter): Unit = synchronized(this) {
+  public fun addConverter(converter: LengthConverter): Unit = synchronized(converters) {
     converters += converter
   }
 
-  public fun removeConverter(converter: LengthConverter): Unit = synchronized(this) {
+  public fun removeConverter(converter: LengthConverter): Unit = synchronized(converters) {
     converters -= converter
   }
 
@@ -24,11 +24,11 @@ public object Ruler {
 
   internal val formatters = mutableListOf<LengthFormatter>()
 
-  public fun addFormatter(formatter: LengthFormatter): Unit = synchronized(this) {
+  public fun addFormatter(formatter: LengthFormatter): Unit = synchronized(formatters) {
     formatters += formatter
   }
 
-  public fun removeFormatter(formatter: LengthFormatter): Unit = synchronized(this) {
+  public fun removeFormatter(formatter: LengthFormatter): Unit = synchronized(formatters) {
     formatters -= formatter
   }
 
@@ -45,24 +45,24 @@ public object Ruler {
       AutoLengthFormatter.useImperialFormatter = value
     }
 
-  private val mutableImperialCountries = mutableSetOf("US", "LR", "MM")
-  internal val imperialCountryCodes get() = mutableImperialCountries.toSet()
+  private val mutableImperialCountryCodes = mutableSetOf("US", "LR", "MM")
+  internal val imperialCountryCodes get() = mutableImperialCountryCodes.toSet()
 
   private const val ukCountryCode = "GB"
   public var isUkImperial: Boolean
     get() = ukCountryCode in imperialCountryCodes
-    set(value) {
-      val func = if (value) mutableImperialCountries::add else mutableImperialCountries::remove
-      synchronized(this) { func(ukCountryCode) }
+    set(add) {
+      val func = if (add) mutableImperialCountryCodes::add else mutableImperialCountryCodes::remove
+      synchronized(mutableImperialCountryCodes) { func(ukCountryCode) }
     }
 
   internal val flooredFormatters = mutableListOf<LengthFormatter>()
 
-  public fun addFlooredFormatter(formatter: LengthFormatter): Unit = synchronized(this) {
+  public fun addFlooredFormatter(formatter: LengthFormatter): Unit = synchronized(flooredFormatters) {
     flooredFormatters += formatter
   }
 
-  public fun removeFlooredFormatter(formatter: LengthFormatter): Unit = synchronized(this) {
+  public fun removeFlooredFormatter(formatter: LengthFormatter): Unit = synchronized(flooredFormatters) {
     flooredFormatters -= formatter
   }
 
@@ -113,10 +113,10 @@ public fun Length<*>.format(
   converter: LengthConverter? = Ruler.converter,
   formatter: LengthFormatter = Ruler.formatter,
 ): String {
-  val length = if (converter == null) this else {
+  val length = if (converter != null) {
     val convertedLength = with(converter) { convert(context) }
     checkNotNull(convertedLength) { "Failed to convert length: $this" }
-  }
+  } else this
 
   val text = with(formatter) { length.format(context, separator) }
   return checkNotNull(text) { "Failed to format length: $length" }
