@@ -10,4 +10,4 @@ internal val Context.preferredLocale: Locale
     else -> @Suppress("DEPRECATION") resources.configuration.locale
   }
 
-internal val Context.useImperialUnits get() = preferredLocale.isImperial
+internal val Context.useImperialUnits get() = preferredLocale.country in Ruler.imperialCountryCodes
