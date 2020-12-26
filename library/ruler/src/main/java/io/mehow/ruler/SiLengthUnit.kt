@@ -23,7 +23,7 @@ public enum class SiLengthUnit(
       upperBound = Distance.create(meters = 1),
   ),
   Meter(
-      meterRatio = 1.0.toBigDecimal(),
+      meterRatio = BigDecimal.ONE,
       lowerBound = Distance.create(meters = 1),
       upperBound = Distance.create(meters = 1_000),
   ),

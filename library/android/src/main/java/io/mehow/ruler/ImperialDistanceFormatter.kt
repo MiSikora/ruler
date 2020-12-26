@@ -117,7 +117,7 @@ internal sealed class PartFormatter {
 
   fun part(distance: Distance, isBasePart: Boolean) = when {
     isBasePart -> distance.extractExtraPart()
-    else -> 0.toBigInteger()
+    else -> BigInteger.ZERO
   } + distance.extractPart()
 
   protected abstract fun Distance.extractPart(): BigInteger
@@ -138,7 +138,7 @@ internal sealed class PartFormatter {
 
     override fun Distance.extractPart() = milesPart
 
-    override fun Distance.extractExtraPart() = 0.toBigInteger()
+    override fun Distance.extractExtraPart() = BigInteger.ZERO
 
     override fun equals(other: Any?) = other is Miles
 
