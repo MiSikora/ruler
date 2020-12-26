@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `contains` function from `LengthUnit` interface.
 - Explicit Java support with `@Jvm*` annotations.
 - `partsSeparator` argument from `ImperialDistanceFormatter.Builder.build()` method. Use explicit `withPartsSeparator(separator)` instead.
+- `metersPart` and `nanosPart` from `Distance` public API.
 
 ### Fixed
 - Wrong lower meter bound of `Miles` unit.

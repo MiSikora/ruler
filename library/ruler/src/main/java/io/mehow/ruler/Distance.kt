@@ -19,8 +19,8 @@ import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
 
 public class Distance private constructor(
-  public val metersPart: Long = 0L,
-  public val nanosPart: Long = 0L,
+  internal val metersPart: Long = 0L,
+  internal val nanosPart: Long = 0L,
 ) : Comparable<Distance> {
   public val meters: BigDecimal = metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
 
@@ -85,7 +85,7 @@ public class Distance private constructor(
 
   override fun hashCode(): Int = 31 * metersPart.hashCode() + nanosPart.hashCode()
 
-  override fun toString(): String = "Distance(meters=$metersPart, nanometers=$nanosPart)"
+  override fun toString(): String = "Distance(meters=${meters})"
 
   public companion object {
     private const val nanosInMeter = 1_000_000_000L
