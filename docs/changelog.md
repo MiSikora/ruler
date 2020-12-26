@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `meterRatio` property to `LengthUnit` interface.
-- `contains` function to to `LengthUnit` interface. This allows to use `in` sugar syntax.
+- `contains` function to `LengthUnit` interface. This allows to use `in` sugar syntax.
 
 ### Changed
 - `io.mehow.ruler:android` to `io.mehow.ruler:ruler-android` artifact.
