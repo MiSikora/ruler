@@ -14,11 +14,17 @@ import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 
 public object FlooredLengthFormatter : LengthFormatter {
-  override fun Length<*>.format(context: Context, separator: String): String? = when (val unit = unit) {
-    is SiLengthUnit -> unit.partResource to unit.unitsPart(distance)
-    is ImperialLengthUnit -> unit.partResource to unit.unitsPart(distance)
-    else -> null
-  }?.let { (resource, part) -> context.getString(resource, part, separator) }
+  override fun Length<*>.format(
+    context: Context,
+    separator: String,
+  ): String? = unit.partResource?.let { context.getString(it, measure.toLong(), separator) }
+
+  private val LengthUnit<*>.partResource
+    get() = when (this) {
+      is SiLengthUnit -> partResource
+      is ImperialLengthUnit -> partResource
+      else -> null
+    }
 
   private val SiLengthUnit.partResource
     get() = when (this) {
@@ -31,16 +37,6 @@ public object FlooredLengthFormatter : LengthFormatter {
       Gigameter -> R.string.io_mehow_ruler_gigameters_part
     }
 
-  private fun SiLengthUnit.unitsPart(distance: Distance): Long = when (this) {
-    Nanometer -> distance.metersPart * 1_000_000_000 + distance.nanosPart
-    Micrometer -> distance.metersPart * 1_000_000 + distance.nanosPart / 1_000
-    Millimeter -> distance.metersPart * 1_000 + distance.nanosPart / 1_000_000
-    Meter -> distance.metersPart
-    Kilometer -> distance.metersPart / 1_000
-    Megameter -> distance.metersPart / 1_000_000
-    Gigameter -> distance.metersPart / 1_000_000_000
-  }
-
   private val ImperialLengthUnit.partResource
     get() = when (this) {
       Inch -> R.string.io_mehow_ruler_inches_part
@@ -48,16 +44,4 @@ public object FlooredLengthFormatter : LengthFormatter {
       Yard -> R.string.io_mehow_ruler_yards_part
       Mile -> R.string.io_mehow_ruler_miles_part
     }
-
-  private fun ImperialLengthUnit.unitsPart(distance: Distance): Long {
-    val inches = (distance.meters * inchesInMeter).toLong()
-    return when (this) {
-      Inch -> inches
-      Foot -> inches / 12
-      Yard -> inches / 36
-      Mile -> inches / 63_360
-    }
-  }
-
-  private val inchesInMeter = 39.3700787402.toBigDecimal()
 }

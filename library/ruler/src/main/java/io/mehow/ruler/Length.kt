@@ -17,7 +17,7 @@ import java.math.RoundingMode.DOWN
 public class Length<T> internal constructor(
   public val distance: Distance,
   public val unit: T,
-) : Comparable<Length<*>> where T : Enum<T>, T : LengthUnit<T> {
+) : Comparable<Length<*>> where T : LengthUnit<T>, T : Enum<T> {
   public val measure: BigDecimal = distance.meters.divide(unit.meterRatio, 9, DOWN)
 
   public fun <R> withUnit(unit: R): Length<R> where R : Enum<R>, R : LengthUnit<R> = Length(distance, unit)
