@@ -119,9 +119,7 @@ public fun Length<*>.format(
   }
 
   val text = with(formatter) { length.format(context, separator) }
-  checkNotNull(text) { "Failed to format length: $length" }
-
-  return text
+  return checkNotNull(text) { "Failed to format length: $length" }
 }
 
 public fun Length<*>.formatFloored(
