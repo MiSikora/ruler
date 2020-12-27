@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Wrong lower meter bound of `Miles` unit.
 - Wrong name of an argument in `Length.div()` methods.
+- Imperial formatting not handling negative distances.
 
 ## [0.6.0] - 2020-11-11
 

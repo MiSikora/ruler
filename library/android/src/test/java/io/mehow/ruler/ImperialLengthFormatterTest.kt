@@ -24,6 +24,18 @@ internal class ImperialLengthFormatterTest {
     formattedDistance shouldBe "10mi 11yd 2ft 7in"
   }
 
+  @Test fun `negative distance is displayed`() {
+    val distance = -(Distance.ofMiles(10) +
+        Distance.ofYards(11) +
+        Distance.ofFeet(2) +
+        Distance.ofInches(7))
+    val formatter = ImperialLengthFormatter.Full
+
+    val formattedDistance = distance.format(context, formatter = formatter, converter = null)
+
+    formattedDistance shouldBe "-(10mi 11yd 2ft 7in)"
+  }
+
   @Test fun `zero unit parts are ignored`() {
     val distance = Distance.ofMiles(10)
     val formatter = ImperialLengthFormatter.Full

@@ -14,10 +14,14 @@ public class ImperialLengthFormatter internal constructor(
   private val minPartFormatter = formatters.lastOrNull()
 
   override fun Length<*>.format(unitSeparator: String, context: Context): String? {
-    val parts = distance.formatUnitParts(context, unitSeparator)
-    return when {
+    val parts = distance.abs().formatUnitParts(context, unitSeparator)
+    val noSignText = when {
       parts.isEmpty() -> minPartFormatter?.format(0, context, unitSeparator)
       else -> parts.joinToString(partSeparator)
+    }
+    return when {
+      distance < Distance.Zero -> context.getString(R.string.io_mehow_ruler_imperial_negative_wrapper, noSignText)
+      else -> noSignText
     }
   }
 

@@ -31,4 +31,6 @@
 
   <string name="io_mehow_ruler_inches">%1$.2f%2$sبوصة</string>
   <string name="io_mehow_ruler_inches_part">%1$d%2$sبوصة</string>
+
+  <string name="io_mehow_ruler_imperial_negative_wrapper">-(%1s)</string>
 </resources>
