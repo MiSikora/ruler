@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `LengthFormatter.Factory` interface. Use it to install custom formatters in `Ruler`.
 - `LengthConverter.Factory` interface. Use it to install custom converters in `Ruler`.
 - `Distance.abs()` and `Length.abs()` methods.
+- `Ruler` implements now `LengthConverter` and `LengthFormatter`.
 
 ### Changed
 - `Distance` and `Length` throw now `ArithmeticException` in case of failures due to overflows or math operations.
@@ -38,7 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Distance.create(meters, nanometers)` method.
 - `Distance.format()` and `Distance.formatFloored()` overloads that accept `LengthUnit`.
 - `Ruler.flooredFormatters` property. Flooring is now available solely via `FlooredLengthFormatter`.
-- `Ruler` implements now `LengthConverter` and `LengthFormatter`.
 
 ### Fixed
 - Wrong lower meter bound of `Miles` unit.
