@@ -1,5 +1,9 @@
 package io.mehow.ruler
 
+import io.mehow.ruler.ImperialLengthUnit.Foot
+import io.mehow.ruler.ImperialLengthUnit.Inch
+import io.mehow.ruler.ImperialLengthUnit.Mile
+import io.mehow.ruler.ImperialLengthUnit.Yard
 import java.math.BigDecimal
 import kotlin.LazyThreadSafetyMode.NONE
 
@@ -36,6 +40,15 @@ public sealed class LengthUnit<T>(
     val inLowerBound = meters >= lowerBound.meters
     val inUpperBound = upperBound?.meters?.let { meters < it } != false
     return inLowerBound && inUpperBound
+  }
+
+  public companion object {
+    /**
+     * All available length units.
+     */
+    public val units: List<LengthUnit<*>> by lazy(NONE) {
+      SiLengthUnit.units + ImperialLengthUnit.units
+    }
   }
 }
 

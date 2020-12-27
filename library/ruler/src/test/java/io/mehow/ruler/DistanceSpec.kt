@@ -2,260 +2,130 @@ package io.mehow.ruler
 
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.comparables.shouldBeEqualComparingTo
-import io.kotest.matchers.comparables.shouldBeGreaterThan
-import io.kotest.matchers.comparables.shouldBeLessThan
 import io.kotest.matchers.shouldBe
 import io.kotest.property.Arb
+import io.kotest.property.arbitrary.filter
+import io.kotest.property.arbitrary.filterNot
 import io.kotest.property.arbitrary.long
 import io.kotest.property.arbitrary.numericDoubles
 import io.kotest.property.checkAll
-import java.math.RoundingMode.DOWN
+import io.mehow.ruler.test.DistanceGenerator
+import java.math.BigDecimal
 import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
 
-internal class DistanceSpec : BehaviorSpec({
-  Given("zero distance") {
+internal class DistanceSpec : DescribeSpec({
+  describe("zero distance") {
     val zeroDistance = Distance.Zero
 
-    Then("it should not have any meters") {
-      zeroDistance.metersPart shouldBe 0L
-    }
-
-    Then("it should not have any nanometers") {
-      zeroDistance.nanosPart shouldBe 0L
-    }
-
-    When("I add it to itself") {
-      val newDistance = zeroDistance + zeroDistance
-
-      Then("it is still zero") {
-        newDistance shouldBe zeroDistance
-      }
-    }
-
-    When("I subtract it from itself") {
-      val newDistance = zeroDistance - zeroDistance
-
-      Then("it is still zero") {
-        newDistance shouldBe zeroDistance
-      }
-    }
-
-    When("I add a distance to it") {
-      Then("it should be equal to that distance") {
-        checkAll(DistanceGenerator()) { distance ->
-          val newDistance = zeroDistance + distance
-          newDistance shouldBe distance
-        }
-      }
+    it("does not have any meters") {
+      zeroDistance.meters shouldBeEqualComparingTo BigDecimal.ZERO
     }
   }
 
-  Given("min distance") {
+  describe("min distance") {
     val minDistance = Distance.Min
 
-    Then("it should have minimum value of meters") {
-      minDistance.metersPart shouldBe MIN_VALUE
+    it("has smallest possible meters") {
+      minDistance.meters shouldBeEqualComparingTo MIN_VALUE.toBigDecimal()
     }
 
-    Then("it should have no nanometers") {
-      minDistance.nanosPart shouldBe 0L
+    it("cannot be subtracted from") {
+      shouldThrow<ArithmeticException> { minDistance - Distance.ofNanometers(1) }
     }
 
-    When("I subtract even one nanometer from it") {
-      Then("it fails") {
-        shouldThrow<ArithmeticException> { minDistance - Distance.create(nanometers = 1) }
-      }
-    }
-
-    When("I add zero distance to it") {
-      val newDistance = minDistance + Distance.Zero
-
-      Then("it stays the same") {
-        newDistance shouldBe minDistance
-      }
-    }
-
-    When("I add any distance from it") {
-      Then("it does not fail") {
-        checkAll(DistanceGenerator(Distance.Zero)) { distance ->
-          shouldNotThrowAny { minDistance + distance }
-        }
+    it("can be added to") {
+      checkAll(DistanceGenerator.create(min = Distance.Zero)) { distance ->
+        shouldNotThrowAny { minDistance + distance }
       }
     }
   }
 
-  Given("max distance") {
+  describe("max distance") {
     val maxDistance = Distance.Max
 
-    Then("it should have maximum value of meters") {
-      maxDistance.metersPart shouldBe MAX_VALUE
+    it("has largest possible meters") {
+      maxDistance.meters shouldBe MAX_VALUE.toBigDecimal() + 999_999_999.toBigDecimal().movePointLeft(9)
     }
 
-    Then("it should have maximum value of nanometers") {
-      maxDistance.nanosPart shouldBe 999_999_999
+    it("cannot be added to") {
+      shouldThrow<ArithmeticException> { maxDistance + Distance.ofNanometers(1) }
     }
 
-    When("I add even one nanometer to it") {
-      Then("it fails") {
-        shouldThrow<ArithmeticException> { maxDistance + Distance.create(nanometers = 1) }
-      }
-    }
-
-    When("I add zero distance to it") {
-      val newDistance = maxDistance + Distance.Zero
-
-      Then("it stays the same") {
-        newDistance shouldBe maxDistance
-      }
-    }
-
-    When("I remove any distance from it") {
-      Then("it does not fail") {
-        checkAll(DistanceGenerator(Distance.Zero)) { distance ->
-          shouldNotThrowAny { maxDistance - distance }
-        }
+    it("can be subtracted from") {
+      checkAll(DistanceGenerator.create(min = Distance.Zero)) { distance ->
+        shouldNotThrowAny { maxDistance - distance }
       }
     }
   }
 
-  Given("two distances") {
-    When("they are added") {
-      Then("nanometer parts should carry over for overflow") {
-        checkAll(Arb.long(0L, 999_999_999), Arb.long(0L, 999_999_999)) { nano1, nano2 ->
-          val totalNanometers = nano1 + nano2
-          val shouldCarryOver = totalNanometers >= 1_000_000_000
-          val distance = Distance.create(nanometers = nano1) + Distance.create(nanometers = nano2)
+  describe("distance") {
+    val distanceGenerator = DistanceGenerator.create(
+        min = Distance.ofGigameters(-1),
+        max = Distance.ofGigameters(1),
+    )
+    // Filter small values to avoid division explosion.
+    val wholeGenerator = Arb.long(-500_000, 500_000).filterNot { it == 0L }
+    val realGenerator = Arb.numericDoubles(-500_000.0, 500_000.0).filterNot { it in -0.000_001..0.000_001 }
 
-          if (shouldCarryOver) distance shouldBe Distance.create(1, totalNanometers - 1_000_000_000)
-          else distance shouldBe Distance.create(0, totalNanometers)
+    context("can be multiplied") {
+      it("by a whole number") {
+        checkAll(distanceGenerator, wholeGenerator) { distance, multiplier ->
+          distance * multiplier shouldBe Distance.create(distance.meters * multiplier.toBigDecimal())
+        }
+      }
+
+      it("by a real number") {
+        checkAll(distanceGenerator, realGenerator) { distance, multiplier ->
+          distance * multiplier shouldBe Distance.create(distance.meters * multiplier.toBigDecimal())
         }
       }
     }
 
-    When("they are subtracted") {
-      Then("nanometer parts should carry over for overflow") {
-        checkAll(Arb.long(0L, 999_999_999), Arb.long(0L, 999_999_999)) { nano1, nano2 ->
-          val nanoDiff = nano1 - nano2
-          val shouldCarryOver = nanoDiff < 0
-          val distance = Distance.create(1, nano1) - Distance.create(0, nano2)
+    context("can be divided") {
+      it("by a whole number") {
+        checkAll(distanceGenerator, wholeGenerator) { distance, multiplier ->
+          distance / multiplier shouldBe Distance.create(distance.meters / multiplier.toBigDecimal())
+        }
+      }
 
-          if (shouldCarryOver) distance shouldBe Distance.create(0, 1_000_000_000 + nanoDiff)
-          else distance shouldBe Distance.create(1, nanoDiff)
+      it("by a real number") {
+        checkAll(distanceGenerator, realGenerator) { distance, multiplier ->
+          distance / multiplier shouldBe Distance.create(distance.meters / multiplier.toBigDecimal())
         }
       }
     }
 
-    Then("they can be compared to each other") {
-      checkAll(
-          Arb.long(MIN_VALUE, MAX_VALUE),
-          Arb.long(0L, 999_999_999),
-          Arb.long(MIN_VALUE, MAX_VALUE),
-          Arb.long(0L, 999_999_999)
-      ) { meter1, nano1, meter2, nano2 ->
-        val distance1 = Distance.create(meter1, nano1)
-        val distance2 = Distance.create(meter2, nano2)
-
-        when {
-          meter1 > meter2 -> distance1 shouldBeGreaterThan distance2
-          meter1 == meter2 && nano1 > nano2 -> distance1 shouldBeGreaterThan distance2
-          meter1 == meter2 && nano1 == nano2 -> distance1 shouldBeEqualComparingTo distance2
-          else -> distance1 shouldBeLessThan distance2
-        }
+    it("can have absolute value computed") {
+      checkAll(distanceGenerator) { distance ->
+        distance.abs() shouldBe Distance.create(distance.meters.abs())
       }
     }
   }
 
-  Given("a distance") {
-    When("I multiply it by a natural number") {
-      Then("the result is correct") {
-        checkAll(
-            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-            Arb.long(0, 500_000)
-        ) { distance, multiplicand ->
-          val meters = distance.meters * multiplicand.toBigDecimal()
-          val storedMeters = meters.toBigInteger().longValueExact()
-          val nanometers = (meters - storedMeters.toBigDecimal()) * 1_000_000_000.toBigDecimal()
-          val expected = Distance.create(storedMeters, nanometers.toLong())
+  describe("two distances") {
+    val generator = DistanceGenerator.create(
+        min = Distance.ofGigameters(-1),
+        max = Distance.ofGigameters(1),
+    )
 
-          val multipliedDistance = distance * multiplicand
-
-          multipliedDistance shouldBe expected
-        }
+    it("can be added") {
+      checkAll(generator, generator) { first, second ->
+        first + second shouldBe Distance.create(first.meters + second.meters)
       }
     }
 
-    When("I multiply it by a real number") {
-      Then("the result is correct") {
-        checkAll(
-            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-            Arb.numericDoubles(0.0, 500_000.0)
-        ) { distance, multiplicand ->
-          val meters = distance.meters * multiplicand.toBigDecimal()
-          val nanos = meters.movePointRight(9).toBigInteger()
-          val divRem = nanos.divideAndRemainder(1_000_000_000.toBigInteger())
-          check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
-          val expected = Distance.create(divRem[0].toLong(), divRem[1].toLong())
-
-          val multipliedDistance = distance * multiplicand
-
-          multipliedDistance shouldBe expected
-        }
+    it("can be subtracted") {
+      checkAll(generator, generator) { first, second ->
+        first - second shouldBe Distance.create(first.meters - second.meters)
       }
     }
 
-    When("I divide it by a natural number") {
-      Then("the result is correct") {
-        checkAll(
-            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-            Arb.long(1, 500_000)
-        ) { distance, divisor ->
-          val meters = distance.meters.divide(divisor.toBigDecimal(), DOWN)
-          val nanos = meters.movePointRight(9).toBigIntegerExact()
-          val divRem = nanos.divideAndRemainder(1_000_000_000.toBigInteger())
-          check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
-          val expected = Distance.create(divRem[0].toLong(), divRem[1].toLong())
-
-          val multipliedDistance = distance / divisor
-
-          multipliedDistance shouldBe expected
-        }
-      }
-    }
-
-    When("I divide it by a real number") {
-      Then("the result is correct") {
-        checkAll(
-            DistanceGenerator(Distance.ofKilometers(-1_000), Distance.ofKilometers(1_000)),
-            Arb.numericDoubles(0.000_001, 500_000.0)
-        ) { distance, divisor ->
-          val meters = distance.meters.divide(divisor.toBigDecimal(), DOWN)
-          val nanos = meters.movePointRight(9).toBigInteger()
-          val divRem = nanos.divideAndRemainder(1_000_000_000.toBigInteger())
-          check(divRem[0].bitLength() <= 63) { "Exceeded duration capacity: $nanos" }
-          val expected = Distance.create(divRem[0].toLong(), divRem[1].toLong())
-
-          val multipliedDistance = distance / divisor
-
-          multipliedDistance shouldBe expected
-        }
-      }
-    }
-
-    When("I compute it's absolute value") {
-      Then("the result is correct") {
-        checkAll(
-            DistanceGenerator(
-                min = Distance.Min + Distance.ofNanometers(1),
-                max = Distance.Max,
-            )
-        ) { distance ->
-          val expectedDistance = if (distance < Distance.Zero) -distance else distance
-
-          distance.abs() shouldBe expectedDistance
-        }
+    it("can be compared") {
+      checkAll(generator, generator) { first, second ->
+        first.compareTo(second) shouldBe first.meters.compareTo(second.meters)
       }
     }
   }
