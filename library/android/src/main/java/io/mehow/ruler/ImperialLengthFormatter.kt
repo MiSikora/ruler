@@ -13,7 +13,7 @@ public class ImperialLengthFormatter internal constructor(
   private val partSeparator = builder.partSeparator
   private val minPartFormatter = formatters.lastOrNull()
 
-  override fun Length<*>.format(context: Context, unitSeparator: String): String? {
+  override fun Length<*>.format(unitSeparator: String, context: Context): String? {
     val parts = distance.prepareParts(context, unitSeparator)
     return when {
       parts.isEmpty() -> minPartFormatter?.format(0, context, unitSeparator)

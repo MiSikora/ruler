@@ -142,7 +142,7 @@ internal class RulerTest {
     val formattedLength = length.format(
         context,
         converter = null,
-        formatter = { context, separator ->
+        formatter = { separator, context ->
           context.getString(R.string.io_mehow_ruler_yards, measure.toDouble(), separator)
         }
     )

@@ -10,7 +10,7 @@ public fun interface LengthFormatter {
    * Formats an input [Length] to a human-friendly text using a separator between a numeric value and a unit.
    * Returns `null` if an input handling should be delegated to a different formatter.
    */
-  public fun Length<*>.format(context: Context, unitSeparator: String): String?
+  public fun Length<*>.format(unitSeparator: String, context: Context): String?
 
   /**
    * Factory for [LengthFormatter] that can be [installed][Ruler.addFormatterFactory] in [Ruler].

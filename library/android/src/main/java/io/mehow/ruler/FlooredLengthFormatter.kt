@@ -15,8 +15,8 @@ import io.mehow.ruler.SiLengthUnit.Nanometer
 
 public object FlooredLengthFormatter : LengthFormatter {
   override fun Length<*>.format(
-    context: Context,
     unitSeparator: String,
+    context: Context,
   ): String = context.getString(unit.partResource, measure.toLong(), unitSeparator)
 
   private val LengthUnit<*>.partResource
