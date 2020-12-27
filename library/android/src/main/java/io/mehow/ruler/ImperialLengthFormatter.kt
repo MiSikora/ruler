@@ -54,8 +54,8 @@ public class ImperialLengthFormatter internal constructor(
         .withPartSeparator(partSeparator)
         .build()
 
-    override fun create(length: Length<*>, unitSeparator: String): LengthFormatter? = when {
-      isEnabled() && length.unit is ImperialLengthUnit -> formatter
+    override fun create(length: Length<*>, unitSeparator: String, context: Context): LengthFormatter? = when {
+      isEnabled() && context.useImperialUnits -> formatter
       else -> null
     }
   }

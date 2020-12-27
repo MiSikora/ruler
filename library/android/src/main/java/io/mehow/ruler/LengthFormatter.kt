@@ -20,6 +20,6 @@ public fun interface LengthFormatter {
      * Creates a [LengthFormatter] that will be used to format an input. It should return `null` if no formatter
      * created by this factory can handle the input.
      */
-    public fun create(length: Length<*>, unitSeparator: String): LengthFormatter?
+    public fun create(length: Length<*>, unitSeparator: String, context: Context): LengthFormatter?
   }
 }

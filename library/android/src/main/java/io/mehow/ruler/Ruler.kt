@@ -32,7 +32,7 @@ public object Ruler : LengthConverter, LengthFormatter {
 
   private val builtInFormatterFactories = listOf(
       ImperialLengthFormatter.Factory(partSeparator = " ") { useImperialFormatter },
-      LengthFormatter.Factory { _, _ -> AutoLengthFormatter },
+      LengthFormatter.Factory { _, _, _ -> AutoLengthFormatter },
   )
 
   private val formatterFactories = mutableListOf<LengthFormatter.Factory>()
@@ -50,7 +50,7 @@ public object Ruler : LengthConverter, LengthFormatter {
 
   override fun Length<*>.format(unitSeparator: String, context: Context): String? = installedFormatterFactories
       .asSequence()
-      .mapNotNull { factory -> factory.create(this, unitSeparator) }
+      .mapNotNull { factory -> factory.create(this, unitSeparator, context) }
       .map { formatter -> with(formatter) { format(unitSeparator, context) } }
       .firstOrNull()
 

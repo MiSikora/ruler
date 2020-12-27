@@ -28,6 +28,8 @@ internal class RulerTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()
 
   @Test fun `nanometer length is properly formatted`() {
+    Ruler.useImperialFormatter = false
+
     val distance = Distance.ofNanometers(123456789)
     val length = distance.toLength(Nanometer)
 
@@ -37,6 +39,8 @@ internal class RulerTest {
   }
 
   @Test fun `micrometer length is properly formatted`() {
+    Ruler.useImperialFormatter = false
+
     val distance = Distance.ofMicrometers(666) + Distance.ofNanometers(333)
     val length = distance.toLength(Micrometer)
 
@@ -46,6 +50,8 @@ internal class RulerTest {
   }
 
   @Test fun `millimeter length is properly formatted`() {
+    Ruler.useImperialFormatter = false
+
     val distance = Distance.ofMeters(20) + Distance.ofMillimeters(789)
     val length = distance.toLength(Millimeter)
 
@@ -55,6 +61,8 @@ internal class RulerTest {
   }
 
   @Test fun `meter length is properly formatted`() {
+    Ruler.useImperialFormatter = false
+
     val distance = Distance.ofMeters(20) + Distance.ofMillimeters(789)
     val length = distance.toLength(Meter)
 
@@ -64,6 +72,8 @@ internal class RulerTest {
   }
 
   @Test fun `kilometer length is properly formatted`() {
+    Ruler.useImperialFormatter = false
+
     val distance = Distance.ofKilometers(1331) + Distance.ofNanometers(500)
     val length = distance.toLength(Kilometer)
 
@@ -73,6 +83,8 @@ internal class RulerTest {
   }
 
   @Test fun `megameter length is properly formatted`() {
+    Ruler.useImperialFormatter = false
+
     val distance = Distance.ofMegameters(600) + Distance.ofMeters(28000)
     val length = distance.toLength(Megameter)
 
@@ -82,6 +94,8 @@ internal class RulerTest {
   }
 
   @Test fun `gigameter length is properly formatted`() {
+    Ruler.useImperialFormatter = false
+
     val distance = Distance.ofGigameters(2_573_213)
     val length = distance.toLength(Gigameter)
 
@@ -127,6 +141,8 @@ internal class RulerTest {
   }
 
   @Test fun `formatting uses provided separator`() {
+    Ruler.useImperialFormatter = false
+
     val distance = Distance.ofMeters(1)
     val length = distance.toLength(Meter)
 
@@ -179,6 +195,8 @@ internal class RulerTest {
   }
 
   @Test fun `formatting uses provided converter`() {
+    Ruler.useImperialFormatter = false
+
     val distance = Distance.ofMillimeters(987)
     val length = distance.toLength(Millimeter)
 
@@ -191,77 +209,52 @@ internal class RulerTest {
   }
 
   @Test fun `auto formatting uses system locale by default`() {
-    // Only language of locale can be set with @Config and we need to set country.
-    val config = context.resources.configuration
-    val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
-    val localizedContext = context.createConfigurationContext(localizedConfig)
-
     val distance = Distance.ofFeet(4)
     val length = distance.toLength(Meter)
 
-    val formattedLength = length.format(localizedContext)
+    val formattedLength = length.format(context)
 
     formattedLength shouldBe "1yd 1ft"
   }
 
   @Test fun `inch length is properly formatted without imperial formatting`() {
-    // Only language of locale can be set with @Config and we need to set country.
-    val config = context.resources.configuration
-    val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
-    val localizedContext = context.createConfigurationContext(localizedConfig)
-
     Ruler.useImperialFormatter = false
     val distance = Distance.ofInches(10)
 
-    val formattedDistance = distance.format(localizedContext)
+    val formattedDistance = distance.format(context)
 
     formattedDistance shouldBe "10.00in"
   }
 
   @Test fun `foot length is properly formatted without imperial formatting`() {
-    // Only language of locale can be set with @Config and we need to set country.
-    val config = context.resources.configuration
-    val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
-    val localizedContext = context.createConfigurationContext(localizedConfig)
-
     Ruler.useImperialFormatter = false
     val distance = Distance.ofInches(10) +
         Distance.ofFeet(2)
 
-    val formattedDistance = distance.format(localizedContext)
+    val formattedDistance = distance.format(context)
 
     formattedDistance shouldBe "2.83ft"
   }
 
   @Test fun `yard length is properly formatted without imperial formatting`() {
-    // Only language of locale can be set with @Config and we need to set country.
-    val config = context.resources.configuration
-    val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
-    val localizedContext = context.createConfigurationContext(localizedConfig)
-
     Ruler.useImperialFormatter = false
     val distance = Distance.ofInches(10) +
         Distance.ofFeet(2) +
         Distance.ofYards(211)
 
-    val formattedDistance = distance.format(localizedContext)
+    val formattedDistance = distance.format(context)
 
     formattedDistance shouldBe "211.94yd"
   }
 
   @Test fun `mile length is properly formatted without imperial formatting`() {
-    // Only language of locale can be set with @Config and we need to set country.
-    val config = context.resources.configuration
-    val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
-    val localizedContext = context.createConfigurationContext(localizedConfig)
-
     Ruler.useImperialFormatter = false
     val distance = Distance.ofInches(10) +
         Distance.ofFeet(2) +
         Distance.ofYards(211) +
         Distance.ofMiles(58)
 
-    val formattedDistance = distance.format(localizedContext)
+    val formattedDistance = distance.format(context)
 
     formattedDistance shouldBe "58.12mi"
   }
@@ -350,7 +343,7 @@ internal class RulerTest {
     val formattedLength = length.format(context, converter = null)
     val flooredLength = length.formatFloored(context)
 
-    formattedLength shouldBe "1ميل"
+    formattedLength shouldBe "1.00ميل"
     flooredLength shouldBe "1ميل"
   }
 
@@ -361,7 +354,7 @@ internal class RulerTest {
     val formattedLength = length.format(context, converter = null)
     val flooredLength = length.formatFloored(context)
 
-    formattedLength shouldBe "1ياردة"
+    formattedLength shouldBe "1.00ياردة"
     flooredLength shouldBe "1ياردة"
   }
 
@@ -372,7 +365,7 @@ internal class RulerTest {
     val formattedLength = length.format(context, converter = null)
     val flooredLength = length.formatFloored(context)
 
-    formattedLength shouldBe "1قدم"
+    formattedLength shouldBe "1.00قدم"
     flooredLength shouldBe "1قدم"
   }
 
@@ -383,7 +376,7 @@ internal class RulerTest {
     val formattedLength = length.format(context, converter = null)
     val flooredLength = length.formatFloored(context)
 
-    formattedLength shouldBe "1بوصة"
+    formattedLength shouldBe "1.00بوصة"
     flooredLength shouldBe "1بوصة"
   }
 }

@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Custom `LengthFormatter`s must be now installed using `LengthFormatter.Factory` interface and `Ruler.addFormatterFactory()` method.
 - Custom `LengthConverter`s must be now installed using `LengthConverter.Factory` interface and `Ruler.addConverterFactory()` method.
 - Order of arguments in `LengthFormatter.format()` method.
+- Imperial formatting is applied now when `Locale` supports imperial units instead of when `Length` has imperial unit.
 - Upgrade to Kotlin `1.4.21`.
 
 ### Removed
