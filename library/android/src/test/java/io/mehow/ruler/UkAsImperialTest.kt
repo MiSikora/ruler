@@ -12,8 +12,8 @@ import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
 internal class UkAsImperialTest {
-  @get:Rule val rulerRule = RulerRule
-  private val context: Context get() = ApplicationProvider.getApplicationContext()
+  @get:Rule val rulerRule = ResetRulerRule
+  private val context = ApplicationProvider.getApplicationContext<Context>()
 
   @Test fun `UK can be set to use imperial units`() {
     // Only language of locale can be set with @Config and we need to set country.

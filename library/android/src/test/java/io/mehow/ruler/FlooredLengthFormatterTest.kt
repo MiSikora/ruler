@@ -21,8 +21,8 @@ import org.robolectric.RobolectricTestRunner
 import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
-internal class FlooredDistanceFormatterTest {
-  private val context: Context get() = ApplicationProvider.getApplicationContext()
+internal class FlooredLengthFormatterTest {
+  private val context = ApplicationProvider.getApplicationContext<Context>()
 
   @Test fun `meters are used as a default formatting SI unit`() {
     // Only language of locale can be set with @Config and we need to set country.

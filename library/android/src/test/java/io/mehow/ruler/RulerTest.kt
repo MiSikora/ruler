@@ -24,8 +24,8 @@ import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
 internal class RulerTest {
-  @get:Rule val rulerRule = RulerRule
-  private val context: Context get() = ApplicationProvider.getApplicationContext()
+  @get:Rule val rulerRule = ResetRulerRule
+  private val context = ApplicationProvider.getApplicationContext<Context>()
 
   @Test fun `nanometer length is properly formatted`() {
     val distance = Distance.ofNanometers(123456789)
@@ -142,14 +142,8 @@ internal class RulerTest {
     val formattedLength = length.format(
         context,
         converter = null,
-        formatter = object : LengthFormatter {
-          override fun Length<*>.format(context: Context, separator: String): String {
-            return context.getString(
-                R.string.io_mehow_ruler_yards,
-                measure.toDouble(),
-                separator
-            )
-          }
+        formatter = { context, separator ->
+          context.getString(R.string.io_mehow_ruler_yards, measure.toDouble(), separator)
         }
     )
 
@@ -190,9 +184,7 @@ internal class RulerTest {
 
     val formattedLength = length.format(
         context,
-        converter = object : LengthConverter {
-          override fun Length<*>.convert(context: Context) = length.withUnit(Nanometer)
-        }
+        converter = { length.withUnit(Nanometer) }
     )
 
     formattedLength shouldBe "987000000.00nm"

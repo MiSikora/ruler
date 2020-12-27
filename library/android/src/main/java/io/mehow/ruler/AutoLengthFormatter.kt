@@ -19,22 +19,11 @@ public object AutoLengthFormatter : LengthFormatter {
   override fun Length<*>.format(context: Context, separator: String): String? = when (val unit = unit) {
     is SiLengthUnit -> context.getString(unit.resource, measure.toDouble(), separator)
     is ImperialLengthUnit -> when {
-      useImperialFormatter -> buildImperialFormatter(context, separator)
+      useImperialFormatter -> with(ImperialLengthFormatter.Full) { format(context, separator) }
       else -> context.getString(unit.resource, measure.toDouble(), separator)
     }
     else -> null
   }
-
-  private fun Length<*>.buildImperialFormatter(
-    context: Context,
-    separator: String,
-  ) = ImperialDistanceFormatter.Builder()
-      .withMiles(separator)
-      .withYards(separator)
-      .withFeet(separator)
-      .withInches(separator)
-      .build()
-      .format(distance, context)
 
   private val SiLengthUnit.resource
     get() = when (this) {
