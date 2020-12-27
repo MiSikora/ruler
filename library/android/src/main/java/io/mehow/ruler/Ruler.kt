@@ -67,7 +67,7 @@ public object Ruler {
   }
 
   internal val flooredFormatter = object : LengthFormatter {
-    override fun Length<*>.format(context: Context, separator: String): String? = flooredFormatters.toList()
+    override fun Length<*>.format(context: Context, separator: String): String = flooredFormatters.toList()
         .asSequence()
         .map { format(context, separator) }
         .firstOrNull() ?: with(FlooredLengthFormatter) { format(context, separator) }
@@ -85,13 +85,13 @@ public fun Distance.format(
 }
 
 @Suppress("LongParameterList")
-public fun <T> Distance.format(
+public fun <T : LengthUnit<T>> Distance.format(
   context: Context,
   unit: T,
   separator: String = "",
   converter: LengthConverter? = Ruler.converter,
   formatter: LengthFormatter = Ruler.formatter,
-): String where T : Enum<T>, T : LengthUnit<T> = toLength(unit).format(context, separator, converter, formatter)
+): String = toLength(unit).format(context, separator, converter, formatter)
 
 public fun Distance.formatFloored(
   context: Context,
@@ -101,11 +101,11 @@ public fun Distance.formatFloored(
   else -> formatFloored(context, Meter, separator)
 }
 
-public fun <T> Distance.formatFloored(
+public fun <T : LengthUnit<T>> Distance.formatFloored(
   context: Context,
   unit: T,
   separator: String = "",
-): String where T : Enum<T>, T : LengthUnit<T> = toLength(unit).formatFloored(context, separator)
+): String = toLength(unit).formatFloored(context, separator)
 
 public fun Length<*>.format(
   context: Context,

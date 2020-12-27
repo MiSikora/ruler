@@ -17,17 +17,16 @@ import java.math.RoundingMode.DOWN
 /**
  * A representation of [Distance] with a dimensional unit.
  */
-public class Length<T> internal constructor(
+public class Length<T : LengthUnit<T>> internal constructor(
   /**
    * A distance that is used for measurement of this length.
    */
   public val distance: Distance,
-
   /**
    * A dimensional unit that is used for measuring a distance in this length.
    */
   public val unit: T,
-) : Comparable<Length<*>> where T : LengthUnit<T>, T : Enum<T> {
+) : Comparable<Length<*>> {
   /**
    * An amount of units that fit in a [distance].
    */
@@ -37,7 +36,7 @@ public class Length<T> internal constructor(
    * Applies provided unit to this length.
    */
   @Suppress("UNCHECKED_CAST")
-  public fun <R> withUnit(unit: R): Length<R> where R : Enum<R>, R : LengthUnit<R> = when (this.unit) {
+  public fun <R : LengthUnit<R>> withUnit(unit: R): Length<R> = when (this.unit) {
     unit -> this as Length<R>
     else -> Length(distance, unit)
   }
@@ -45,7 +44,7 @@ public class Length<T> internal constructor(
   /**
    * Applies best fitting unit to this length. Fitting is based on bounds defined in units [LengthUnit].
    */
-  public fun withAutoUnit(): Length<T> = withUnit(unit.javaClass.enumConstants.single { distance in it })
+  public fun withAutoUnit(): Length<T> = withUnit(unit.first { distance in it })
 
   /**
    * Ensures that a unit is within a specified range.
@@ -161,10 +160,7 @@ public class Length<T> internal constructor(
     /**
      * Creates a length representing a value in the specified unit.
      */
-    public fun <T> of(
-      value: Long,
-      unit: T,
-    ): Length<T> where T : LengthUnit<T>, T : Enum<T> = Length(Distance.of(value, unit), unit)
+    public fun <T : LengthUnit<T>> of(value: Long, unit: T): Length<T> = Length(Distance.of(value, unit), unit)
 
     /**
      * Creates a distance representing a value expressed in [SiLengthUnit.Gigameter].
@@ -224,10 +220,7 @@ public class Length<T> internal constructor(
     /**
      * Creates a length representing a value in the specified unit.
      */
-    public fun <T> of(
-      value: Double,
-      unit: T,
-    ): Length<T> where T : LengthUnit<T>, T : Enum<T> = Length(Distance.of(value, unit), unit)
+    public fun <T : LengthUnit<T>> of(value: Double, unit: T): Length<T> = Length(Distance.of(value, unit), unit)
 
     /**
      * Creates a distance representing a value expressed in [SiLengthUnit.Gigameter].

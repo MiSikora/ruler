@@ -17,13 +17,12 @@ public object FlooredLengthFormatter : LengthFormatter {
   override fun Length<*>.format(
     context: Context,
     separator: String,
-  ): String? = unit.partResource?.let { context.getString(it, measure.toLong(), separator) }
+  ): String = unit.partResource.let { context.getString(it, measure.toLong(), separator) }
 
   private val LengthUnit<*>.partResource
     get() = when (this) {
       is SiLengthUnit -> partResource
       is ImperialLengthUnit -> partResource
-      else -> null
     }
 
   private val SiLengthUnit.partResource

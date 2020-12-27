@@ -34,7 +34,7 @@ public class Distance private constructor(
   /**
    * Converts this distance to a [Length] with [unit].
    */
-  public fun <T> toLength(unit: T): Length<T> where T : LengthUnit<T>, T : Enum<T> = Length(this, unit)
+  public fun <T : LengthUnit<T>> toLength(unit: T): Length<T> = Length(this, unit)
 
   /**
    * Adds specified distance to this distance.

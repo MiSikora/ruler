@@ -22,7 +22,6 @@ public object AutoLengthFormatter : LengthFormatter {
       useImperialFormatter -> with(ImperialLengthFormatter.Full) { format(context, separator) }
       else -> context.getString(unit.resource, measure.toDouble(), separator)
     }
-    else -> null
   }
 
   private val SiLengthUnit.resource

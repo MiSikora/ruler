@@ -100,13 +100,13 @@ private fun BehaviorSpec.checkSiUnit(unit: SiLengthUnit) {
     When("I auto unit it") {
       Then("it uses $unit as a unit") {
         checkAll(DistanceGenerator(Distance.of(1, unit), Distance.of(999, unit))) { distance ->
-          val length = distance.toLength(SiLengthUnit.values().random()).withAutoUnit()
+          val length = distance.toLength(SiLengthUnit.values.random()).withAutoUnit()
 
           length.unit shouldBeSameInstanceAs unit
         }
 
         checkAll(DistanceGenerator(Distance.of(-999, unit), Distance.of(-1, unit))) { distance ->
-          val length = distance.toLength(SiLengthUnit.values().random()).withAutoUnit()
+          val length = distance.toLength(SiLengthUnit.values.random()).withAutoUnit()
 
           length.unit shouldBeSameInstanceAs unit
         }
@@ -128,7 +128,7 @@ private fun BehaviorSpec.checkSiUnit(unit: SiLengthUnit) {
       checkAll(DistanceGenerator()) { distance ->
         val length = distance.toLength(unit)
 
-        SiLengthUnit.values().filter { it > unit && it < Gigameter }.forEach {
+        SiLengthUnit.values.filter { it > unit && it < Gigameter }.forEach {
           length.coerceUnitIn(it..Gigameter).unit shouldBeSameInstanceAs it
         }
       }
@@ -138,7 +138,7 @@ private fun BehaviorSpec.checkSiUnit(unit: SiLengthUnit) {
       checkAll(DistanceGenerator()) { distance ->
         val length = distance.toLength(unit)
 
-        SiLengthUnit.values().filter { it > unit && it < Gigameter }.forEach {
+        SiLengthUnit.values.filter { it > unit && it < Gigameter }.forEach {
           length.coerceUnitIn(it, Gigameter).unit shouldBeSameInstanceAs it
         }
       }
@@ -148,11 +148,11 @@ private fun BehaviorSpec.checkSiUnit(unit: SiLengthUnit) {
       checkAll(DistanceGenerator()) { distance ->
         val length = distance.toLength(unit)
 
-        SiLengthUnit.values().filter { it > unit }.forEach {
+        SiLengthUnit.values.filter { it > unit }.forEach {
           length.coerceUnitAtLeastTo(it).unit shouldBeSameInstanceAs it
         }
 
-        SiLengthUnit.values().filter { it <= unit }.forEach {
+        SiLengthUnit.values.filter { it <= unit }.forEach {
           length.coerceUnitAtLeastTo(it).unit shouldBeSameInstanceAs unit
         }
       }
@@ -162,11 +162,11 @@ private fun BehaviorSpec.checkSiUnit(unit: SiLengthUnit) {
       checkAll(DistanceGenerator()) { distance ->
         val length = distance.toLength(unit)
 
-        SiLengthUnit.values().filter { it < unit }.forEach {
+        SiLengthUnit.values.filter { it < unit }.forEach {
           length.coerceUnitAtMostTo(it).unit shouldBeSameInstanceAs it
         }
 
-        SiLengthUnit.values().filter { it >= unit }.forEach {
+        SiLengthUnit.values.filter { it >= unit }.forEach {
           length.coerceUnitAtMostTo(it).unit shouldBeSameInstanceAs unit
         }
       }
@@ -184,7 +184,7 @@ private fun BehaviorSpec.checkImperialUnit(
         checkAll(
             DistanceGenerator(Distance.of(1, unit), Distance.of(maxRange, unit))
         ) { distance ->
-          val length = distance.toLength(ImperialLengthUnit.values().random()).withAutoUnit()
+          val length = distance.toLength(ImperialLengthUnit.values.random()).withAutoUnit()
 
           length.unit shouldBeSameInstanceAs unit
         }
@@ -192,7 +192,7 @@ private fun BehaviorSpec.checkImperialUnit(
         checkAll(
             DistanceGenerator(Distance.of(-maxRange, unit), Distance.of(-1, unit))
         ) { distance ->
-          val length = distance.toLength(ImperialLengthUnit.values().random()).withAutoUnit()
+          val length = distance.toLength(ImperialLengthUnit.values.random()).withAutoUnit()
 
           length.unit shouldBeSameInstanceAs unit
         }
@@ -214,7 +214,7 @@ private fun BehaviorSpec.checkImperialUnit(
       checkAll(DistanceGenerator()) { distance ->
         val length = distance.toLength(unit)
 
-        ImperialLengthUnit.values().filter { it > unit && it < Mile }.forEach {
+        ImperialLengthUnit.values.filter { it > unit && it < Mile }.forEach {
           length.coerceUnitIn(it..Mile).unit shouldBeSameInstanceAs it
         }
       }
@@ -224,7 +224,7 @@ private fun BehaviorSpec.checkImperialUnit(
       checkAll(DistanceGenerator()) { distance ->
         val length = distance.toLength(unit)
 
-        ImperialLengthUnit.values().filter { it > unit && it < Mile }.forEach {
+        ImperialLengthUnit.values.filter { it > unit && it < Mile }.forEach {
           length.coerceUnitIn(it, Mile).unit shouldBeSameInstanceAs it
         }
       }
@@ -234,11 +234,11 @@ private fun BehaviorSpec.checkImperialUnit(
       checkAll(DistanceGenerator()) { distance ->
         val length = distance.toLength(unit)
 
-        ImperialLengthUnit.values().filter { it > unit }.forEach {
+        ImperialLengthUnit.values.filter { it > unit }.forEach {
           length.coerceUnitAtLeastTo(it).unit shouldBeSameInstanceAs it
         }
 
-        ImperialLengthUnit.values().filter { it <= unit }.forEach {
+        ImperialLengthUnit.values.filter { it <= unit }.forEach {
           length.coerceUnitAtLeastTo(it).unit shouldBeSameInstanceAs unit
         }
       }
@@ -248,11 +248,11 @@ private fun BehaviorSpec.checkImperialUnit(
       checkAll(DistanceGenerator()) { distance ->
         val length = distance.toLength(unit)
 
-        ImperialLengthUnit.values().filter { it < unit }.forEach {
+        ImperialLengthUnit.values.filter { it < unit }.forEach {
           length.coerceUnitAtMostTo(it).unit shouldBeSameInstanceAs it
         }
 
-        ImperialLengthUnit.values().filter { it >= unit }.forEach {
+        ImperialLengthUnit.values.filter { it >= unit }.forEach {
           length.coerceUnitAtMostTo(it).unit shouldBeSameInstanceAs unit
         }
       }

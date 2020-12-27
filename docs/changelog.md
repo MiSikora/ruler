@@ -10,25 +10,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AutoLengthFormatter` to the public API.
 - `FlooredLengthFormatter` to the public API.
 - `AutoFitLengthConverter` to the public API.
-- `lowerBound` property to `LengthUnit` interface.
-- `upperBound` property to `LengthUnit` interface.
 - `ImperialLengthFormatter` class. It replaces removed `ImperialDistanceFormatter` but offers a simpler API without bloated configurability.
 
 ### Changed
+- `LengthUnit` is no longer an interface. It is now a sealed class with two implementations – `SiLengthUnit` and `ImperialLengthUnit`.
 - `Distance` and `Length` throw now `ArithmeticException` in case of failures due to overflows or math operations.
-- Rename `exactTotalMeters` property to `meters`.
-- `LengthUnit` interface no longer extends `Iterable`.
+- `Distance.exactTotalMeters` property name to `meters`.
 - `LengthConverter` and `LengthFormatter` to functional interfaces.
 - Upgrade to Kotlin `1.4.21`.
 
 ### Removed
-- `ImperialDistanceFormatter` class.
+- Explicit Java support with `@Jvm*` annotations.
 - `metersPart` and `nanosPart` from `Distance` public the API.
 - `Distance.create(meters, nanometers)` method from the public API.
-- Companion objects of `SiLengthUnit`.
-- Companion objects of `ImperialLengthUnit`.
-- `contains` function from `LengthUnit` interface.
-- Explicit Java support with `@Jvm*` annotations.
+- `LengthUnit.contains()` method from the public API.
+- `ImperialDistanceFormatter` class.
 
 ### Fixed
 - Wrong lower meter bound of `Miles` unit.
