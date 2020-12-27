@@ -12,7 +12,7 @@ public object Ruler : LengthConverter, LengthFormatter {
   private val converterFactories = mutableListOf<LengthConverter.Factory>()
 
   public val installedConverterFactories: List<LengthConverter.Factory>
-    get() = builtInConverterFactories + converterFactories
+    get() = converterFactories + builtInConverterFactories
 
   public fun addConverterFactory(factory: LengthConverter.Factory): Unit = synchronized(converterFactories) {
     converterFactories += factory
@@ -38,7 +38,7 @@ public object Ruler : LengthConverter, LengthFormatter {
   private val formatterFactories = mutableListOf<LengthFormatter.Factory>()
 
   public val installedFormatterFactories: List<LengthFormatter.Factory>
-    get() = builtInFormatterFactories + formatterFactories
+    get() = formatterFactories + builtInFormatterFactories
 
   public fun addFormatterFactory(factory: LengthFormatter.Factory): Unit = synchronized(formatterFactories) {
     formatterFactories += factory
