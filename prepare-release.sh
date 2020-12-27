@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-if [[ $(git rev-parse --abbrev-ref HEAD) != master ]]; then
-  echo Release version can be prepared automatically only from the master branch.
+if [[ $(git rev-parse --abbrev-ref HEAD) != trunk ]]; then
+  echo Release version can be prepared automatically only from the trunk branch.
   exit 0
 fi
 
