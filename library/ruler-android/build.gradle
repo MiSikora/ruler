@@ -12,7 +12,7 @@ android {
 }
 
 dependencies {
-  api project(":library:ruler")
+  api project(':library:ruler-jvm')
 
   testImplementation libs.junit
   testImplementation libs.kotest.assertions

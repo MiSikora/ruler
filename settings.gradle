@@ -1,2 +1,2 @@
-include ":library:ruler"
-include ":library:android"
+include ':library:ruler-jvm'
+include ':library:ruler-android'

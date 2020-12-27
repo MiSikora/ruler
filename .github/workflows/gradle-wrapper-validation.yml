@@ -7,7 +7,7 @@ on:
 
 jobs:
   validate-project-gradle-wrapper:
-    if: ${{ github.repository == 'MiSikora/Ruler' }}
+    if: ${{ github.repository == 'MiSikora/ruler' }}
     name: Validate
     runs-on: ubuntu-latest
     steps:

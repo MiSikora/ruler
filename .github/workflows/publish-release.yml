@@ -6,7 +6,7 @@ on:
 
 jobs:
   publish-release:
-    if: ${{ github.repository == 'MiSikora/Ruler' }}
+    if: ${{ github.repository == 'MiSikora/ruler' }}
     name: Publish Release
     runs-on: ubuntu-latest
     steps:

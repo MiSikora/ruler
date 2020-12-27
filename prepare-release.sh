@@ -59,7 +59,7 @@ sed -i "" "s/.*$versionNameKey.*/$versionNameKey=$newVersion/g" $propertiesFile
 changelogFile="./docs/changelog.md"
 today=$(date +%F)
 sed -i "" "s/## \[Unreleased\]/## \[Unreleased\]"$'\\\n\\\n'"## \[$newVersion\] - $today/g" $changelogFile
-newVersionTag="[$newVersion]: https:\/\/github.com\/MiSikora\/Ruler\/releases\/tag\/$newVersion"
+newVersionTag="[$newVersion]: https:\/\/github.com\/MiSikora\/ruler\/releases\/tag\/$newVersion"
 sed -i "" "s/$currentVersion...HEAD/$newVersion...HEAD"$'\\\n'"$newVersionTag""/g" $changelogFile
 
 # Replace current version in index.md

@@ -1,9 +1,9 @@
 site_name: Ruler
 site_description: Distance measurements library for Kotlin and Android
 site_author: Michał Sikora
-site_url: https://misikora.github.io/Ruler/
-repo_name: Ruler
-repo_url: https://github.com/MiSikora/Ruler/
+site_url: https://misikora.github.io/ruler/
+repo_name: ruler
+repo_url: https://github.com/MiSikora/ruler/
 remote_branch: gh-pages
 
 copyright: Copyright &copy; 2020 Michał Sikora

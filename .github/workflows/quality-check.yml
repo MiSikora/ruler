@@ -15,7 +15,7 @@ on:
 
 jobs:
   tests:
-    if: ${{ github.repository == 'MiSikora/Ruler' }}
+    if: ${{ github.repository == 'MiSikora/ruler' }}
     name: Tests
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +38,7 @@ jobs:
         run: ./gradlew --stop
 
   detekt:
-    if: ${{ github.repository == 'MiSikora/Ruler' }}
+    if: ${{ github.repository == 'MiSikora/ruler' }}
     name: Detekt
     runs-on: ubuntu-latest
     steps:
@@ -61,7 +61,7 @@ jobs:
         run: ./gradlew --stop
 
   lint:
-    if: ${{ github.repository == 'MiSikora/Ruler' }}
+    if: ${{ github.repository == 'MiSikora/ruler' }}
     name: Lint
     runs-on: ubuntu-latest
     steps:

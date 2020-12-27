@@ -2,14 +2,14 @@
 
 ## Versioning
 
-1. Run the [prepare release script](https://github.com/MiSikora/Ruler/blob/trunk/prepare-release.sh) and bump the desirable version part.
+1. Run the [prepare release script](https://github.com/MiSikora/ruler/blob/trunk/prepare-release.sh) and bump the desirable version part.
 2. If there are no errors `git push && git push --tags`.
-3. Wait for [the CI server](https://github.com/MiSikora/Ruler/actions) to upload the artifacts.
+3. Wait for [the CI server](https://github.com/MiSikora/ruler/actions) to upload the artifacts.
 4. Visit [Sonatype Nexus](https://oss.sonatype.org) and promote the artifacts.
 
 ## Documentation updates
 
-Website documentation lives under [`/docs`](https://github.com/MiSikora/Ruler/tree/trunk/docs) directory and is deployed with [MkDocs](https://www.mkdocs.org/) using [Material Theme](https://squidfunk.github.io/mkdocs-material/). A new site is built and published for latest commits on the `trunk` branch.
+Website documentation lives under [`/docs`](https://github.com/MiSikora/ruler/tree/trunk/docs) directory and is deployed with [MkDocs](https://www.mkdocs.org/) using [Material Theme](https://squidfunk.github.io/mkdocs-material/). A new site is built and published for latest commits on the `trunk` branch.
 
 If you want to test the website locally before pushing changes you need to follow these steps.
 
