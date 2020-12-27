@@ -13,23 +13,23 @@ public class ImperialLengthFormatter internal constructor(
   private val partSeparator = builder.partSeparator
   private val minPartFormatter = formatters.lastOrNull()
 
-  override fun Length<*>.format(context: Context, separator: String): String? {
-    val parts = distance.prepareParts(context, separator)
+  override fun Length<*>.format(context: Context, unitSeparator: String): String? {
+    val parts = distance.prepareParts(context, unitSeparator)
     return when {
-      parts.isEmpty() -> minPartFormatter?.format(0, context, separator)
+      parts.isEmpty() -> minPartFormatter?.format(0, context, unitSeparator)
       else -> parts.joinToString(partSeparator)
     }
   }
 
   private fun Distance.prepareParts(
     context: Context,
-    separator: String,
+    unitSeparator: String,
   ) = formatters.fold(this to emptyList<String>()) { (partDistance, parts), formatter ->
     val unitCount = partDistance.toLength(formatter.unit).measure.toLong()
     if (unitCount == 0L) return@fold partDistance to parts
 
     val adjustedDistance = partDistance - Distance.of(unitCount, formatter.unit)
-    val formattedParts = parts + formatter.format(unitCount, context, separator)
+    val formattedParts = parts + formatter.format(unitCount, context, unitSeparator)
     adjustedDistance to formattedParts
   }.second
 
@@ -54,7 +54,7 @@ public class ImperialLengthFormatter internal constructor(
         .withPartSeparator(partSeparator)
         .build()
 
-    override fun create(length: Length<*>, separator: String): LengthFormatter? = when {
+    override fun create(length: Length<*>, unitSeparator: String): LengthFormatter? = when {
       isEnabled() && length.unit is ImperialLengthUnit -> formatter
       else -> null
     }
@@ -82,7 +82,11 @@ public class ImperialLengthFormatter internal constructor(
   }
 
   internal class UnitFormatter(val unit: ImperialLengthUnit) {
-    fun format(unitCount: Long, context: Context, separator: String) = context.getString(resource, unitCount, separator)
+    fun format(
+      unitCount: Long,
+      context: Context,
+      unitSeparator: String,
+    ) = context.getString(resource, unitCount, unitSeparator)
 
     override fun equals(other: Any?) = other is UnitFormatter && unit == other.unit
 

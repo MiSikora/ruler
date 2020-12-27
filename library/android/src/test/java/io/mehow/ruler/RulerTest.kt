@@ -130,7 +130,7 @@ internal class RulerTest {
     val distance = Distance.ofMeters(1)
     val length = distance.toLength(Meter)
 
-    val formattedLength = length.format(context, separator = "-", converter = null)
+    val formattedLength = length.format(context, unitSeparator = "-", converter = null)
 
     formattedLength shouldBe "1.00-m"
   }

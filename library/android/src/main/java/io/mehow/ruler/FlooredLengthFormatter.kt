@@ -16,8 +16,8 @@ import io.mehow.ruler.SiLengthUnit.Nanometer
 public object FlooredLengthFormatter : LengthFormatter {
   override fun Length<*>.format(
     context: Context,
-    separator: String,
-  ): String = context.getString(unit.partResource, measure.toLong(), separator)
+    unitSeparator: String,
+  ): String = context.getString(unit.partResource, measure.toLong(), unitSeparator)
 
   private val LengthUnit<*>.partResource
     get() = when (this) {
@@ -47,13 +47,13 @@ public object FlooredLengthFormatter : LengthFormatter {
 
 public fun Distance.formatFloored(
   context: Context,
-  separator: String = "",
+  unitSeparator: String = "",
 ): String = when {
   context.useImperialUnits -> toLength(Yard)
   else -> toLength(Meter)
-}.formatFloored(context, separator)
+}.formatFloored(context, unitSeparator)
 
 public fun Length<*>.formatFloored(
   context: Context,
-  separator: String = "",
-): String = format(context, separator, converter = null, FlooredLengthFormatter)
+  unitSeparator: String = "",
+): String = format(context, unitSeparator, converter = null, FlooredLengthFormatter)

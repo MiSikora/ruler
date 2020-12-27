@@ -7,10 +7,10 @@ import android.content.Context
  */
 public fun interface LengthFormatter {
   /**
-   * Formats an input [Length] to a human-friendly text using a [separator] between a numeric value and unit.
+   * Formats an input [Length] to a human-friendly text using a separator between a numeric value and a unit.
    * Returns `null` if an input handling should be delegated to a different formatter.
    */
-  public fun Length<*>.format(context: Context, separator: String): String?
+  public fun Length<*>.format(context: Context, unitSeparator: String): String?
 
   /**
    * Factory for [LengthFormatter] that can be [installed][Ruler.addFormatterFactory] in [Ruler].
@@ -20,6 +20,6 @@ public fun interface LengthFormatter {
      * Creates a [LengthFormatter] that will be used to format an input. It should return `null` if no formatter
      * created by this factory can handle the input.
      */
-    public fun create(length: Length<*>, separator: String): LengthFormatter?
+    public fun create(length: Length<*>, unitSeparator: String): LengthFormatter?
   }
 }

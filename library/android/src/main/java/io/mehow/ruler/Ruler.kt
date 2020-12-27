@@ -48,10 +48,10 @@ public object Ruler : LengthConverter, LengthFormatter {
     formatterFactories -= factory
   }
 
-  override fun Length<*>.format(context: Context, separator: String): String? = installedFormatterFactories
+  override fun Length<*>.format(context: Context, unitSeparator: String): String? = installedFormatterFactories
       .asSequence()
-      .mapNotNull { factory -> factory.create(this, separator) }
-      .map { formatter -> with(formatter) { format(context, separator) } }
+      .mapNotNull { factory -> factory.create(this, unitSeparator) }
+      .map { formatter -> with(formatter) { format(context, unitSeparator) } }
       .firstOrNull()
 
   private val builtInImperialCountryCodes = setOf("US", "LR", "MM")
@@ -73,21 +73,21 @@ public object Ruler : LengthConverter, LengthFormatter {
 
 public fun Distance.format(
   context: Context,
-  separator: String = "",
+  unitSeparator: String = "",
   converter: LengthConverter? = Ruler,
   formatter: LengthFormatter = Ruler,
 ): String = when {
   context.useImperialUnits -> toLength(Yard)
   else -> toLength(Meter)
-}.format(context, separator, converter, formatter)
+}.format(context, unitSeparator, converter, formatter)
 
 public fun Length<*>.format(
   context: Context,
-  separator: String = "",
+  unitSeparator: String = "",
   converter: LengthConverter? = Ruler,
   formatter: LengthFormatter = Ruler,
 ): String {
   val length = converter?.run { convert(context) } ?: this
-  val text = with(formatter) { length.format(context, separator) }
+  val text = with(formatter) { length.format(context, unitSeparator) }
   return checkNotNull(text) { "Failed to format length: $length" }
 }
