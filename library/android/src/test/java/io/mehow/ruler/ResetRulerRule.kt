@@ -15,6 +15,12 @@ internal object ResetRulerRule : TestRule {
         } finally {
           Ruler.isUkImperial = isUkImperial
           Ruler.useImperialFormatter = useImperialFormatting
+          for (factory in Ruler.installedFormatterFactories) {
+            Ruler.removeFormatterFactory(factory)
+          }
+          for (converter in Ruler.installedConverterFactories) {
+            Ruler.removeConverter(converter)
+          }
         }
       }
     }
