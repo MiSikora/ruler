@@ -4,7 +4,7 @@ import android.content.Context
 import io.mehow.ruler.ImperialLengthUnit.Yard
 import io.mehow.ruler.SiLengthUnit.Meter
 
-public object Ruler {
+public object Ruler : LengthConverter, LengthFormatter {
   private val builtInConverterFactories = listOf(
       LengthConverter.Factory { AutoFitLengthConverter },
   )
@@ -22,12 +22,11 @@ public object Ruler {
     converterFactories -= factory
   }
 
-  internal val converter = LengthConverter { context ->
-    installedConverterFactories.asSequence()
-        .mapNotNull { factory -> factory.create(this) }
-        .map { converter -> with(converter) { convert(context) } }
-        .firstOrNull()
-  }
+  override fun Length<*>.convert(context: Context): Length<*>? = installedConverterFactories
+      .asSequence()
+      .mapNotNull { factory -> factory.create(this) }
+      .map { converter -> with(converter) { convert(context) } }
+      .firstOrNull()
 
   @Volatile public var useImperialFormatter: Boolean = true
 
@@ -49,12 +48,11 @@ public object Ruler {
     formatterFactories -= factory
   }
 
-  public val formatter: LengthFormatter = LengthFormatter { context, separator ->
-    installedFormatterFactories.asSequence()
-        .mapNotNull { factory -> factory.create(this, separator) }
-        .map { formatter -> with(formatter) { format(context, separator) } }
-        .firstOrNull()
-  }
+  override fun Length<*>.format(context: Context, separator: String): String? = installedFormatterFactories
+      .asSequence()
+      .mapNotNull { factory -> factory.create(this, separator) }
+      .map { formatter -> with(formatter) { format(context, separator) } }
+      .firstOrNull()
 
   private val mutableImperialCountryCodes = mutableSetOf("US", "LR", "MM")
   internal val imperialCountryCodes get() = mutableImperialCountryCodes.toSet()
@@ -71,8 +69,8 @@ public object Ruler {
 public fun Distance.format(
   context: Context,
   separator: String = "",
-  converter: LengthConverter? = Ruler.converter,
-  formatter: LengthFormatter = Ruler.formatter,
+  converter: LengthConverter? = Ruler,
+  formatter: LengthFormatter = Ruler,
 ): String = when {
   context.useImperialUnits -> format(context, Yard, separator, converter, formatter)
   else -> format(context, Meter, separator, converter, formatter)
@@ -83,15 +81,15 @@ public fun <T : LengthUnit<T>> Distance.format(
   context: Context,
   unit: T,
   separator: String = "",
-  converter: LengthConverter? = Ruler.converter,
-  formatter: LengthFormatter = Ruler.formatter,
+  converter: LengthConverter? = Ruler,
+  formatter: LengthFormatter = Ruler,
 ): String = toLength(unit).format(context, separator, converter, formatter)
 
 public fun Length<*>.format(
   context: Context,
   separator: String = "",
-  converter: LengthConverter? = Ruler.converter,
-  formatter: LengthFormatter = Ruler.formatter,
+  converter: LengthConverter? = Ruler,
+  formatter: LengthFormatter = Ruler,
 ): String {
   val length = if (converter != null) {
     val convertedLength = with(converter) { convert(context) }
