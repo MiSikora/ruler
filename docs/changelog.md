@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2020-12-28
+
 ### Added
 - `AutoLengthFormatter` class. Use it to format lengths using resources defined in the library based on a unit.
 - `FlooredLengthFormatter` class. Use it to floor a length unit quantities and format them using resources defined in the library.
@@ -138,7 +140,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[Unreleased]: https://github.com/MiSikora/ruler/compare/0.6.0...HEAD
+[Unreleased]: https://github.com/MiSikora/ruler/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/MiSikora/ruler/releases/tag/1.0.0
 [0.6.0]: https://github.com/MiSikora/ruler/releases/tag/0.6.0
 [0.5.3]: https://github.com/MiSikora/ruler/releases/tag/0.5.3
 [0.5.2]: https://github.com/MiSikora/ruler/releases/tag/0.5.2

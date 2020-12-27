@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-  implementation "io.mehow.ruler:ruler-android:0.6.0"
+  implementation "io.mehow.ruler:ruler-android:1.0.0"
 }
 ```
 
