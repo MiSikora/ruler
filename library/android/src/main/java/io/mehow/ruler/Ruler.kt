@@ -79,11 +79,11 @@ public object Ruler : LengthConverter, LengthFormatter {
     formatterFactories -= factory
   }
 
-  override fun Length<*>.format(unitSeparator: String, context: Context): String? = installedFormatterFactories
+  override fun Length<*>.format(unitSeparator: String, context: Context): String = installedFormatterFactories
       .asSequence()
       .mapNotNull { factory -> factory.create(this, unitSeparator, context) }
       .map { formatter -> with(formatter) { format(unitSeparator, context) } }
-      .firstOrNull()
+      .first()
 
   private val builtInImperialCountryCodes = setOf("US", "LR", "MM")
 
@@ -141,6 +141,5 @@ public fun Length<*>.format(
   formatter: LengthFormatter = Ruler,
 ): String {
   val length = converter?.run { convert(context) } ?: this
-  val text = with(formatter) { length.format(unitSeparator, context) }
-  return checkNotNull(text) { "Failed to format length: $length" }
+  return with(formatter) { length.format(unitSeparator, context) }
 }

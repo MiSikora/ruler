@@ -11,12 +11,12 @@ public class ImperialLengthFormatter internal constructor(
 ) : LengthFormatter {
   private val formatters = builder.formatters.sortedByDescending(UnitFormatter::unit)
   private val partSeparator = builder.partSeparator
-  private val minPartFormatter = formatters.lastOrNull()
+  private val fallbackFormatter = builder.fallbackFormatter
 
-  override fun Length<*>.format(unitSeparator: String, context: Context): String? {
+  override fun Length<*>.format(unitSeparator: String, context: Context): String {
     val parts = distance.abs().formatUnitParts(context, unitSeparator)
     val noSignText = when {
-      parts.isEmpty() -> minPartFormatter?.format(0, context, unitSeparator)
+      parts.isEmpty() -> fallbackFormatter.format(0, context, unitSeparator)
       else -> parts.joinToString(partSeparator)
     }
     return when {
@@ -72,8 +72,11 @@ public class ImperialLengthFormatter internal constructor(
 
   public class Builder private constructor(
     internal val formatters: Set<UnitFormatter>,
+    private val fallbackUnit: ImperialLengthUnit = Foot,
     internal val partSeparator: String = " ",
   ) {
+    internal val fallbackFormatter = formatters.lastOrNull() ?: UnitFormatter(fallbackUnit)
+
     public constructor() : this(emptySet())
 
     public fun withMiles(): Builder = withUnit(Mile)
@@ -84,11 +87,17 @@ public class ImperialLengthFormatter internal constructor(
 
     public fun withInches(): Builder = withUnit(Inch)
 
-    public fun withPartSeparator(separator: String): Builder = Builder(formatters, separator)
+    public fun withPartSeparator(separator: String): Builder = Builder(formatters, fallbackUnit, separator)
+
+    public fun withFallbackUnit(unit: ImperialLengthUnit): Builder = Builder(formatters, unit, partSeparator)
 
     public fun build(): ImperialLengthFormatter = ImperialLengthFormatter(this)
 
-    private fun withUnit(unit: ImperialLengthUnit) = Builder(formatters + UnitFormatter(unit), partSeparator)
+    private fun withUnit(unit: ImperialLengthUnit) = Builder(
+        formatters + UnitFormatter(unit),
+        fallbackUnit,
+        partSeparator,
+    )
   }
 
   internal class UnitFormatter(val unit: ImperialLengthUnit) {
