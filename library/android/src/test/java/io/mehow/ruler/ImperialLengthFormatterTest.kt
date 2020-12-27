@@ -183,4 +183,16 @@ internal class ImperialLengthFormatterTest {
 
     formattedDistance shouldBe "10ميل 11ياردة 2قدم 7بوصة"
   }
+
+  @Test fun `imperial formatter without specified parts has a fallback`() {
+    val distance = Distance.ofMiles(10) +
+        Distance.ofYards(11) +
+        Distance.ofFeet(2) +
+        Distance.ofInches(7)
+    val formatter = ImperialLengthFormatter.Builder().build()
+
+    val formattedDistance = distance.format(context, formatter = formatter, converter = null)
+
+    formattedDistance shouldBe "17611yd"
+  }
 }

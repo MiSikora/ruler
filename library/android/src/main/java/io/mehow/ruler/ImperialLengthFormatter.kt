@@ -22,7 +22,10 @@ public class ImperialLengthFormatter internal constructor(
   override fun Length<*>.format(unitSeparator: String, context: Context): String {
     val parts = distance.abs().formatUnitParts(context, unitSeparator)
     val noSignText = when {
-      parts.isEmpty() -> fallbackFormatter.format(0, context, unitSeparator)
+      parts.isEmpty() -> {
+        val fallbackUnitCount = distance.abs().toLength(fallbackFormatter.unit).measure.toLong()
+        fallbackFormatter.format(fallbackUnitCount, context, unitSeparator)
+      }
       else -> parts.joinToString(partSeparator)
     }
     return when {
