@@ -196,7 +196,6 @@ internal class RulerTest {
 
   @Test fun `formatting uses provided converter`() {
     Ruler.useImperialFormatter = false
-
     val distance = Distance.ofMillimeters(987)
     val length = distance.toLength(Millimeter)
 
@@ -206,15 +205,6 @@ internal class RulerTest {
     )
 
     formattedLength shouldBe "987000000.00nm"
-  }
-
-  @Test fun `auto formatting uses system locale by default`() {
-    val distance = Distance.ofFeet(4)
-    val length = distance.toLength(Meter)
-
-    val formattedLength = length.format(context)
-
-    formattedLength shouldBe "1yd 1ft"
   }
 
   @Test fun `inch length is properly formatted without imperial formatting`() {
@@ -260,6 +250,7 @@ internal class RulerTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `nanometers are reversed for RTL locales`() {
+    Ruler.useImperialFormatter = false
     val distance = Distance.of(1, Nanometer)
     val length = distance.toLength(Nanometer)
 
@@ -271,6 +262,7 @@ internal class RulerTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `micrometers are reversed for RTL locales`() {
+    Ruler.useImperialFormatter = false
     val distance = Distance.of(1, Micrometer)
     val length = distance.toLength(Micrometer)
 
@@ -282,6 +274,7 @@ internal class RulerTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `millimeters are reversed for RTL locales`() {
+    Ruler.useImperialFormatter = false
     val distance = Distance.of(1, Millimeter)
     val length = distance.toLength(Millimeter)
 
@@ -293,6 +286,7 @@ internal class RulerTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `meters are reversed for RTL locales`() {
+    Ruler.useImperialFormatter = false
     val distance = Distance.of(1, Meter)
     val length = distance.toLength(Meter)
 
@@ -304,6 +298,7 @@ internal class RulerTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `kilometers are reversed for RTL locales`() {
+    Ruler.useImperialFormatter = false
     val distance = Distance.of(1, Kilometer)
     val length = distance.toLength(Kilometer)
 
@@ -315,6 +310,7 @@ internal class RulerTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `megameters are reversed for RTL locales`() {
+    Ruler.useImperialFormatter = false
     val distance = Distance.of(1, Megameter)
     val length = distance.toLength(Megameter)
 
@@ -326,6 +322,7 @@ internal class RulerTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `gigameters are reversed for RTL locales`() {
+    Ruler.useImperialFormatter = false
     val distance = Distance.of(1, Gigameter)
     val length = distance.toLength(Gigameter)
 
@@ -337,6 +334,7 @@ internal class RulerTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `miles are reversed for RTL locales`() {
+    Ruler.useImperialFormatter = false
     val distance = Distance.of(1, Mile)
     val length = distance.toLength(Mile)
 
@@ -348,6 +346,7 @@ internal class RulerTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `yards are reversed for RTL locales`() {
+    Ruler.useImperialFormatter = false
     val distance = Distance.of(1, Yard)
     val length = distance.toLength(Yard)
 
@@ -359,6 +358,7 @@ internal class RulerTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `feet are reversed for RTL locales`() {
+    Ruler.useImperialFormatter = false
     val distance = Distance.of(1, Foot)
     val length = distance.toLength(Foot)
 
@@ -370,6 +370,7 @@ internal class RulerTest {
   }
 
   @Test @Config(qualifiers = "ar") fun `inches are reversed for RTL locales`() {
+    Ruler.useImperialFormatter = false
     val distance = Distance.of(1, Inch)
     val length = distance.toLength(Inch)
 
