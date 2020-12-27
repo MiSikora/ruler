@@ -54,16 +54,21 @@ public object Ruler : LengthConverter, LengthFormatter {
       .map { formatter -> with(formatter) { format(context, separator) } }
       .firstOrNull()
 
-  private val mutableImperialCountryCodes = mutableSetOf("US", "LR", "MM")
-  internal val imperialCountryCodes get() = mutableImperialCountryCodes.toSet()
+  private val builtInImperialCountryCodes = setOf("US", "LR", "MM")
 
-  private const val ukCountryCode = "GB"
+  private val imperialCountryCodes = mutableSetOf<String>()
+
+  public val installedImperialCountryCodes: Set<String>
+    get() = builtInImperialCountryCodes + imperialCountryCodes
+
   public var isUkImperial: Boolean
     get() = ukCountryCode in imperialCountryCodes
     set(add) {
-      val func = if (add) mutableImperialCountryCodes::add else mutableImperialCountryCodes::remove
-      synchronized(mutableImperialCountryCodes) { func(ukCountryCode) }
+      val func = if (add) imperialCountryCodes::add else imperialCountryCodes::remove
+      synchronized(imperialCountryCodes) { func(ukCountryCode) }
     }
+
+  private const val ukCountryCode = "GB"
 }
 
 public fun Distance.format(
