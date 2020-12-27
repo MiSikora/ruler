@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Distance.create(meters, nanometers)` method from the public API.
 - `LengthUnit.contains()` method from the public API.
 - `ImperialDistanceFormatter` class.
+- `Ruler.flooredFormatters` from the Ruler API. Flooring is now available solely via `FlooredLengthFormatter`.
 
 ### Fixed
 - Wrong lower meter bound of `Miles` unit.

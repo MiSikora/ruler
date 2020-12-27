@@ -55,23 +55,6 @@ public object Ruler {
       val func = if (add) mutableImperialCountryCodes::add else mutableImperialCountryCodes::remove
       synchronized(mutableImperialCountryCodes) { func(ukCountryCode) }
     }
-
-  internal val flooredFormatters = mutableListOf<LengthFormatter>()
-
-  public fun addFlooredFormatter(formatter: LengthFormatter): Unit = synchronized(flooredFormatters) {
-    flooredFormatters += formatter
-  }
-
-  public fun removeFlooredFormatter(formatter: LengthFormatter): Unit = synchronized(flooredFormatters) {
-    flooredFormatters -= formatter
-  }
-
-  internal val flooredFormatter = object : LengthFormatter {
-    override fun Length<*>.format(context: Context, separator: String): String = flooredFormatters.toList()
-        .asSequence()
-        .map { format(context, separator) }
-        .firstOrNull() ?: with(FlooredLengthFormatter) { format(context, separator) }
-  }
 }
 
 public fun Distance.format(
@@ -93,20 +76,6 @@ public fun <T : LengthUnit<T>> Distance.format(
   formatter: LengthFormatter = Ruler.formatter,
 ): String = toLength(unit).format(context, separator, converter, formatter)
 
-public fun Distance.formatFloored(
-  context: Context,
-  separator: String = "",
-): String = when {
-  context.useImperialUnits -> formatFloored(context, Yard, separator)
-  else -> formatFloored(context, Meter, separator)
-}
-
-public fun <T : LengthUnit<T>> Distance.formatFloored(
-  context: Context,
-  unit: T,
-  separator: String = "",
-): String = toLength(unit).formatFloored(context, separator)
-
 public fun Length<*>.format(
   context: Context,
   separator: String = "",
@@ -121,8 +90,3 @@ public fun Length<*>.format(
   val text = with(formatter) { length.format(context, separator) }
   return checkNotNull(text) { "Failed to format length: $length" }
 }
-
-public fun Length<*>.formatFloored(
-  context: Context,
-  separator: String = "",
-): String = format(context, separator, null, Ruler.flooredFormatter)

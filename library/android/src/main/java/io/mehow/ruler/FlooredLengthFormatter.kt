@@ -17,7 +17,7 @@ public object FlooredLengthFormatter : LengthFormatter {
   override fun Length<*>.format(
     context: Context,
     separator: String,
-  ): String = unit.partResource.let { context.getString(it, measure.toLong(), separator) }
+  ): String = context.getString(unit.partResource, measure.toLong(), separator)
 
   private val LengthUnit<*>.partResource
     get() = when (this) {
@@ -44,3 +44,22 @@ public object FlooredLengthFormatter : LengthFormatter {
       Mile -> R.string.io_mehow_ruler_miles_part
     }
 }
+
+public fun Distance.formatFloored(
+  context: Context,
+  separator: String = "",
+): String = when {
+  context.useImperialUnits -> formatFloored(context, Yard, separator)
+  else -> formatFloored(context, Meter, separator)
+}
+
+public fun <T : LengthUnit<T>> Distance.formatFloored(
+  context: Context,
+  unit: T,
+  separator: String = "",
+): String = toLength(unit).formatFloored(context, separator)
+
+public fun Length<*>.formatFloored(
+  context: Context,
+  separator: String = "",
+): String = format(context, separator, converter = null, FlooredLengthFormatter)
