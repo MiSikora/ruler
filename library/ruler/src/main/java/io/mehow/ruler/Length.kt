@@ -78,6 +78,11 @@ public class Length<T : LengthUnit<T>> internal constructor(
   }
 
   /**
+   * Returns a length whose value is the absolute value of this length.
+   */
+  public fun abs(): Length<T> = Length(distance.abs(), unit)
+
+  /**
    * Adds specified length to this length. Left hand side unit is preserved.
    */
   public operator fun plus(other: Length<*>): Length<T> = (distance + other.distance).toLength(unit)

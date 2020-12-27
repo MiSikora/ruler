@@ -22,6 +22,23 @@ import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
 
 internal class LengthSpec : BehaviorSpec({
+  Given("length") {
+    Then("it has correct absolute value") {
+      checkAll(
+          DistanceGenerator(
+              min = Distance.Min + Distance.ofNanometers(1),
+              max = Distance.Max
+          ),
+          DistanceUnitGenerator,
+      ) { distance, unit ->
+        val length = DistanceUnitGenerator.createLength(distance, unit)
+
+        val expectedLength = if (length.distance < Distance.Zero) -length else length
+        length.abs() shouldBe expectedLength
+      }
+    }
+  }
+
   Given("two lengths") {
     When("they are added") {
       Then("unit of the left operand is preserved") {

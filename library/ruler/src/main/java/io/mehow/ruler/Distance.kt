@@ -37,6 +37,11 @@ public class Distance private constructor(
   public fun <T : LengthUnit<T>> toLength(unit: T): Length<T> = Length(this, unit)
 
   /**
+   * Returns a distance whose value is the absolute value of this distance.
+   */
+  public fun abs(): Distance = create(meters.abs())
+
+  /**
    * Adds specified distance to this distance.
    */
   public operator fun plus(other: Distance): Distance = create(

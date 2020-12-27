@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AutoFitLengthConverter` class.
 - `LengthFormatter.Factory` interface.
 - `LengthConverter.Factory` interface.
+- `Distance.abs()` and `Length.abs()` methods.
 
 ### Changed
 - `LengthUnit` is no longer an interface. It is now a sealed class with two implementations – `SiLengthUnit` and `ImperialLengthUnit`.

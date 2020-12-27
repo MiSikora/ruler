@@ -243,5 +243,20 @@ internal class DistanceSpec : BehaviorSpec({
         }
       }
     }
+
+    When("I compute it's absolute value") {
+      Then("the result is correct") {
+        checkAll(
+            DistanceGenerator(
+                min = Distance.Min + Distance.ofNanometers(1),
+                max = Distance.Max,
+            )
+        ) { distance ->
+          val expectedDistance = if (distance < Distance.Zero) -distance else distance
+
+          distance.abs() shouldBe expectedDistance
+        }
+      }
+    }
   }
 })
