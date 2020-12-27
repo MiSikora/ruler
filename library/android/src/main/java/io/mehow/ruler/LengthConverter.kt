@@ -7,10 +7,9 @@ import android.content.Context
  */
 public fun interface LengthConverter {
   /**
-   * Maps an input [Length] to a one that should be formatted. Returns `null` if an input handling
-   * should be delegated to a different converter.
+   * Maps an input [Length] to a one that should be formatted.
    */
-  public fun Length<*>.convert(context: Context): Length<*>?
+  public fun Length<*>.convert(context: Context): Length<*>
 
   /**
    * Factory for [LengthConverter] that can be [installed][Ruler.addConverterFactory] in [Ruler].

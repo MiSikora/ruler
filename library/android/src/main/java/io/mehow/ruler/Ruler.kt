@@ -39,11 +39,11 @@ public object Ruler : LengthConverter, LengthFormatter {
     converterFactories -= factory
   }
 
-  override fun Length<*>.convert(context: Context): Length<*>? = installedConverterFactories
+  override fun Length<*>.convert(context: Context): Length<*> = installedConverterFactories
       .asSequence()
       .mapNotNull { factory -> factory.create(this, context) }
       .map { converter -> with(converter) { convert(context) } }
-      .firstOrNull()
+      .first()
 
   /**
    * Determines whether built-in [imperial formatting][ImperialLengthFormatter] should be applied when system locale

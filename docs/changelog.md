@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Order of arguments in `LengthFormatter.format()` method.
 - `Length` no longer changes units automatically based on `Locale` during formatting.
 - `LengthFormatter` can no longer return `null`.
+- `LengthConverter` can no longer return `null`.
 - Upgrade to Kotlin `1.4.21`.
 
 ### Removed
