@@ -158,7 +158,7 @@ public class Length<T : LengthUnit<T>> internal constructor(
 
   override fun hashCode(): Int = 31 * distance.hashCode() + unit.hashCode()
 
-  override fun toString(): String = "Length(measure=$measure, unit=$unit)"
+  override fun toString(): String = "Length(measure=${measure.stripTrailingZeros().toPlainString()}, unit=$unit)"
 
   public companion object {
 

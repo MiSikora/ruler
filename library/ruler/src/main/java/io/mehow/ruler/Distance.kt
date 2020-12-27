@@ -12,7 +12,6 @@ import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 import java.math.BigDecimal
-import java.math.RoundingMode.DOWN
 import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
 
@@ -29,7 +28,8 @@ public class Distance private constructor(
   internal val metersPart: Long = 0L,
   internal val nanosPart: Long = 0L,
 ) : Comparable<Distance> {
-  public val meters: BigDecimal = metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()
+  public val meters: BigDecimal =
+    (metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()).setScale(9)
 
   /**
    * Converts this distance to a [Length] with [unit].
@@ -106,7 +106,7 @@ public class Distance private constructor(
   public operator fun div(divisor: Long): Distance = when (divisor) {
     0L -> throw ArithmeticException("Cannot divide by 0.")
     1L -> this
-    else -> create(meters.divide(divisor.toBigDecimal(), DOWN))
+    else -> create(meters / divisor.toBigDecimal())
   }
 
   /**
@@ -120,7 +120,7 @@ public class Distance private constructor(
   public operator fun div(divisor: Double): Distance = when (divisor) {
     0.0 -> throw ArithmeticException("Cannot divide by 0.")
     1.0 -> this
-    else -> create(meters.divide(divisor.toBigDecimal(), DOWN))
+    else -> create(meters / divisor.toBigDecimal())
   }
 
   /**
@@ -142,7 +142,7 @@ public class Distance private constructor(
 
   override fun hashCode(): Int = 31 * metersPart.hashCode() + nanosPart.hashCode()
 
-  override fun toString(): String = "Distance(meters=$meters)"
+  override fun toString(): String = "Distance(meters=${meters.stripTrailingZeros().toPlainString()})"
 
   public companion object {
     private const val nanosInMeter = 1_000_000_000L
