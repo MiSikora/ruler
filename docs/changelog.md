@@ -15,17 +15,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Distance.abs()` and `Length.abs()` methods.
 
 ### Changed
-- `LengthUnit` is no longer an interface. It is now a sealed class with two implementations – `SiLengthUnit` and `ImperialLengthUnit`.
-- `LengthUnit` is no longer `Iterable`. It exposes now `units` property.
 - `Distance` and `Length` throw now `ArithmeticException` in case of failures due to overflows or math operations.
 - `Distance.exactTotalMeters` property name to `meters`.
-- `LengthConverter` and `LengthFormatter` to functional interfaces.
-- `ImperialLengthFormatter` substitutes `ImperialDistanceFormatter`. It offers a more unified API without bloated configurability.
+- `LengthUnit` is no longer an interface. It is now a sealed class with two implementations – `SiLengthUnit` and `ImperialLengthUnit`.
+- `LengthUnit` is no longer `Iterable`. It exposes now `units` property.
 - Custom `LengthFormatter`s must be now installed using `LengthFormatter.Factory` interface and `Ruler.addFormatterFactory()` method.
-- Custom `LengthConverter`s must be now installed using `LengthConverter.Factory` interface and `Ruler.addConverterFactory()` method.
-- Order of arguments in `LengthFormatter.format()` method.
-- `Length` no longer changes units automatically based on `Locale` during formatting.
+- `LengthFormatter` to a functional interface.
 - `LengthFormatter` can no longer return `null`.
+- `Length` no longer changes units automatically based on `Locale` during formatting.
+- Order of arguments in `LengthFormatter.format()` method.
+- `ImperialLengthFormatter` substitutes `ImperialDistanceFormatter`. It offers a more unified API without bloated configurability.
+- Custom `LengthConverter`s must be now installed using `LengthConverter.Factory` interface and `Ruler.addConverterFactory()` method.
+- `LengthConverter` to a functional interface.
 - `LengthConverter` can no longer return `null`.
 - Upgrade to Kotlin `1.4.21`.
 
@@ -33,10 +34,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Explicit Java support with `@Jvm*` annotations.
 - `Distance.metersPart` and `Distance.nanosPart` properties.
 - `Distance.create(meters, nanometers)` method.
+- `Distance.format()` and `Distance.formatFloored()` overloads that accept `LengthUnit`.
 - `LengthUnit.contains()` method.
 - `Ruler.flooredFormatters` property. Flooring is now available solely via `FlooredLengthFormatter`.
 - `Ruler` implements now `LengthConverter` and `LengthFormatter`.
-- `Distance.format()` and `Distance.formatFloored()` overloads that accept `LengthUnit`.
 
 ### Fixed
 - Wrong lower meter bound of `Miles` unit.
