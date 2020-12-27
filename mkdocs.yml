@@ -38,6 +38,8 @@ plugins:
 nav:
   - 'Quick start': index.md
   - 'User guide': user-guide.md
-  - 'API': api.md
+  - 'API':
+      - 'ruler': api/ruler/ruler/index.html
+      - 'ruler-android': api/android/android/index.html
   - 'Changelog': changelog.md
   - 'Releasing': releasing.md

@@ -14,7 +14,10 @@ ext.libs = [
         "xTestCoreKtx": "androidx.test:core-ktx:1.3.0"
     ],
     "kotlinGradlePlugin": "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21",
-    "dokkaGradlePlugin": "org.jetbrains.dokka:dokka-gradle-plugin:1.4.20",
+    "dokka": [
+        "gradlePlugin": "org.jetbrains.dokka:dokka-gradle-plugin:1.4.20",
+        "gradlePluginId": "org.jetbrains.dokka",
+    ],
     "kotest": [
         "runnerJunit5": "io.kotest:kotest-runner-junit5-jvm:${versions.kotest}",
         "assertions": "io.kotest:kotest-assertions-core-jvm:${versions.kotest}",
