@@ -35,7 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Distance.metersPart` and `Distance.nanosPart` properties.
 - `Distance.create(meters, nanometers)` method.
 - `Distance.format()` and `Distance.formatFloored()` overloads that accept `LengthUnit`.
-- `LengthUnit.contains()` method.
 - `Ruler.flooredFormatters` property. Flooring is now available solely via `FlooredLengthFormatter`.
 - `Ruler` implements now `LengthConverter` and `LengthFormatter`.
 

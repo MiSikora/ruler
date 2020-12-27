@@ -28,7 +28,10 @@ public sealed class LengthUnit<T>(
    */
   public abstract val units: List<T>
 
-  internal operator fun contains(distance: Distance): Boolean {
+  /**
+   * Checks if a distance is in range of this unit.
+   */
+  public operator fun contains(distance: Distance): Boolean {
     val meters = distance.meters.abs()
     val inLowerBound = meters >= lowerBound.meters
     val inUpperBound = upperBound?.meters?.let { meters < it } != false
