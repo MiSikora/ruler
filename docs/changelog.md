@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- `AutoLengthFormatter` class.
-- `FlooredLengthFormatter` class.
-- `AutoFitLengthConverter` class.
-- `LengthFormatter.Factory` interface.
-- `LengthConverter.Factory` interface.
+- `AutoLengthFormatter` class. Use it to format lengths using resources defined in the library based on a unit.
+- `FlooredLengthFormatter` class. Use it to floor a length unit quantities and format them using resources defined in the library.
+- `AutoFitLengthConverter` class. Use it to convert lengths to different lengths a best fitting units based on `Length.withAutoUnit()` and unit coercion.
+- `LengthFormatter.Factory` interface. Use it to install custom formatters in `Ruler`.
+- `LengthConverter.Factory` interface. Use it to install custom converters in `Ruler`.
 - `Distance.abs()` and `Length.abs()` methods.
 
 ### Changed
