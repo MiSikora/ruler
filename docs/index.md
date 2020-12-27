@@ -13,11 +13,11 @@ Define a distance and manipulate it.
 val distanceFromMeters: Distance = Distance.ofMeters(100)
 val distanceFromYards: Distance = Distance.ofYards(50)
 
-// Length has a unit attached to it
+// Length has a unit attached to it.
 val metersLength: Length<SiLengthUnit.Meter> = distanceFromMeters.toLength(SiLengthUnit.Meter)
 val inchesLength: Length<ImperialLengthUnit.Inch> = distanceFromMeters.toLength(ImperialLengthUnit.Inch)
 
-// metersLength and inchesLength represent the same distance but with a different units attached to them
+// metersLength and inchesLength represent the same distance but with a different units attached to them.
 check(metersLength - inchesLength == Length.ofMeters(0))
 ```
 
@@ -30,10 +30,10 @@ fun main(context: Context) {
 
   // Assumes en_US Locale on a device.
 
-  // Prints "109yd 1ft 1in"
+  // Prints "109yd 1ft 1in".
   val humanReadableDistance: String = distance.format(context)
 
-  // Prints "109yd 1ft 1in"
+  // Prints "109yd 1ft 1in".
   val humanReadableLength: String = length.format(context)
 }
 ```
@@ -51,16 +51,6 @@ android {
 
   kotlinOptions {
     jvmTarget = "1.8"
-  }
-}
-```
-
-Also, you have to enable [default methods generation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-default/) by Kotlin compiler. You can do this by adding a compiler flag in a `build.gradle` file.
-
-```groovy
-android {
-  kotlinOptions {
-    freeCompilerArgs += "-Xjvm-default=enable"
   }
 }
 ```
