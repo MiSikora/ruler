@@ -22,28 +22,32 @@ public object Ruler {
         .firstOrNull() ?: with(AutoFitLengthConverter) { convert(context) }
   }
 
-  internal val formatters = mutableListOf<LengthFormatter>()
+  @Volatile public var useImperialFormatter: Boolean = true
 
-  public fun addFormatter(formatter: LengthFormatter): Unit = synchronized(formatters) {
-    formatters += formatter
+  private val builtInFormatterFactories = listOf(
+      ImperialLengthFormatter.Factory(partSeparator = " ") { useImperialFormatter },
+      LengthFormatter.Factory { _, _ -> AutoLengthFormatter },
+  )
+
+  private val formatterFactories = mutableListOf<LengthFormatter.Factory>()
+
+  public val installedFormatterFactories: List<LengthFormatter.Factory>
+    get() = builtInFormatterFactories + formatterFactories
+
+  public fun addFormatterFactory(factory: LengthFormatter.Factory): Unit = synchronized(formatterFactories) {
+    formatterFactories += factory
   }
 
-  public fun removeFormatter(formatter: LengthFormatter): Unit = synchronized(formatters) {
-    formatters -= formatter
+  public fun removeFormatterFactory(factory: LengthFormatter.Factory): Unit = synchronized(formatterFactories) {
+    formatterFactories -= factory
   }
 
-  internal val formatter = object : LengthFormatter {
-    override fun Length<*>.format(context: Context, separator: String): String? = formatters.toList()
-        .asSequence()
-        .map { format(context, separator) }
-        .firstOrNull() ?: with(AutoLengthFormatter) { format(context, separator) }
+  public val formatter: LengthFormatter = LengthFormatter { context, separator ->
+    installedFormatterFactories.asSequence()
+        .mapNotNull { factory -> factory.create(this, separator) }
+        .map { formatter -> with(formatter) { format(context, separator) } }
+        .firstOrNull()
   }
-
-  public var useImperialFormatter: Boolean
-    get() = AutoLengthFormatter.useImperialFormatter
-    set(value) {
-      AutoLengthFormatter.useImperialFormatter = value
-    }
 
   private val mutableImperialCountryCodes = mutableSetOf("US", "LR", "MM")
   internal val imperialCountryCodes get() = mutableImperialCountryCodes.toSet()

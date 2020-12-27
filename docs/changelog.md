@@ -7,25 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- `AutoLengthFormatter` to the public API.
-- `FlooredLengthFormatter` to the public API.
-- `AutoFitLengthConverter` to the public API.
-- `ImperialLengthFormatter` class. It replaces removed `ImperialDistanceFormatter` but offers a simpler API without bloated configurability.
+- `AutoLengthFormatter` class.
+- `FlooredLengthFormatter` class.
+- `AutoFitLengthConverter` class.
+- `LengthFormatter.Factory` interface.
 
 ### Changed
 - `LengthUnit` is no longer an interface. It is now a sealed class with two implementations – `SiLengthUnit` and `ImperialLengthUnit`.
 - `Distance` and `Length` throw now `ArithmeticException` in case of failures due to overflows or math operations.
 - `Distance.exactTotalMeters` property name to `meters`.
 - `LengthConverter` and `LengthFormatter` to functional interfaces.
+- `ImperialLengthFormatter` substitutes `ImperialDistanceFormatter`. It offers a more unified API without bloated configurability.
+- Custom `LengthFormatter`s must be now installed using `LengthFormatter.Factory` interface and `Ruler.addFormatterFactory()` method.
 - Upgrade to Kotlin `1.4.21`.
 
 ### Removed
 - Explicit Java support with `@Jvm*` annotations.
-- `metersPart` and `nanosPart` from `Distance` public the API.
-- `Distance.create(meters, nanometers)` method from the public API.
-- `LengthUnit.contains()` method from the public API.
-- `ImperialDistanceFormatter` class.
-- `Ruler.flooredFormatters` from the Ruler API. Flooring is now available solely via `FlooredLengthFormatter`.
+- `Distance.metersPart` and `Distance.nanosPart` properties.
+- `Distance.create(meters, nanometers)` method.
+- `LengthUnit.contains()` method.
+- `Ruler.flooredFormatters` property. Flooring is now available solely via `FlooredLengthFormatter`.
 
 ### Fixed
 - Wrong lower meter bound of `Miles` unit.

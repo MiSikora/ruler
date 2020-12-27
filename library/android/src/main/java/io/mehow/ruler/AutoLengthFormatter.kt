@@ -14,14 +14,9 @@ import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 
 public object AutoLengthFormatter : LengthFormatter {
-  @Volatile internal var useImperialFormatter = true
-
-  override fun Length<*>.format(context: Context, separator: String): String? = when (val unit = unit) {
+  override fun Length<*>.format(context: Context, separator: String): String = when (val unit = unit) {
     is SiLengthUnit -> context.getString(unit.resource, measure.toDouble(), separator)
-    is ImperialLengthUnit -> when {
-      useImperialFormatter -> with(ImperialLengthFormatter.Full) { format(context, separator) }
-      else -> context.getString(unit.resource, measure.toDouble(), separator)
-    }
+    is ImperialLengthUnit -> context.getString(unit.resource, measure.toDouble(), separator)
   }
 
   private val SiLengthUnit.resource

@@ -3,8 +3,7 @@ package io.mehow.ruler
 import android.content.Context
 
 /**
- * Formats [Length] to a displayable output. Can be automatically applied during data formatting
- * by [installing][Ruler.addFormatter] it into the [Ruler].
+ * Formats [Length] to a displayable output.
  */
 public fun interface LengthFormatter {
   /**
@@ -12,4 +11,15 @@ public fun interface LengthFormatter {
    * Returns `null` if an input handling should be delegated to a different formatter.
    */
   public fun Length<*>.format(context: Context, separator: String): String?
+
+  /**
+   * Factory for [LengthFormatter] that can be [installed][Ruler.addFormatterFactory] in [Ruler].
+   */
+  public fun interface Factory {
+    /**
+     * Creates a [LengthFormatter] that will be used to format an input. It should return `null` if no formatter
+     * created by this factory can handle the input.
+     */
+    public fun create(length: Length<*>, separator: String): LengthFormatter?
+  }
 }

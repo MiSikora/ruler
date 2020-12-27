@@ -42,6 +42,24 @@ public class ImperialLengthFormatter internal constructor(
         .build()
   }
 
+  public class Factory(
+    partSeparator: String,
+    private val isEnabled: () -> Boolean,
+  ) : LengthFormatter.Factory {
+    private val formatter = Builder()
+        .withMiles()
+        .withYards()
+        .withFeet()
+        .withInches()
+        .withPartSeparator(partSeparator)
+        .build()
+
+    override fun create(length: Length<*>, separator: String): LengthFormatter? = when {
+      isEnabled() && length.unit is ImperialLengthUnit -> formatter
+      else -> null
+    }
+  }
+
   public class Builder private constructor(
     internal val formatters: Set<UnitFormatter>,
     internal val partSeparator: String = " ",
