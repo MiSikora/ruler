@@ -6,6 +6,12 @@ import io.mehow.ruler.ImperialLengthUnit.Inch
 import io.mehow.ruler.ImperialLengthUnit.Mile
 import io.mehow.ruler.ImperialLengthUnit.Yard
 
+/**
+ * Formatter that applies imperial system friendly rules to a [Length]. For example when length is 3.5 feet it will
+ * be displayed as "3ft 6in" instead of "3.5ft".
+ *
+ * @see ImperialLengthFormatter.Builder
+ */
 public class ImperialLengthFormatter internal constructor(
   builder: Builder,
 ) : LengthFormatter {
@@ -51,7 +57,13 @@ public class ImperialLengthFormatter internal constructor(
         .build()
   }
 
-  public class Factory(
+  /**
+   * Factory for [ImperialLengthFormatter] that can conditionally create a formatter with all unit parts.
+   *
+   * @param partSeparator Separator that should be used between unit parts.
+   * @param isEnabled Enables or disables formatter creation.
+   */
+  public class AllPartsFactory(
     partSeparator: String,
     private val isEnabled: () -> Boolean,
   ) : LengthFormatter.Factory {
@@ -70,6 +82,10 @@ public class ImperialLengthFormatter internal constructor(
     ): LengthFormatter? = formatter.takeIf { length.unit is ImperialLengthUnit && isEnabled() }
   }
 
+  /**
+   * [ImperialLengthFormatter] builder. Created formatter uses only units that were set during builder construction.
+   * Units are always ordered by their capacity from highest to lowest.
+   */
   public class Builder private constructor(
     internal val formatters: Set<UnitFormatter>,
     private val fallbackUnit: ImperialLengthUnit = Foot,
@@ -79,18 +95,39 @@ public class ImperialLengthFormatter internal constructor(
 
     public constructor() : this(emptySet())
 
+    /**
+     * Adds miles unit part to the builder.
+     */
     public fun withMiles(): Builder = withUnit(Mile)
 
+    /**
+     * Adds yards unit part to the builder.
+     */
     public fun withYards(): Builder = withUnit(Yard)
 
+    /**
+     * Adds feet unit part to the builder.
+     */
     public fun withFeet(): Builder = withUnit(Foot)
 
+    /**
+     * Adds inches unit part to the builder.
+     */
     public fun withInches(): Builder = withUnit(Inch)
 
+    /**
+     * Sets part separator between different units.
+     */
     public fun withPartSeparator(separator: String): Builder = Builder(formatters, fallbackUnit, separator)
 
+    /**
+     * Sets the default unit that should be used for formatting if no unit part was added.
+     */
     public fun withFallbackUnit(unit: ImperialLengthUnit): Builder = Builder(formatters, unit, partSeparator)
 
+    /**
+     * Creates new formatter with properties defined in this builder.
+     */
     public fun build(): ImperialLengthFormatter = ImperialLengthFormatter(this)
 
     private fun withUnit(unit: ImperialLengthUnit) = Builder(

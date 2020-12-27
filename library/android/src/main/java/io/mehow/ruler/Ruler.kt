@@ -52,7 +52,7 @@ public object Ruler : LengthConverter, LengthFormatter {
   @Volatile public var useImperialFormatter: Boolean = true
 
   private val builtInFormatterFactories = listOf(
-      ImperialLengthFormatter.Factory(partSeparator = " ") { useImperialFormatter },
+      ImperialLengthFormatter.AllPartsFactory(partSeparator = " ") { useImperialFormatter },
       LengthFormatter.Factory { _, _, _ -> AutoLengthFormatter },
   )
 

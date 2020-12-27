@@ -13,6 +13,9 @@ import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 
+/**
+ * Formatter that applies a resource based on a unit type in [Length].
+ */
 public object AutoLengthFormatter : LengthFormatter {
   override fun Length<*>.format(unitSeparator: String, context: Context): String = when (val unit = unit) {
     is SiLengthUnit -> context.getString(unit.resource, measure.toDouble(), unitSeparator)
