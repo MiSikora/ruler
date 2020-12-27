@@ -77,18 +77,9 @@ public fun Distance.format(
   converter: LengthConverter? = Ruler,
   formatter: LengthFormatter = Ruler,
 ): String = when {
-  context.useImperialUnits -> format(context, Yard, separator, converter, formatter)
-  else -> format(context, Meter, separator, converter, formatter)
-}
-
-@Suppress("LongParameterList")
-public fun <T : LengthUnit<T>> Distance.format(
-  context: Context,
-  unit: T,
-  separator: String = "",
-  converter: LengthConverter? = Ruler,
-  formatter: LengthFormatter = Ruler,
-): String = toLength(unit).format(context, separator, converter, formatter)
+  context.useImperialUnits -> toLength(Yard)
+  else -> toLength(Meter)
+}.format(context, separator, converter, formatter)
 
 public fun Length<*>.format(
   context: Context,

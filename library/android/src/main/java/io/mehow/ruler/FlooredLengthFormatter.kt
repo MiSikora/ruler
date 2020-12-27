@@ -49,15 +49,9 @@ public fun Distance.formatFloored(
   context: Context,
   separator: String = "",
 ): String = when {
-  context.useImperialUnits -> formatFloored(context, Yard, separator)
-  else -> formatFloored(context, Meter, separator)
-}
-
-public fun <T : LengthUnit<T>> Distance.formatFloored(
-  context: Context,
-  unit: T,
-  separator: String = "",
-): String = toLength(unit).formatFloored(context, separator)
+  context.useImperialUnits -> toLength(Yard)
+  else -> toLength(Meter)
+}.formatFloored(context, separator)
 
 public fun Length<*>.formatFloored(
   context: Context,

@@ -68,7 +68,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofMicrometers(1) +
         Distance.ofNanometers(1)
 
-    val formattedDistance = distance.formatFloored(context, Gigameter)
+    val formattedDistance = distance.toLength(Gigameter).formatFloored(context)
 
     formattedDistance shouldBe "1Gm"
   }
@@ -82,7 +82,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofMicrometers(1) +
         Distance.ofNanometers(1)
 
-    val formattedDistance = distance.formatFloored(context, Megameter)
+    val formattedDistance = distance.toLength(Megameter).formatFloored(context)
 
     formattedDistance shouldBe "1001Mm"
   }
@@ -96,7 +96,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofMicrometers(1) +
         Distance.ofNanometers(1)
 
-    val formattedDistance = distance.formatFloored(context, Kilometer)
+    val formattedDistance = distance.toLength(Kilometer).formatFloored(context)
 
     formattedDistance shouldBe "1001001km"
   }
@@ -110,7 +110,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofMicrometers(1) +
         Distance.ofNanometers(1)
 
-    val formattedDistance = distance.formatFloored(context, Meter)
+    val formattedDistance = distance.toLength(Meter).formatFloored(context)
 
     formattedDistance shouldBe "1001001001m"
   }
@@ -124,7 +124,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofMicrometers(1) +
         Distance.ofNanometers(1)
 
-    val formattedDistance = distance.formatFloored(context, Millimeter)
+    val formattedDistance = distance.toLength(Millimeter).formatFloored(context)
 
     formattedDistance shouldBe "1001001001001mm"
   }
@@ -138,7 +138,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofMicrometers(1) +
         Distance.ofNanometers(1)
 
-    val formattedDistance = distance.formatFloored(context, Micrometer)
+    val formattedDistance = distance.toLength(Micrometer).formatFloored(context)
 
     formattedDistance shouldBe "1001001001001001µm"
   }
@@ -152,7 +152,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofMicrometers(1) +
         Distance.ofNanometers(1)
 
-    val formattedDistance = distance.formatFloored(context, Nanometer)
+    val formattedDistance = distance.toLength(Nanometer).formatFloored(context)
 
     formattedDistance shouldBe "1001001001001001001nm"
   }
@@ -165,7 +165,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofMicrometers(999) +
         Distance.ofNanometers(999)
 
-    val formattedDistance = distance.formatFloored(context, Gigameter)
+    val formattedDistance = distance.toLength(Gigameter).formatFloored(context)
 
     formattedDistance shouldBe "0Gm"
   }
@@ -177,7 +177,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofMicrometers(999) +
         Distance.ofNanometers(999)
 
-    val formattedDistance = distance.formatFloored(context, Megameter)
+    val formattedDistance = distance.toLength(Megameter).formatFloored(context)
 
     formattedDistance shouldBe "0Mm"
   }
@@ -188,7 +188,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofMicrometers(999) +
         Distance.ofNanometers(999)
 
-    val formattedDistance = distance.formatFloored(context, Kilometer)
+    val formattedDistance = distance.toLength(Kilometer).formatFloored(context)
 
     formattedDistance shouldBe "0km"
   }
@@ -198,7 +198,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofMicrometers(999) +
         Distance.ofNanometers(999)
 
-    val formattedDistance = distance.formatFloored(context, Meter)
+    val formattedDistance = distance.toLength(Meter).formatFloored(context)
 
     formattedDistance shouldBe "0m"
   }
@@ -207,7 +207,7 @@ internal class FlooredLengthFormatterTest {
     val distance = Distance.ofMicrometers(999) +
         Distance.ofNanometers(999)
 
-    val formattedDistance = distance.formatFloored(context, Millimeter)
+    val formattedDistance = distance.toLength(Millimeter).formatFloored(context)
 
     formattedDistance shouldBe "0mm"
   }
@@ -215,7 +215,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `micrometers are formatting zeros properly`() {
     val distance = Distance.ofNanometers(999)
 
-    val formattedDistance = distance.formatFloored(context, Micrometer)
+    val formattedDistance = distance.toLength(Micrometer).formatFloored(context)
 
     formattedDistance shouldBe "0µm"
   }
@@ -223,7 +223,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `nanometers are formatting zeros properly`() {
     val distance = Distance.Zero
 
-    val formattedDistance = distance.formatFloored(context, Nanometer)
+    val formattedDistance = distance.toLength(Nanometer).formatFloored(context)
 
     formattedDistance shouldBe "0nm"
   }
@@ -234,7 +234,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofFeet(1) +
         Distance.ofInches(1)
 
-    val formattedDistance = distance.formatFloored(context, Mile)
+    val formattedDistance = distance.toLength(Mile).formatFloored(context)
 
     formattedDistance shouldBe "1mi"
   }
@@ -244,7 +244,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofFeet(1) +
         Distance.ofInches(1)
 
-    val formattedDistance = distance.formatFloored(context, Yard)
+    val formattedDistance = distance.toLength(Yard).formatFloored(context)
 
     formattedDistance shouldBe "1yd"
   }
@@ -253,7 +253,7 @@ internal class FlooredLengthFormatterTest {
     val distance = Distance.ofFeet(1) +
         Distance.ofInches(1)
 
-    val formattedDistance = distance.formatFloored(context, Foot)
+    val formattedDistance = distance.toLength(Foot).formatFloored(context)
 
     formattedDistance shouldBe "1ft"
   }
@@ -261,7 +261,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `inches are properly formatted`() {
     val distance = Distance.ofInches(1)
 
-    val formattedDistance = distance.formatFloored(context, Inch)
+    val formattedDistance = distance.toLength(Inch).formatFloored(context)
 
     formattedDistance shouldBe "1in"
   }
@@ -271,7 +271,7 @@ internal class FlooredLengthFormatterTest {
         Distance.ofFeet(2) +
         Distance.ofInches(11.99)
 
-    val formattedDistance = distance.formatFloored(context, Mile)
+    val formattedDistance = distance.toLength(Mile).formatFloored(context)
 
     formattedDistance shouldBe "0mi"
   }
@@ -280,7 +280,7 @@ internal class FlooredLengthFormatterTest {
     val distance = Distance.ofFeet(2) +
         Distance.ofInches(11.99)
 
-    val formattedDistance = distance.formatFloored(context, Yard)
+    val formattedDistance = distance.toLength(Yard).formatFloored(context)
 
     formattedDistance shouldBe "0yd"
   }
@@ -288,7 +288,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `feet are formatting zeros properly`() {
     val distance = Distance.ofInches(11.99)
 
-    val formattedDistance = distance.formatFloored(context, Foot)
+    val formattedDistance = distance.toLength(Foot).formatFloored(context)
 
     formattedDistance shouldBe "0ft"
   }
@@ -296,7 +296,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `inches are formatting zeros properly`() {
     val distance = Distance.ofInches(0.99)
 
-    val formattedDistance = distance.formatFloored(context, Inch)
+    val formattedDistance = distance.toLength(Inch).formatFloored(context)
 
     formattedDistance shouldBe "0in"
   }

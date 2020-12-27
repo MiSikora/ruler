@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `LengthUnit.contains()` method.
 - `Ruler.flooredFormatters` property. Flooring is now available solely via `FlooredLengthFormatter`.
 - `Ruler` implements now `LengthConverter` and `LengthFormatter`.
+- `Distance.format()` and `Distance.formatFloored()` overloads that accept `LengthUnit`.
 
 ### Fixed
 - Wrong lower meter bound of `Miles` unit.
