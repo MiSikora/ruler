@@ -14,24 +14,29 @@ public class ImperialLengthFormatter internal constructor(
   private val minPartFormatter = formatters.lastOrNull()
 
   override fun Length<*>.format(unitSeparator: String, context: Context): String? {
-    val parts = distance.prepareParts(context, unitSeparator)
+    val parts = distance.formatUnitParts(context, unitSeparator)
     return when {
       parts.isEmpty() -> minPartFormatter?.format(0, context, unitSeparator)
       else -> parts.joinToString(partSeparator)
     }
   }
 
-  private fun Distance.prepareParts(
+  private fun Distance.formatUnitParts(
     context: Context,
     unitSeparator: String,
   ) = formatters.fold(this to emptyList<String>()) { (partDistance, parts), formatter ->
-    val unitCount = partDistance.toLength(formatter.unit).measure.toLong()
-    if (unitCount == 0L) return@fold partDistance to parts
-
-    val adjustedDistance = partDistance - Distance.of(unitCount, formatter.unit)
-    val formattedParts = parts + formatter.format(unitCount, context, unitSeparator)
-    adjustedDistance to formattedParts
+    when {
+      partDistance.hasAtLeastOne(formatter.unit) -> {
+        val unitCount = partDistance.toLength(formatter.unit).measure.toLong()
+        val adjustedDistance = partDistance - Distance.of(unitCount, formatter.unit)
+        val part = formatter.format(unitCount, context, unitSeparator)
+        adjustedDistance to parts + part
+      }
+      else -> partDistance to parts
+    }
   }.second
+
+  private fun Distance.hasAtLeastOne(unit: ImperialLengthUnit) = this >= Distance.of(1, unit)
 
   public companion object {
     public val Full: ImperialLengthFormatter = Builder()
