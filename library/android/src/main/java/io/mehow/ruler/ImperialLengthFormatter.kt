@@ -88,7 +88,7 @@ public class ImperialLengthFormatter internal constructor(
    */
   public class Builder private constructor(
     internal val formatters: Set<UnitFormatter>,
-    private val fallbackUnit: ImperialLengthUnit = Foot,
+    private val fallbackUnit: ImperialLengthUnit = Yard,
     internal val partSeparator: String = " ",
   ) {
     internal val fallbackFormatter = formatters.lastOrNull() ?: UnitFormatter(fallbackUnit)
