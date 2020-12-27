@@ -96,11 +96,7 @@ public fun Length<*>.format(
   converter: LengthConverter? = Ruler,
   formatter: LengthFormatter = Ruler,
 ): String {
-  val length = if (converter != null) {
-    val convertedLength = with(converter) { convert(context) }
-    checkNotNull(convertedLength) { "Failed to convert length: $this" }
-  } else this
-
+  val length = converter?.run { convert(context) } ?: this
   val text = with(formatter) { length.format(context, separator) }
   return checkNotNull(text) { "Failed to format length: $length" }
 }
