@@ -6,7 +6,7 @@ import io.mehow.ruler.SiLengthUnit.Meter
 
 public object Ruler : LengthConverter, LengthFormatter {
   private val builtInConverterFactories = listOf(
-      LengthConverter.Factory { AutoFitLengthConverter },
+      LengthConverter.Factory { _, _ -> AutoFitLengthConverter },
   )
 
   private val converterFactories = mutableListOf<LengthConverter.Factory>()
@@ -24,7 +24,7 @@ public object Ruler : LengthConverter, LengthFormatter {
 
   override fun Length<*>.convert(context: Context): Length<*>? = installedConverterFactories
       .asSequence()
-      .mapNotNull { factory -> factory.create(this) }
+      .mapNotNull { factory -> factory.create(this, context) }
       .map { converter -> with(converter) { convert(context) } }
       .firstOrNull()
 

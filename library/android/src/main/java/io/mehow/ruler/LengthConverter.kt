@@ -20,6 +20,6 @@ public fun interface LengthConverter {
      * Creates a [LengthConverter] that will be used to process an input. It should return `null` if no converter
      * created by this factory can handle the input.
      */
-    public fun create(length: Length<*>): LengthConverter?
+    public fun create(length: Length<*>, context: Context): LengthConverter?
   }
 }
