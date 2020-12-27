@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `FlooredLengthFormatter` class.
 - `AutoFitLengthConverter` class.
 - `LengthFormatter.Factory` interface.
+- `LengthConverter.Factory` interface.
 
 ### Changed
 - `LengthUnit` is no longer an interface. It is now a sealed class with two implementations – `SiLengthUnit` and `ImperialLengthUnit`.
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `LengthConverter` and `LengthFormatter` to functional interfaces.
 - `ImperialLengthFormatter` substitutes `ImperialDistanceFormatter`. It offers a more unified API without bloated configurability.
 - Custom `LengthFormatter`s must be now installed using `LengthFormatter.Factory` interface and `Ruler.addFormatterFactory()` method.
+- Custom `LengthConverter`s must be now installed using `LengthConverter.Factory` interface and `Ruler.addConverterFactory()` method.
 - Upgrade to Kotlin `1.4.21`.
 
 ### Removed

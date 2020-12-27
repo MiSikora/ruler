@@ -5,21 +5,28 @@ import io.mehow.ruler.ImperialLengthUnit.Yard
 import io.mehow.ruler.SiLengthUnit.Meter
 
 public object Ruler {
-  internal val converters = mutableListOf<LengthConverter>()
+  private val builtInConverterFactories = listOf(
+      LengthConverter.Factory { AutoFitLengthConverter },
+  )
 
-  public fun addConverter(converter: LengthConverter): Unit = synchronized(converters) {
-    converters += converter
+  private val converterFactories = mutableListOf<LengthConverter.Factory>()
+
+  public val installedConverterFactories: List<LengthConverter.Factory>
+    get() = builtInConverterFactories + converterFactories
+
+  public fun addConverterFactory(factory: LengthConverter.Factory): Unit = synchronized(converterFactories) {
+    converterFactories += factory
   }
 
-  public fun removeConverter(converter: LengthConverter): Unit = synchronized(converters) {
-    converters -= converter
+  public fun removeConverter(factory: LengthConverter.Factory): Unit = synchronized(converterFactories) {
+    converterFactories -= factory
   }
 
-  internal val converter = object : LengthConverter {
-    override fun Length<*>.convert(context: Context): Length<*> = converters.toList()
-        .asSequence()
-        .map { convert(context) }
-        .firstOrNull() ?: with(AutoFitLengthConverter) { convert(context) }
+  internal val converter = LengthConverter { context ->
+    installedConverterFactories.asSequence()
+        .mapNotNull { factory -> factory.create(this) }
+        .map { converter -> with(converter) { convert(context) } }
+        .firstOrNull()
   }
 
   @Volatile public var useImperialFormatter: Boolean = true

@@ -3,8 +3,7 @@ package io.mehow.ruler
 import android.content.Context
 
 /**
- * Converts one [Length] to another one. Useful if you need to process an input before it is displayed to a user.
- * Can be automatically applied during data formatting by [installing][Ruler.addConverter] it into the [Ruler].
+ * Converts one [Length] to another one.
  */
 public fun interface LengthConverter {
   /**
@@ -12,4 +11,15 @@ public fun interface LengthConverter {
    * should be delegated to a different converter.
    */
   public fun Length<*>.convert(context: Context): Length<*>?
+
+  /**
+   * Factory for [LengthConverter] that can be [installed][Ruler.addConverterFactory] in [Ruler].
+   */
+  public fun interface Factory {
+    /**
+     * Creates a [LengthConverter] that will be used to process an input. It should return `null` if no converter
+     * created by this factory can handle the input.
+     */
+    public fun create(length: Length<*>): LengthConverter?
+  }
 }
