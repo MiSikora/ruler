@@ -18,10 +18,15 @@ public sealed class LengthUnit<T>(
   private val upperBound: Distance?,
   private val ordinal: Int,
   private val name: String,
-) : Comparable<T>, Iterable<T> where T : LengthUnit<T> {
+) : Comparable<T> where T : LengthUnit<T> {
   final override fun compareTo(other: T): Int = ordinal.compareTo(other.ordinal)
 
   final override fun toString(): String = name
+
+  /**
+   * All available units in this [length unit][LengthUnit] system.
+   */
+  public abstract val units: List<T>
 
   internal operator fun contains(distance: Distance): Boolean {
     val meters = distance.meters.abs()
@@ -98,10 +103,13 @@ public sealed class SiLengthUnit(
       name = "Gigameter",
   )
 
-  final override fun iterator(): Iterator<SiLengthUnit> = values.iterator()
+  override val units: List<SiLengthUnit> get() = SiLengthUnit.units
 
   public companion object {
-    public val values: List<SiLengthUnit> by lazy(NONE) {
+    /**
+     * All available units in the [SI][SiLengthUnit] system.
+     */
+    public val units: List<SiLengthUnit> by lazy(NONE) {
       listOf(Nanometer, Micrometer, Millimeter, Meter, Kilometer, Megameter, Gigameter)
     }
   }
@@ -150,10 +158,13 @@ public sealed class ImperialLengthUnit(
       name = "Mile",
   )
 
-  final override fun iterator(): Iterator<ImperialLengthUnit> = values.iterator()
+  override val units: List<ImperialLengthUnit> get() = ImperialLengthUnit.units
 
   public companion object {
-    public val values: List<ImperialLengthUnit> by lazy(NONE) {
+    /**
+     * All available units in the [imperial][ImperialLengthUnit] system.
+     */
+    public val units: List<ImperialLengthUnit> by lazy(NONE) {
       listOf(Inch, Foot, Yard, Mile)
     }
   }

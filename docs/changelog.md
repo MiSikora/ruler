@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - `LengthUnit` is no longer an interface. It is now a sealed class with two implementations – `SiLengthUnit` and `ImperialLengthUnit`.
+- `LengthUnit` is no longer `Iterable`. It exposes now `units` property.
 - `Distance` and `Length` throw now `ArithmeticException` in case of failures due to overflows or math operations.
 - `Distance.exactTotalMeters` property name to `meters`.
 - `LengthConverter` and `LengthFormatter` to functional interfaces.

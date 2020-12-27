@@ -44,7 +44,7 @@ public class Length<T : LengthUnit<T>> internal constructor(
   /**
    * Applies best fitting unit to this length. Fitting is based on bounds defined in units [LengthUnit].
    */
-  public fun withAutoUnit(): Length<T> = withUnit(unit.first { distance in it })
+  public fun withAutoUnit(): Length<T> = withUnit(unit.units.first { distance in it })
 
   /**
    * Ensures that a unit is within a specified range.
