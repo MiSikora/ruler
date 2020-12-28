@@ -141,7 +141,7 @@ internal class LengthSpec : DescribeSpec({
       }
     }
 
-    it("can have unit coerced between min and max") {
+    it("can have unit coerced between in a range") {
       val siUnitRanges = SiLengthUnit.units.windowed(size = 2, step = 3).map { it.first() to it.last() }
       for ((start, end) in siUnitRanges) {
         checkAll(LengthGenerator.si()) { length ->
@@ -155,6 +155,24 @@ internal class LengthSpec : DescribeSpec({
         checkAll(LengthGenerator.imperial()) { length ->
           length.coerceUnitIn(start..end).unit shouldNotBeLessThan start
           length.coerceUnitIn(start..end).unit shouldNotBeGreaterThan end
+        }
+      }
+    }
+
+    it("can have unit coerced between min and max") {
+      val siUnitRanges = SiLengthUnit.units.windowed(size = 2, step = 3).map { it.first() to it.last() }
+      for ((start, end) in siUnitRanges) {
+        checkAll(LengthGenerator.si()) { length ->
+          length.coerceUnitIn(start, end).unit shouldNotBeLessThan start
+          length.coerceUnitIn(start, end).unit shouldNotBeGreaterThan end
+        }
+      }
+
+      val imperialUnitRanges = ImperialLengthUnit.units.windowed(size = 2, step = 3).map { it.first() to it.last() }
+      for ((start, end) in imperialUnitRanges) {
+        checkAll(LengthGenerator.imperial()) { length ->
+          length.coerceUnitIn(start, end).unit shouldNotBeLessThan start
+          length.coerceUnitIn(start, end).unit shouldNotBeGreaterThan end
         }
       }
     }
