@@ -13,7 +13,6 @@ import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 import java.math.BigDecimal
 import kotlin.Long.Companion.MAX_VALUE
-import kotlin.Long.Companion.MIN_VALUE
 
 /**
  * Meter–based numerical representation of how far apart two points are, such as '150.5 meters'. This class
@@ -146,6 +145,7 @@ public class Distance private constructor(
 
   public companion object {
     private const val nanosInMeter = 1_000_000_000L
+    private val nanosInMeterBig = nanosInMeter.toBigInteger()
 
     /**
      * Constant for a minimal possible distance to express by this class.
@@ -169,7 +169,7 @@ public class Distance private constructor(
 
     internal fun create(meters: BigDecimal): Distance {
       val nanos = meters.movePointRight(9).toBigInteger()
-      val divRem = nanos.divideAndRemainder(nanosInMeter.toBigInteger())
+      val divRem = nanos.divideAndRemainder(nanosInMeterBig)
       if (divRem[0].bitLength() > 63) {
         throw ArithmeticException("Exceeded distance capacity: $nanos nm.")
       }
