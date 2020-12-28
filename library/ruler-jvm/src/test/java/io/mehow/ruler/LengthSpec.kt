@@ -92,18 +92,28 @@ internal class LengthSpec : DescribeSpec({
       }
     }
 
-    it("can change unit to best fit") {
-      for (unit in LengthUnit.units) {
-        val inRangeValue = unit.capacity()
-        val generator = LengthGenerator.forUnit(
-            unit = unit,
-            ranges = listOf(
-                Distance.of(-inRangeValue, unit)..Distance.of(-1, unit),
-                Distance.of(1, unit)..Distance.of(inRangeValue, unit),
-            ),
-        )
-        checkAll(generator) { length ->
-          length.withAutoUnit().unit shouldBe unit
+    context("with some distance") {
+      it("can change unit with an automatic fit") {
+        for (unit in LengthUnit.units) {
+          val inRangeValue = unit.capacity()
+          val generator = LengthGenerator.forUnit(
+              unit = unit,
+              ranges = listOf(
+                  Distance.of(-inRangeValue, unit)..Distance.of(-1, unit),
+                  Distance.of(1, unit)..Distance.of(inRangeValue, unit),
+              ),
+          )
+          checkAll(generator) { length ->
+            length.withAutoUnit().unit shouldBe unit
+          }
+        }
+      }
+    }
+
+    context("with zero distance") {
+      it("is not affected by unit automatic fit") {
+        for (unit in LengthUnit.units) {
+          Distance.Zero.toLength(unit).withAutoUnit().unit shouldBe unit
         }
       }
     }

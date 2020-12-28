@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `Distance.Epsilon` constant that represents smallest possible change in of `Distance`.
+
+### Changed
+- Lengths with zero distance to not change their units when `Length.withAutoUnit()` is used.
+
 ## [1.0.0] - 2020-12-28
 
 ### Added

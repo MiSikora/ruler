@@ -52,7 +52,7 @@ public sealed class SiLengthUnit(
 ) : LengthUnit<SiLengthUnit>(meterRatio, bounds, ordinal, name) {
   public object Nanometer : SiLengthUnit(
       meterRatio = 0.000_000_001.toBigDecimal(),
-      bounds = Distance.Zero..Distance.create(nanometers = 1_000) - Distance.Epsilon,
+      bounds = Distance.Epsilon..Distance.create(nanometers = 1_000) - Distance.Epsilon,
       ordinal = 0,
       name = "Nanometer",
   )
@@ -122,7 +122,7 @@ public sealed class ImperialLengthUnit(
 ) : LengthUnit<ImperialLengthUnit>(meterRatio, bounds, ordinal, name) {
   public object Inch : ImperialLengthUnit(
       meterRatio = 0.025_4.toBigDecimal(),
-      bounds = Distance.Zero..Distance.create(nanometers = 304_800_000) - Distance.Epsilon,
+      bounds = Distance.Epsilon..Distance.create(nanometers = 304_800_000) - Distance.Epsilon,
       ordinal = 0,
       name = "Inch",
   )
