@@ -39,7 +39,7 @@ nav:
   - 'Quick start': index.md
   - 'User guide': user-guide.md
   - 'API':
-      - 'ruler': api/ruler/ruler/index.html
-      - 'ruler-android': api/android/android/index.html
+      - 'ruler': api/ruler-jvm/ruler-jvm/index.html
+      - 'ruler-android': api/ruler-android/ruler-android/index.html
   - 'Changelog': changelog.md
   - 'Releasing': releasing.md
