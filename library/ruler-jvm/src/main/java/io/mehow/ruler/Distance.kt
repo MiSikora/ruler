@@ -25,8 +25,8 @@ import kotlin.Long.Companion.MIN_VALUE
  * out of these bounds will throw an exception.
  */
 public class Distance private constructor(
-  internal val metersPart: Long = 0L,
-  internal val nanosPart: Long = 0L,
+  private val metersPart: Long = 0L,
+  private val nanosPart: Long = 0L,
 ) : Comparable<Distance> {
   public val meters: BigDecimal =
     (metersPart.toBigDecimal() + (nanosPart.toDouble() / nanosInMeter).toBigDecimal()).setScale(9)
