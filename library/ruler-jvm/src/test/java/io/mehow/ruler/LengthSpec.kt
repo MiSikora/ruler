@@ -38,12 +38,7 @@ internal class LengthSpec : DescribeSpec({
     Mile -> toLength(Mile)
   }
 
-  fun LengthUnit<*>.capacity() = when (this) {
-    Inch -> 12
-    Foot -> 3
-    Yard -> 1_760
-    else -> 1_000
-  }
+  fun LengthUnit<*>.capacity() = bounds.endInclusive.toLength(this).measure.toLong()
 
   describe("length") {
     val lengthGenerator = LengthGenerator.create(
@@ -99,7 +94,7 @@ internal class LengthSpec : DescribeSpec({
 
     it("can change unit to best fit") {
       for (unit in LengthUnit.units) {
-        val inRangeValue = unit.capacity() - 0.01
+        val inRangeValue = unit.capacity()
         val generator = LengthGenerator.forUnit(
             unit = unit,
             ranges = listOf(

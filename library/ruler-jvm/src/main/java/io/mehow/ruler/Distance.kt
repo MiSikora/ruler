@@ -150,12 +150,17 @@ public class Distance private constructor(
     /**
      * Constant for a minimal possible distance to express by this class.
      */
-    public val Min: Distance = Distance(MIN_VALUE, 0L)
+    public val Min: Distance = Distance(MIN_VALUE, 0)
 
     /**
      * Constant for a distance of zero.
      */
     public val Zero: Distance = Distance()
+
+    /**
+     * Constant for a smallest grain of a distance.
+     */
+    public val Epsilon: Distance = Distance(nanosPart = 1)
 
     /**
      * Constant for a maximal possible distance to express by this class.
