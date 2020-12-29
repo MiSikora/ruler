@@ -44,6 +44,10 @@ public class Length<T : LengthUnit<T>> internal constructor(
   /**
    * Applies a best fitted unit to this length from all available units in a unit system.
    */
+  @Deprecated(
+      message = "Will be removed in a next major release.",
+      replaceWith = ReplaceWith("withFittingUnit()"),
+  )
   public fun withAutoUnit(): Length<T> = withFittingUnit()
 
   /**

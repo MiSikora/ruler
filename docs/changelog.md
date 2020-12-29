@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Added one nanometer to `Distance.Min`. This change was made in order to make `Distance.abs()` operation safe.
 
+### Deprecated
+- `Length.withAutoUnit()` in favour of `Length.withFittingUnit()` with default arguments.
+
 ## [1.0.0] - 2020-12-28
 
 ### Added

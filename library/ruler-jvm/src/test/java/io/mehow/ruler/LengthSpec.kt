@@ -67,15 +67,15 @@ internal class LengthSpec : DescribeSpec({
       }
     }
 
-    it("changes unit with an automatic fit") {
-      for (unit in LengthUnit.units) {
-        checkAll(LengthGenerator.unitRange(unit)) { length ->
-          length.withAutoUnit().unit shouldBe unit
+    context("when fitted") {
+      it("changes unit with an automatic fit") {
+        for (unit in LengthUnit.units) {
+          checkAll(LengthGenerator.unitRange(unit)) { length ->
+            length.withFittingUnit().unit shouldBe unit
+          }
         }
       }
-    }
 
-    context("when fitted") {
       it("uses only units that are supplied") {
         for (unit in LengthUnit.units) {
           checkAll(LengthGenerator.create()) { length ->
