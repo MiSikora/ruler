@@ -6,7 +6,6 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.comparables.shouldBeEqualComparingTo
 import io.kotest.matchers.shouldBe
 import io.kotest.property.Arb
-import io.kotest.property.arbitrary.filter
 import io.kotest.property.arbitrary.filterNot
 import io.kotest.property.arbitrary.long
 import io.kotest.property.arbitrary.numericDoubles
@@ -29,7 +28,7 @@ internal class DistanceSpec : DescribeSpec({
     val minDistance = Distance.Min
 
     it("has smallest possible meters") {
-      minDistance.meters shouldBeEqualComparingTo MIN_VALUE.toBigDecimal()
+      minDistance.meters shouldBeEqualComparingTo MIN_VALUE.toBigDecimal() + 1.toBigDecimal().movePointLeft(9)
     }
 
     it("cannot be subtracted from") {
@@ -40,6 +39,14 @@ internal class DistanceSpec : DescribeSpec({
       checkAll(DistanceGenerator.create(min = Distance.Zero)) { distance ->
         shouldNotThrowAny { minDistance + distance }
       }
+    }
+
+    it("cannot have smaller distance") {
+      shouldThrow<ArithmeticException> { minDistance - Distance.Epsilon }
+    }
+
+    it("absolute value is equal to max distance") {
+      minDistance.abs() shouldBe Distance.Max
     }
   }
 
@@ -58,6 +65,10 @@ internal class DistanceSpec : DescribeSpec({
       checkAll(DistanceGenerator.create(min = Distance.Zero)) { distance ->
         shouldNotThrowAny { maxDistance - distance }
       }
+    }
+
+    it("cannot have larger distance") {
+      shouldThrow<ArithmeticException> { maxDistance + Distance.Epsilon }
     }
   }
 

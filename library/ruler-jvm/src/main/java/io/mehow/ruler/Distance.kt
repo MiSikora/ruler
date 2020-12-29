@@ -13,15 +13,16 @@ import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 import java.math.BigDecimal
 import kotlin.Long.Companion.MAX_VALUE
+import kotlin.Long.Companion.MIN_VALUE
 
 /**
  * Meter–based numerical representation of how far apart two points are, such as '150.5 meters'. This class
  * can hold negative values to represent the direction.
  *
  * This class models a quantity of space in terms of meters and nanometers. Physical distance
- * could be of infinite length. For practicality, the distance can have values between [Long.MIN_VALUE]
- * and [Long.MAX_VALUE] meters, which is approximately -975 and 975 light years. An attempt to create a distance
- * out of these bounds will throw an exception.
+ * could be of infinite length. For practicality, the can have values between [Long.MIN_VALUE] meters exclusive
+ * and [Long.MAX_VALUE] meters and `999_999_999` nanometers inclusive, which is approximately -975 and 975 light years.
+ * Exclusive lower bound is set An attempt to create a distance out of these bounds will throw an exception.
  */
 public class Distance private constructor(
   private val metersPart: Long = 0L,
@@ -148,9 +149,14 @@ public class Distance private constructor(
     private val nanosInMeterBig = nanosInMeter.toBigInteger()
 
     /**
+     * Constant for a maximal possible distance to express by this class.
+     */
+    public val Max: Distance = Distance(MAX_VALUE, nanosInMeter - 1)
+
+    /**
      * Constant for a minimal possible distance to express by this class.
      */
-    public val Min: Distance = Distance(MIN_VALUE, 0)
+    public val Min: Distance = -Max
 
     /**
      * Constant for a distance of zero.
@@ -161,11 +167,6 @@ public class Distance private constructor(
      * Constant for a smallest grain of a distance.
      */
     public val Epsilon: Distance = Distance(nanosPart = 1)
-
-    /**
-     * Constant for a maximal possible distance to express by this class.
-     */
-    public val Max: Distance = Distance(MAX_VALUE, nanosInMeter - 1)
 
     internal fun create(meters: BigDecimal): Distance {
       val nanos = meters.movePointRight(9).toBigInteger()
@@ -193,6 +194,9 @@ public class Distance private constructor(
       val totalNanometers = nanoPart
           .takeIf { it in 0..999_999_999 }
           ?: throw ArithmeticException("Exceeded nanometers capacity: $nanoPart nm")
+      if (totalMeters == MIN_VALUE && totalNanometers == 0L) {
+        throw ArithmeticException("Exceeded meters capacity: $totalMeters m")
+      }
 
       return Distance(totalMeters, totalNanometers)
     }

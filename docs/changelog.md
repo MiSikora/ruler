@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Lengths with zero distance to not change their units when `Length.withAutoUnit()` is used.
+- Added one nanometer to `Distance.Min`. This change was made in order to make `Distance.abs()` operation safe.
 
 ## [1.0.0] - 2020-12-28
 
