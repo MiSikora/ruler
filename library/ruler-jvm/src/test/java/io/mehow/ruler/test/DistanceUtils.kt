@@ -6,7 +6,11 @@ import io.mehow.ruler.ImperialLengthUnit.Inch
 import io.mehow.ruler.ImperialLengthUnit.Mile
 import io.mehow.ruler.ImperialLengthUnit.Yard
 import io.mehow.ruler.LengthUnit
+import io.mehow.ruler.SiLengthUnit.Centimeter
+import io.mehow.ruler.SiLengthUnit.Decameter
+import io.mehow.ruler.SiLengthUnit.Decimeter
 import io.mehow.ruler.SiLengthUnit.Gigameter
+import io.mehow.ruler.SiLengthUnit.Hectometer
 import io.mehow.ruler.SiLengthUnit.Kilometer
 import io.mehow.ruler.SiLengthUnit.Megameter
 import io.mehow.ruler.SiLengthUnit.Meter
@@ -18,7 +22,11 @@ internal fun Distance.toLength(unit: LengthUnit<*>) = when (unit) {
   Nanometer -> toLength(Nanometer)
   Micrometer -> toLength(Micrometer)
   Millimeter -> toLength(Millimeter)
+  Centimeter -> toLength(Centimeter)
+  Decimeter -> toLength(Decimeter)
   Meter -> toLength(Meter)
+  Decameter -> toLength(Decameter)
+  Hectometer -> toLength(Hectometer)
   Kilometer -> toLength(Kilometer)
   Megameter -> toLength(Megameter)
   Gigameter -> toLength(Gigameter)

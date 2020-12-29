@@ -70,36 +70,64 @@ public sealed class SiLengthUnit(
 
   public object Millimeter : SiLengthUnit(
       meterRatio = 0.001.toBigDecimal(),
-      bounds = Distance.create(nanometers = 1_000_000)..Distance.create(meters = 1) - Distance.Epsilon,
+      bounds = Distance.create(nanometers = 1_000_000)..Distance.create(nanometers = 10_000_000) - Distance.Epsilon,
       ordinal = 2,
       name = "Millimeter",
   )
 
+  public object Centimeter : SiLengthUnit(
+      meterRatio = 0.01.toBigDecimal(),
+      bounds = Distance.create(nanometers = 10_000_000)..Distance.create(nanometers = 100_000_000) - Distance.Epsilon,
+      ordinal = 3,
+      name = "Centimeter",
+  )
+
+  public object Decimeter : SiLengthUnit(
+      meterRatio = 0.1.toBigDecimal(),
+      bounds = Distance.create(nanometers = 100_000_000)..Distance.create(meters = 1) - Distance.Epsilon,
+      ordinal = 4,
+      name = "Decimeter",
+  )
+
   public object Meter : SiLengthUnit(
       meterRatio = BigDecimal.ONE,
-      bounds = Distance.create(meters = 1)..Distance.create(meters = 1_000) - Distance.Epsilon,
-      ordinal = 3,
+      bounds = Distance.create(meters = 1)..Distance.create(meters = 10) - Distance.Epsilon,
+      ordinal = 5,
       name = "Meter",
+  )
+
+  public object Decameter : SiLengthUnit(
+      meterRatio = BigDecimal.TEN,
+      bounds = Distance.create(meters = 10)..Distance.create(meters = 100) - Distance.Epsilon,
+      ordinal = 6,
+      name = "Decameter",
+  )
+
+  public object Hectometer : SiLengthUnit(
+      meterRatio = 100.toBigDecimal(),
+      bounds = Distance.create(meters = 100)..Distance.create(meters = 1_000) - Distance.Epsilon,
+      ordinal = 7,
+      name = "Hectometer",
   )
 
   public object Kilometer : SiLengthUnit(
       meterRatio = 1_000.0.toBigDecimal(),
       bounds = Distance.create(meters = 1_000)..Distance.create(meters = 1_000_000) - Distance.Epsilon,
-      ordinal = 4,
+      ordinal = 8,
       name = "Kilometer",
   )
 
   public object Megameter : SiLengthUnit(
       meterRatio = 1_000_000.0.toBigDecimal(),
       bounds = Distance.create(meters = 1_000_000)..Distance.create(meters = 1_000_000_000) - Distance.Epsilon,
-      ordinal = 5,
+      ordinal = 9,
       name = "Megameter",
   )
 
   public object Gigameter : SiLengthUnit(
       meterRatio = 1_000_000_000.0.toBigDecimal(),
       bounds = Distance.create(meters = 1_000_000_000)..Distance.Max,
-      ordinal = 6,
+      ordinal = 10,
       name = "Gigameter",
   )
 
@@ -110,7 +138,19 @@ public sealed class SiLengthUnit(
      * All available units in the [SI][SiLengthUnit] system.
      */
     public val units: List<SiLengthUnit> by lazy(NONE) {
-      listOf(Nanometer, Micrometer, Millimeter, Meter, Kilometer, Megameter, Gigameter)
+      listOf(
+          Nanometer,
+          Micrometer,
+          Millimeter,
+          Centimeter,
+          Decimeter,
+          Meter,
+          Decameter,
+          Hectometer,
+          Kilometer,
+          Megameter,
+          Gigameter,
+      )
     }
   }
 }

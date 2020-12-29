@@ -1,20 +1,24 @@
 package io.mehow.ruler
 
-import android.content.Context
-import android.content.res.Configuration
-import androidx.test.core.app.ApplicationProvider
 import io.kotest.matchers.shouldBe
 import io.mehow.ruler.ImperialLengthUnit.Foot
 import io.mehow.ruler.ImperialLengthUnit.Inch
 import io.mehow.ruler.ImperialLengthUnit.Mile
 import io.mehow.ruler.ImperialLengthUnit.Yard
+import io.mehow.ruler.SiLengthUnit.Centimeter
+import io.mehow.ruler.SiLengthUnit.Decameter
+import io.mehow.ruler.SiLengthUnit.Decimeter
 import io.mehow.ruler.SiLengthUnit.Gigameter
+import io.mehow.ruler.SiLengthUnit.Hectometer
 import io.mehow.ruler.SiLengthUnit.Kilometer
 import io.mehow.ruler.SiLengthUnit.Megameter
 import io.mehow.ruler.SiLengthUnit.Meter
 import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
+import io.mehow.ruler.test.format
+import io.mehow.ruler.test.getApplicationContext
+import io.mehow.ruler.test.localise
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -22,282 +26,241 @@ import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
 internal class FlooredLengthFormatterTest {
-  private val context = ApplicationProvider.getApplicationContext<Context>()
+  private val context = getApplicationContext()
 
-  @Test fun `meters are used as a default formatting SI unit`() {
-    // Only language of locale can be set with @Config and we need to set country.
-    val config = context.resources.configuration
-    val localizedConfig = Configuration(config).apply { setLocale(Locale.UK) }
-    val localizedContext = context.createConfigurationContext(localizedConfig)
+  @Test fun `max length is displayed without overflow`() {
+    val length = Distance.Max.toLength(Nanometer)
 
-    val distance = Distance.ofGigameters(1) +
-        Distance.ofMegameters(2) +
-        Distance.ofKilometers(3) +
-        Distance.ofMeters(4) +
-        Distance.ofMillimeters(5) +
-        Distance.ofMicrometers(6) +
-        Distance.ofNanometers(7)
-
-    val formattedDistance = distance.formatFloored(localizedContext)
-
-    formattedDistance shouldBe "1002003004m"
+    FlooredLengthFormatter.format(length, context) shouldBe "9223372036854775807999999999nm"
   }
 
-  @Test fun `yards are used as a default formatting imperial unit`() {
-    // Only language of locale can be set with @Config and we need to set country.
-    val config = context.resources.configuration
-    val localizedConfig = Configuration(config).apply { setLocale(Locale.US) }
-    val localizedContext = context.createConfigurationContext(localizedConfig)
+  @Test fun `min length is displayed without overflow`() {
+    val length = Distance.Min.toLength(Nanometer)
 
-    val distance = Distance.ofMiles(1) +
-        Distance.ofYards(500) +
-        Distance.ofFeet(4) +
-        Distance.ofInches(5)
-
-    val formattedDistance = distance.formatFloored(localizedContext)
-
-    formattedDistance shouldBe "2261yd"
+    FlooredLengthFormatter.format(length, context) shouldBe "-9223372036854775807999999999nm"
   }
 
-  @Test fun `gigameters are properly formatted`() {
-    val distance = Distance.ofGigameters(1) +
-        Distance.ofMegameters(1) +
-        Distance.ofKilometers(1) +
-        Distance.ofMeters(1) +
-        Distance.ofMillimeters(1) +
-        Distance.ofMicrometers(1) +
-        Distance.ofNanometers(1)
+  @Test fun `positive length is displayed correctly with RTL locale`() {
+    val context = context.localise(Locale("ar"))
+    val length = Length.ofMeters(12.36)
 
-    val formattedDistance = distance.toLength(Gigameter).formatFloored(context)
-
-    formattedDistance shouldBe "1Gm"
+    FlooredLengthFormatter.format(length, context) shouldBe "12م"
   }
 
-  @Test fun `megameters are properly formatted`() {
-    val distance = Distance.ofGigameters(1) +
-        Distance.ofMegameters(1) +
-        Distance.ofKilometers(1) +
-        Distance.ofMeters(1) +
-        Distance.ofMillimeters(1) +
-        Distance.ofMicrometers(1) +
-        Distance.ofNanometers(1)
+  @Test fun `negative length is displayed correctly with RTL locale`() {
+    val context = context.localise(Locale("ar"))
+    val length = Length.ofMeters(-12.36)
 
-    val formattedDistance = distance.toLength(Megameter).formatFloored(context)
-
-    formattedDistance shouldBe "1001Mm"
+    FlooredLengthFormatter.format(length, context) shouldBe "-12م"
   }
 
-  @Test fun `kilometers are properly formatted`() {
-    val distance = Distance.ofGigameters(1) +
-        Distance.ofMegameters(1) +
-        Distance.ofKilometers(1) +
-        Distance.ofMeters(1) +
-        Distance.ofMillimeters(1) +
-        Distance.ofMicrometers(1) +
-        Distance.ofNanometers(1)
+  @Test fun `custom separator is displayed in a correct position`() {
+    val length = Length.ofMeters(12.36)
 
-    val formattedDistance = distance.toLength(Kilometer).formatFloored(context)
-
-    formattedDistance shouldBe "1001001km"
+    FlooredLengthFormatter.format(length, context, "|") shouldBe "12|m"
   }
 
-  @Test fun `meters are properly formatted`() {
-    val distance = Distance.ofGigameters(1) +
-        Distance.ofMegameters(1) +
-        Distance.ofKilometers(1) +
-        Distance.ofMeters(1) +
-        Distance.ofMillimeters(1) +
-        Distance.ofMicrometers(1) +
-        Distance.ofNanometers(1)
+  @Test fun `custom separator is displayed in a correct position with RTL locale`() {
+    val context = context.localise(Locale("ar"))
+    val length = Length.ofMeters(12.36)
 
-    val formattedDistance = distance.toLength(Meter).formatFloored(context)
-
-    formattedDistance shouldBe "1001001001m"
+    FlooredLengthFormatter.format(length, context, "|") shouldBe "12|م"
   }
 
-  @Test fun `millimeters are properly formatted`() {
-    val distance = Distance.ofGigameters(1) +
-        Distance.ofMegameters(1) +
-        Distance.ofKilometers(1) +
-        Distance.ofMeters(1) +
-        Distance.ofMillimeters(1) +
-        Distance.ofMicrometers(1) +
-        Distance.ofNanometers(1)
+  private val rainbowSiDistance = Distance.ofNanometers(1) +
+      Distance.ofMicrometers(2) +
+      Distance.ofMillimeters(3) +
+      Distance.ofCentimeters(4) +
+      Distance.ofDecimeters(5) +
+      Distance.ofMeters(6) +
+      Distance.ofDecameters(7) +
+      Distance.ofHectometers(8) +
+      Distance.ofKilometers(9) +
+      Distance.ofMegameters(10) +
+      Distance.ofGigameters(11)
 
-    val formattedDistance = distance.toLength(Millimeter).formatFloored(context)
+  @Test fun `gigameters do not display smaller unit parts`() {
+    val length = rainbowSiDistance.toLength(Gigameter)
 
-    formattedDistance shouldBe "1001001001001mm"
+    FlooredLengthFormatter.format(length, context) shouldBe "11Gm"
   }
 
-  @Test fun `micrometers are properly formatted`() {
-    val distance = Distance.ofGigameters(1) +
-        Distance.ofMegameters(1) +
-        Distance.ofKilometers(1) +
-        Distance.ofMeters(1) +
-        Distance.ofMillimeters(1) +
-        Distance.ofMicrometers(1) +
-        Distance.ofNanometers(1)
+  @Test fun `gigameters display zero distance`() {
+    val length = Distance.Zero.toLength(Gigameter)
 
-    val formattedDistance = distance.toLength(Micrometer).formatFloored(context)
-
-    formattedDistance shouldBe "1001001001001001µm"
+    FlooredLengthFormatter.format(length, context) shouldBe "0Gm"
   }
 
-  @Test fun `nanometers are properly formatted`() {
-    val distance = Distance.ofGigameters(1) +
-        Distance.ofMegameters(1) +
-        Distance.ofKilometers(1) +
-        Distance.ofMeters(1) +
-        Distance.ofMillimeters(1) +
-        Distance.ofMicrometers(1) +
-        Distance.ofNanometers(1)
+  @Test fun `megameters do not display smaller unit parts`() {
+    val length = rainbowSiDistance.toLength(Megameter)
 
-    val formattedDistance = distance.toLength(Nanometer).formatFloored(context)
-
-    formattedDistance shouldBe "1001001001001001001nm"
+    FlooredLengthFormatter.format(length, context) shouldBe "11010Mm"
   }
 
-  @Test fun `gigameters are formatting zeros properly`() {
-    val distance = Distance.ofMegameters(999) +
-        Distance.ofKilometers(999) +
-        Distance.ofMeters(999) +
-        Distance.ofMillimeters(999) +
-        Distance.ofMicrometers(999) +
-        Distance.ofNanometers(999)
+  @Test fun `megameters display zero distance`() {
+    val length = Distance.Zero.toLength(Megameter)
 
-    val formattedDistance = distance.toLength(Gigameter).formatFloored(context)
-
-    formattedDistance shouldBe "0Gm"
+    FlooredLengthFormatter.format(length, context) shouldBe "0Mm"
   }
 
-  @Test fun `megameters are formatting zeros properly`() {
-    val distance = Distance.ofKilometers(999) +
-        Distance.ofMeters(999) +
-        Distance.ofMillimeters(999) +
-        Distance.ofMicrometers(999) +
-        Distance.ofNanometers(999)
+  @Test fun `kilometers do not display smaller unit parts`() {
+    val length = rainbowSiDistance.toLength(Kilometer)
 
-    val formattedDistance = distance.toLength(Megameter).formatFloored(context)
-
-    formattedDistance shouldBe "0Mm"
+    FlooredLengthFormatter.format(length, context) shouldBe "11010009km"
   }
 
-  @Test fun `kilometers are formatting zeros properly`() {
-    val distance = Distance.ofMeters(999) +
-        Distance.ofMillimeters(999) +
-        Distance.ofMicrometers(999) +
-        Distance.ofNanometers(999)
+  @Test fun `kilometers display zero distance`() {
+    val length = Distance.Zero.toLength(Kilometer)
 
-    val formattedDistance = distance.toLength(Kilometer).formatFloored(context)
-
-    formattedDistance shouldBe "0km"
+    FlooredLengthFormatter.format(length, context) shouldBe "0km"
   }
 
-  @Test fun `meters are formatting zeros properly`() {
-    val distance = Distance.ofMillimeters(999) +
-        Distance.ofMicrometers(999) +
-        Distance.ofNanometers(999)
+  @Test fun `hectometers do not display smaller unit parts`() {
+    val length = rainbowSiDistance.toLength(Hectometer)
 
-    val formattedDistance = distance.toLength(Meter).formatFloored(context)
-
-    formattedDistance shouldBe "0m"
+    FlooredLengthFormatter.format(length, context) shouldBe "110100098hm"
   }
 
-  @Test fun `millimeters are formatting zeros properly`() {
-    val distance = Distance.ofMicrometers(999) +
-        Distance.ofNanometers(999)
+  @Test fun `hectometers display zero distance`() {
+    val length = Distance.Zero.toLength(Hectometer)
 
-    val formattedDistance = distance.toLength(Millimeter).formatFloored(context)
-
-    formattedDistance shouldBe "0mm"
+    FlooredLengthFormatter.format(length, context) shouldBe "0hm"
   }
 
-  @Test fun `micrometers are formatting zeros properly`() {
-    val distance = Distance.ofNanometers(999)
+  @Test fun `decameters do not display smaller unit parts`() {
+    val length = rainbowSiDistance.toLength(Decameter)
 
-    val formattedDistance = distance.toLength(Micrometer).formatFloored(context)
-
-    formattedDistance shouldBe "0µm"
+    FlooredLengthFormatter.format(length, context) shouldBe "1101000987dam"
   }
 
-  @Test fun `nanometers are formatting zeros properly`() {
-    val distance = Distance.Zero
+  @Test fun `decameters display zero distance`() {
+    val length = Distance.Zero.toLength(Decameter)
 
-    val formattedDistance = distance.toLength(Nanometer).formatFloored(context)
-
-    formattedDistance shouldBe "0nm"
+    FlooredLengthFormatter.format(length, context) shouldBe "0dam"
   }
 
-  @Test fun `miles are properly formatted`() {
-    val distance = Distance.ofMiles(1) +
-        Distance.ofYards(1) +
-        Distance.ofFeet(1) +
-        Distance.ofInches(1)
+  @Test fun `meters do not display smaller unit parts`() {
+    val length = rainbowSiDistance.toLength(Meter)
 
-    val formattedDistance = distance.toLength(Mile).formatFloored(context)
-
-    formattedDistance shouldBe "1mi"
+    FlooredLengthFormatter.format(length, context) shouldBe "11010009876m"
   }
 
-  @Test fun `yards are properly formatted`() {
-    val distance = Distance.ofYards(1) +
-        Distance.ofFeet(1) +
-        Distance.ofInches(1)
+  @Test fun `meters display zero distance`() {
+    val length = Distance.Zero.toLength(Meter)
 
-    val formattedDistance = distance.toLength(Yard).formatFloored(context)
-
-    formattedDistance shouldBe "1yd"
+    FlooredLengthFormatter.format(length, context) shouldBe "0m"
   }
 
-  @Test fun `feet are properly formatted`() {
-    val distance = Distance.ofFeet(1) +
-        Distance.ofInches(1)
+  @Test fun `decimeters do not display smaller unit parts`() {
+    val length = rainbowSiDistance.toLength(Decimeter)
 
-    val formattedDistance = distance.toLength(Foot).formatFloored(context)
-
-    formattedDistance shouldBe "1ft"
+    FlooredLengthFormatter.format(length, context) shouldBe "110100098765dm"
   }
 
-  @Test fun `inches are properly formatted`() {
-    val distance = Distance.ofInches(1)
+  @Test fun `decimeters display zero distance`() {
+    val length = Distance.Zero.toLength(Decimeter)
 
-    val formattedDistance = distance.toLength(Inch).formatFloored(context)
-
-    formattedDistance shouldBe "1in"
+    FlooredLengthFormatter.format(length, context) shouldBe "0dm"
   }
 
-  @Test fun `miles are formatting zeros properly`() {
-    val distance = Distance.ofYards(1759) +
-        Distance.ofFeet(2) +
-        Distance.ofInches(11.99)
+  @Test fun `centimeters do not display smaller unit parts`() {
+    val length = rainbowSiDistance.toLength(Centimeter)
 
-    val formattedDistance = distance.toLength(Mile).formatFloored(context)
-
-    formattedDistance shouldBe "0mi"
+    FlooredLengthFormatter.format(length, context) shouldBe "1101000987654cm"
   }
 
-  @Test fun `yards are formatting zeros properly`() {
-    val distance = Distance.ofFeet(2) +
-        Distance.ofInches(11.99)
+  @Test fun `centimeters display zero distance`() {
+    val length = Distance.Zero.toLength(Centimeter)
 
-    val formattedDistance = distance.toLength(Yard).formatFloored(context)
-
-    formattedDistance shouldBe "0yd"
+    FlooredLengthFormatter.format(length, context) shouldBe "0cm"
   }
 
-  @Test fun `feet are formatting zeros properly`() {
-    val distance = Distance.ofInches(11.99)
+  @Test fun `millimeters do not display smaller unit parts`() {
+    val length = rainbowSiDistance.toLength(Millimeter)
 
-    val formattedDistance = distance.toLength(Foot).formatFloored(context)
-
-    formattedDistance shouldBe "0ft"
+    FlooredLengthFormatter.format(length, context) shouldBe "11010009876543mm"
   }
 
-  @Test fun `inches are formatting zeros properly`() {
-    val distance = Distance.ofInches(0.99)
+  @Test fun `millimeters display zero distance`() {
+    val length = Distance.Zero.toLength(Millimeter)
 
-    val formattedDistance = distance.toLength(Inch).formatFloored(context)
+    FlooredLengthFormatter.format(length, context) shouldBe "0mm"
+  }
 
-    formattedDistance shouldBe "0in"
+  @Test fun `micrometers do not display smaller unit parts`() {
+    val length = rainbowSiDistance.toLength(Micrometer)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "11010009876543002µm"
+  }
+
+  @Test fun `micrometers display zero distance`() {
+    val length = Distance.Zero.toLength(Micrometer)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "0µm"
+  }
+
+  @Test fun `nanometers display all unit parts`() {
+    val length = rainbowSiDistance.toLength(Nanometer)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "11010009876543002001nm"
+  }
+
+  @Test fun `nanometers display zero distance`() {
+    val length = Distance.Zero.toLength(Nanometer)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "0nm"
+  }
+
+  private val rainbowImperialDistance = Distance.ofInches(1) +
+      Distance.ofFeet(2) +
+      Distance.ofYards(3) +
+      Distance.ofMiles(4)
+
+  @Test fun `miles do not display smaller unit parts`() {
+    val length = rainbowImperialDistance.toLength(Mile)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "4mi"
+  }
+
+  @Test fun `miles display zero distance`() {
+    val length = Distance.Zero.toLength(Mile)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "0mi"
+  }
+
+  @Test fun `yards do not display smaller unit parts`() {
+    val length = rainbowImperialDistance.toLength(Yard)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "7043yd"
+  }
+
+  @Test fun `yards display zero distance`() {
+    val length = Distance.Zero.toLength(Yard)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "0yd"
+  }
+
+  @Test fun `feet do not display smaller unit parts`() {
+    val length = rainbowImperialDistance.toLength(Foot)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "21131ft"
+  }
+
+  @Test fun `feet display zero distance`() {
+    val length = Distance.Zero.toLength(Foot)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "0ft"
+  }
+
+  @Test fun `inches display all unit parts`() {
+    val length = rainbowImperialDistance.toLength(Inch)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "253573in"
+  }
+
+  @Test fun `inches display zero distance`() {
+    val length = Distance.Zero.toLength(Inch)
+
+    FlooredLengthFormatter.format(length, context) shouldBe "0in"
   }
 }

@@ -5,7 +5,11 @@ import io.mehow.ruler.ImperialLengthUnit.Foot
 import io.mehow.ruler.ImperialLengthUnit.Inch
 import io.mehow.ruler.ImperialLengthUnit.Mile
 import io.mehow.ruler.ImperialLengthUnit.Yard
+import io.mehow.ruler.SiLengthUnit.Centimeter
+import io.mehow.ruler.SiLengthUnit.Decameter
+import io.mehow.ruler.SiLengthUnit.Decimeter
 import io.mehow.ruler.SiLengthUnit.Gigameter
+import io.mehow.ruler.SiLengthUnit.Hectometer
 import io.mehow.ruler.SiLengthUnit.Kilometer
 import io.mehow.ruler.SiLengthUnit.Megameter
 import io.mehow.ruler.SiLengthUnit.Meter
@@ -20,7 +24,7 @@ public object FlooredLengthFormatter : LengthFormatter {
   override fun Length<*>.format(
     unitSeparator: String,
     context: Context,
-  ): String = context.getString(unit.partResource, measure.toLong(), unitSeparator)
+  ): String = context.getString(unit.partResource, measure.toBigInteger().toString(), unitSeparator)
 
   private val LengthUnit<*>.partResource
     get() = when (this) {
@@ -33,7 +37,11 @@ public object FlooredLengthFormatter : LengthFormatter {
       Nanometer -> R.string.io_mehow_ruler_nanometers_part
       Micrometer -> R.string.io_mehow_ruler_micrometers_part
       Millimeter -> R.string.io_mehow_ruler_millimeters_part
+      Centimeter -> R.string.io_mehow_ruler_centimeters_part
+      Decimeter -> R.string.io_mehow_ruler_decimeters_part
       Meter -> R.string.io_mehow_ruler_meters_part
+      Decameter -> R.string.io_mehow_ruler_decameters_part
+      Hectometer -> R.string.io_mehow_ruler_hectometers_part
       Kilometer -> R.string.io_mehow_ruler_kilometers_part
       Megameter -> R.string.io_mehow_ruler_megameters_part
       Gigameter -> R.string.io_mehow_ruler_gigameters_part

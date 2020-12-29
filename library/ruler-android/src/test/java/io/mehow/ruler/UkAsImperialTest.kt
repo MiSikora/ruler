@@ -1,9 +1,8 @@
 package io.mehow.ruler
 
-import android.content.Context
-import android.content.res.Configuration
-import androidx.test.core.app.ApplicationProvider
 import io.kotest.matchers.shouldBe
+import io.mehow.ruler.test.ResetRulerRule
+import io.mehow.ruler.test.getApplicationContext
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -12,22 +11,29 @@ import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
 internal class UkAsImperialTest {
-  @get:Rule val rulerRule = ResetRulerRule
-  private val context = ApplicationProvider.getApplicationContext<Context>()
+  @get:Rule val resetRuler = ResetRulerRule
+  private val context = getApplicationContext(Locale.UK)
 
-  @Test fun `UK can be set to use imperial units`() {
-    // Only language of locale can be set with @Config and we need to set country.
-    val config = context.resources.configuration
-    val localizedConfig = Configuration(config).apply { setLocale(Locale.UK) }
-    val localizedContext = context.createConfigurationContext(localizedConfig)
-
+  @Test fun `UK does not use imperial units by default`() {
     val distance = Distance.ofFeet(4)
-    distance.format(localizedContext) shouldBe "1.22m"
+
+    distance.format(context) shouldBe "1.22m"
+  }
+
+  @Test fun `UK can be switched on to use imperial units`() {
+    val distance = Distance.ofFeet(4)
 
     Ruler.isUkImperial = true
-    distance.format(localizedContext) shouldBe "1yd 1ft"
 
+    distance.format(context) shouldBe "1yd 1ft"
+  }
+
+  @Test fun `UK can be switched off to use imperial units`() {
+    val distance = Distance.ofFeet(4)
+
+    Ruler.isUkImperial = true
     Ruler.isUkImperial = false
-    distance.format(localizedContext) shouldBe "1.22m"
+
+    distance.format(context) shouldBe "1.22m"
   }
 }

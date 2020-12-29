@@ -6,7 +6,11 @@ import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 import io.kotest.property.checkAll
 import io.mehow.ruler.ImperialLengthUnit.Mile
+import io.mehow.ruler.SiLengthUnit.Centimeter
+import io.mehow.ruler.SiLengthUnit.Decameter
+import io.mehow.ruler.SiLengthUnit.Decimeter
 import io.mehow.ruler.SiLengthUnit.Gigameter
+import io.mehow.ruler.SiLengthUnit.Hectometer
 import io.mehow.ruler.SiLengthUnit.Kilometer
 import io.mehow.ruler.SiLengthUnit.Megameter
 import io.mehow.ruler.SiLengthUnit.Meter
@@ -57,20 +61,28 @@ internal class LogDistanceUnitFitterSpec : DescribeSpec({
       }
     }
 
-    it("finds fit to the closest logarithmic range") {
+    it("finds fit to the closest range based on logarithmic distance") {
       forAll(
-          row(Length.of(100, Nanometer), listOf(Nanometer), Micrometer),
-          row(Length.of(10, Micrometer), listOf(Micrometer), Nanometer),
-          row(Length.of(100, Micrometer), listOf(Micrometer), Millimeter),
-          row(Length.of(10, Millimeter), listOf(Millimeter), Micrometer),
-          row(Length.of(100, Millimeter), listOf(Millimeter), Meter),
-          row(Length.of(10, Meter), listOf(Meter), Millimeter),
-          row(Length.of(100, Meter), listOf(Meter), Kilometer),
-          row(Length.of(10, Kilometer), listOf(Kilometer), Meter),
-          row(Length.of(100, Kilometer), listOf(Kilometer), Megameter),
-          row(Length.of(10, Megameter), listOf(Megameter), Kilometer),
-          row(Length.of(100, Megameter), listOf(Megameter), Gigameter),
-          row(Length.of(10, Gigameter), listOf(Gigameter), Megameter),
+          row(Distance.Epsilon.toLength(Nanometer), listOf(Nanometer), Micrometer),
+          row(Length.of(31, Micrometer), listOf(Micrometer), Nanometer),
+          row(Length.of(32, Micrometer), listOf(Micrometer), Millimeter),
+          row(Length.of(3.1, Millimeter), listOf(Millimeter), Micrometer),
+          row(Length.of(3.2, Millimeter), listOf(Millimeter), Centimeter),
+          row(Length.of(3.1, Centimeter), listOf(Centimeter), Millimeter),
+          row(Length.of(3.2, Centimeter), listOf(Centimeter), Decimeter),
+          row(Length.of(3.1, Decimeter), listOf(Decimeter), Centimeter),
+          row(Length.of(3.2, Decimeter), listOf(Decimeter), Meter),
+          row(Length.of(3.1, Meter), listOf(Meter), Decimeter),
+          row(Length.of(3.2, Meter), listOf(Meter), Decameter),
+          row(Length.of(3.1, Decameter), listOf(Decameter), Meter),
+          row(Length.of(3.2, Decameter), listOf(Decameter), Hectometer),
+          row(Length.of(3.1, Hectometer), listOf(Hectometer), Decameter),
+          row(Length.of(3.2, Hectometer), listOf(Hectometer), Kilometer),
+          row(Length.of(31, Kilometer), listOf(Kilometer), Hectometer),
+          row(Length.of(32, Kilometer), listOf(Kilometer), Megameter),
+          row(Length.of(31, Megameter), listOf(Megameter), Kilometer),
+          row(Length.of(32, Megameter), listOf(Megameter), Gigameter),
+          row(Distance.Max.toLength(Gigameter), listOf(Gigameter), Megameter),
       ) { length, excludedUnits: List<SiLengthUnit>, expectedUnit ->
         LogDistanceUnitFitter.findFit(SiLengthUnit.units - excludedUnits, length) shouldBe expectedUnit
         LogDistanceUnitFitter.findFit(SiLengthUnit.units - excludedUnits, -length) shouldBe expectedUnit

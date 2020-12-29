@@ -1,36 +1,48 @@
 <resources>
   <string name="io_mehow_ruler_gigameters">%1$.2f%2$sجيجامتر</string>
-  <string name="io_mehow_ruler_gigameters_part">%1$d%2$sجيجامتر</string>
+  <string name="io_mehow_ruler_gigameters_part">%1$s%2$sجيجامتر</string>
 
   <string name="io_mehow_ruler_megameters">%1$.2f%2$sميجامتر</string>
-  <string name="io_mehow_ruler_megameters_part">%1$d%2$sميجامتر</string>
+  <string name="io_mehow_ruler_megameters_part">%1$s%2$sميجامتر</string>
 
   <string name="io_mehow_ruler_kilometers">%1$.2f%2$sكم</string>
-  <string name="io_mehow_ruler_kilometers_part">%1$d%2$sكم</string>
+  <string name="io_mehow_ruler_kilometers_part">%1$s%2$sكم</string>
+
+  <string name="io_mehow_ruler_hectometers">%1$.2f%2$sهكتومتر</string>
+  <string name="io_mehow_ruler_hectometers_part">%1$s%2$sهكتومتر</string>
+
+  <string name="io_mehow_ruler_decameters">%1$.2f%2$sديكامتر</string>
+  <string name="io_mehow_ruler_decameters_part">%1$s%2$sديكامتر</string>
 
   <string name="io_mehow_ruler_meters">%1$.2f%2$sم</string>
-  <string name="io_mehow_ruler_meters_part">%1$d%2$sم</string>
+  <string name="io_mehow_ruler_meters_part">%1$s%2$sم</string>
+
+  <string name="io_mehow_ruler_decimeters">%1$.2f%2$sديسيمتر</string>
+  <string name="io_mehow_ruler_decimeters_part">%1$s%2$sديسيمتر</string>
+
+  <string name="io_mehow_ruler_centimeters">%1$.2f%2$sسم</string>
+  <string name="io_mehow_ruler_centimeters_part">%1$s%2$sسم</string>
 
   <string name="io_mehow_ruler_millimeters">%1$.2f%2$sمم</string>
-  <string name="io_mehow_ruler_millimeters_part">%1$d%2$sمم</string>
+  <string name="io_mehow_ruler_millimeters_part">%1$s%2$sمم</string>
 
   <string name="io_mehow_ruler_micrometers">%1$.2f%2$sميكرومتر</string>
-  <string name="io_mehow_ruler_micrometers_part">%1$d%2$sميكرومتر</string>
+  <string name="io_mehow_ruler_micrometers_part">%1$s%2$sميكرومتر</string>
 
   <string name="io_mehow_ruler_nanometers">%1$.2f%2$sنانومتر</string>
-  <string name="io_mehow_ruler_nanometers_part">%1$d%2$sنانومتر</string>
+  <string name="io_mehow_ruler_nanometers_part">%1$s%2$sنانومتر</string>
 
   <string name="io_mehow_ruler_miles">%1$.2f%2$sميل</string>
-  <string name="io_mehow_ruler_miles_part">%1$d%2$sميل</string>
+  <string name="io_mehow_ruler_miles_part">%1$s%2$sميل</string>
 
   <string name="io_mehow_ruler_yards">%1$.2f%2$sياردة</string>
-  <string name="io_mehow_ruler_yards_part">%1$d%2$sياردة</string>
+  <string name="io_mehow_ruler_yards_part">%1$s%2$sياردة</string>
 
   <string name="io_mehow_ruler_feet">%1$.2f%2$sقدم</string>
-  <string name="io_mehow_ruler_feet_part">%1$d%2$sقدم</string>
+  <string name="io_mehow_ruler_feet_part">%1$s%2$sقدم</string>
 
   <string name="io_mehow_ruler_inches">%1$.2f%2$sبوصة</string>
-  <string name="io_mehow_ruler_inches_part">%1$d%2$sبوصة</string>
+  <string name="io_mehow_ruler_inches_part">%1$s%2$sبوصة</string>
 
   <string name="io_mehow_ruler_imperial_negative_wrapper">-(%1s)</string>
 </resources>

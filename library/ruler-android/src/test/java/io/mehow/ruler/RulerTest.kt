@@ -1,383 +1,169 @@
 package io.mehow.ruler
 
-import android.content.Context
-import android.content.res.Configuration
-import androidx.test.core.app.ApplicationProvider
+import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
-import io.mehow.ruler.ImperialLengthUnit.Foot
-import io.mehow.ruler.ImperialLengthUnit.Inch
-import io.mehow.ruler.ImperialLengthUnit.Mile
-import io.mehow.ruler.ImperialLengthUnit.Yard
-import io.mehow.ruler.SiLengthUnit.Gigameter
-import io.mehow.ruler.SiLengthUnit.Kilometer
-import io.mehow.ruler.SiLengthUnit.Megameter
 import io.mehow.ruler.SiLengthUnit.Meter
-import io.mehow.ruler.SiLengthUnit.Micrometer
-import io.mehow.ruler.SiLengthUnit.Millimeter
-import io.mehow.ruler.SiLengthUnit.Nanometer
+import io.mehow.ruler.test.ResetRulerRule
+import io.mehow.ruler.test.getApplicationContext
+import io.mehow.ruler.test.localise
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
 internal class RulerTest {
-  @get:Rule val rulerRule = ResetRulerRule
-  private val context = ApplicationProvider.getApplicationContext<Context>()
+  @get:Rule val resetRuler = ResetRulerRule
+  private val context = getApplicationContext()
 
-  @Test fun `nanometer length is properly formatted`() {
+  @Test fun `has built-in converter factories`() {
+    Ruler.installedConverterFactories.shouldNotBeEmpty()
+  }
+
+  @Test fun `cannot remove built-in converter factories`() {
+    val factories = Ruler.installedConverterFactories
+
+    factories.forEach(Ruler::removeConverterFactory)
+
+    Ruler.installedConverterFactories shouldContainExactly factories
+  }
+
+  @Test fun `can add a converter factory`() {
+    val factory = LengthConverter.Factory { _, _ -> null }
+
+    Ruler.addConverterFactory(factory)
+
+    Ruler.installedConverterFactories shouldContain factory
+  }
+
+  @Test fun `can remove a converter factory`() {
+    val factory = LengthConverter.Factory { _, _ -> null }
+
+    Ruler.addConverterFactory(factory)
+    Ruler.removeConverterFactory(factory)
+
+    Ruler.installedConverterFactories shouldNotContain factory
+  }
+
+  @Test fun `converter factories are used in the installed order`() {
+    var text = ""
+    Ruler.addConverterFactory { _, _ -> text += "a"; null }
+    Ruler.addConverterFactory { _, _ -> text += "b"; null }
+
+    Distance.Zero.format(context)
+
+    text shouldBe "ab"
+  }
+
+  @Test fun `following converters are not used after first match`() {
+    var text = ""
+    Ruler.addConverterFactory { _, _ -> text += "a"; LengthConverter { this } }
+    Ruler.addConverterFactory { _, _ -> text += "b"; null }
+
+    Distance.Zero.format(context)
+
+    text shouldBe "a"
+  }
+
+  @Test fun `has built-in formatter factories`() {
+    Ruler.installedFormatterFactories.shouldNotBeEmpty()
+  }
+
+  @Test fun `cannot remove built-in formatter factories`() {
+    val factories = Ruler.installedFormatterFactories
+
+    factories.forEach(Ruler::removeFormatterFactory)
+
+    Ruler.installedFormatterFactories shouldContainExactly factories
+  }
+
+  @Test fun `can add a formatter factory`() {
+    val factory = LengthFormatter.Factory { _, _, _ -> null }
+
+    Ruler.addFormatterFactory(factory)
+
+    Ruler.installedFormatterFactories shouldContain factory
+  }
+
+  @Test fun `can remove a formatter factory`() {
+    val factory = LengthFormatter.Factory { _, _, _ -> null }
+
+    Ruler.addFormatterFactory(factory)
+    Ruler.removeFormatterFactory(factory)
+
+    Ruler.installedFormatterFactories shouldNotContain factory
+  }
+
+  @Test fun `formatter factories are used in the installed order`() {
+    var text = ""
+    Ruler.addFormatterFactory { _, _, _ -> text += "a"; null }
+    Ruler.addFormatterFactory { _, _, _ -> text += "b"; null }
+
+    Distance.Zero.format(context)
+
+    text shouldBe "ab"
+  }
+
+  @Test fun `following formatters are not used after first match`() {
+    var text = ""
+    Ruler.addFormatterFactory { _, _, _ -> text += "a"; LengthFormatter { _, _ -> "" } }
+    Ruler.addFormatterFactory { _, _, _ -> text += "b"; null }
+
+    Distance.Zero.format(context)
+
+    text shouldBe "a"
+  }
+
+  @Test fun `uses imperial formatting for imperial lengths`() {
+    Length.ofFeet(1.5).format(context) shouldBe "1ft 6in"
+  }
+
+  @Test fun `does not use imperial formatting for SI lengths`() {
+    Length.ofMeters(1).format(context) shouldBe "1.00m"
+  }
+
+  @Test fun `can turn off imperial formatting`() {
     Ruler.useImperialFormatter = false
 
-    val distance = Distance.ofNanometers(123456789)
-    val length = distance.toLength(Nanometer)
-
-    val formattedLength = length.format(context, converter = null)
-
-    formattedLength shouldBe "123456789.00nm"
+    Length.ofFeet(1.5).format(context) shouldBe "1.50ft"
   }
 
-  @Test fun `micrometer length is properly formatted`() {
-    Ruler.useImperialFormatter = false
+  @Test fun `uses all units for imperial formatting`() {
+    val length = Length.ofInches(1) +
+        Length.ofFeet(2) +
+        Length.ofYards(3) +
+        Length.ofMiles(4)
 
-    val distance = Distance.ofMicrometers(666) + Distance.ofNanometers(333)
-    val length = distance.toLength(Micrometer)
-
-    val formattedLength = length.format(context, converter = null)
-
-    formattedLength shouldBe "666.33µm"
+    length.format(context) shouldBe "4mi 3yd 2ft 1in"
   }
 
-  @Test fun `millimeter length is properly formatted`() {
-    Ruler.useImperialFormatter = false
+  @Test fun `distance uses meter as a default SI unit`() {
+    val context = context.localise(Locale("pl"))
 
-    val distance = Distance.ofMeters(20) + Distance.ofMillimeters(789)
-    val length = distance.toLength(Millimeter)
-
-    val formattedLength = length.format(context, converter = null)
-
-    formattedLength shouldBe "20789.00mm"
+    Distance.Zero.format(context) shouldBe "0,00m"
   }
 
-  @Test fun `meter length is properly formatted`() {
-    Ruler.useImperialFormatter = false
-
-    val distance = Distance.ofMeters(20) + Distance.ofMillimeters(789)
-    val length = distance.toLength(Meter)
-
-    val formattedLength = length.format(context, converter = null)
-
-    formattedLength shouldBe "20.79m"
+  @Test fun `distance uses yard as a default imperial unit`() {
+    Distance.ofYards(1).format(context) shouldBe "1yd"
   }
 
-  @Test fun `kilometer length is properly formatted`() {
-    Ruler.useImperialFormatter = false
-
-    val distance = Distance.ofKilometers(1331) + Distance.ofNanometers(500)
-    val length = distance.toLength(Kilometer)
-
-    val formattedLength = length.format(context, converter = null)
-
-    formattedLength shouldBe "1331.00km"
+  @Test fun `uses a supplied unit separator`() {
+    Length.ofInches(1).format(context, unitSeparator = "|") shouldBe "1|in"
   }
 
-  @Test fun `megameter length is properly formatted`() {
-    Ruler.useImperialFormatter = false
+  @Test fun `uses a supplied length converter`() {
+    val converter = LengthConverter { Distance.Zero.toLength(Meter) }
 
-    val distance = Distance.ofMegameters(600) + Distance.ofMeters(28000)
-    val length = distance.toLength(Megameter)
-
-    val formattedLength = length.format(context, converter = null)
-
-    formattedLength shouldBe "600.03Mm"
+    Distance.Max.format(context, converter = converter) shouldBe "0.00m"
   }
 
-  @Test fun `gigameter length is properly formatted`() {
-    Ruler.useImperialFormatter = false
+  @Test fun `uses a supplied length formatter`() {
+    val formatter = LengthFormatter { _, _ -> "hello" }
 
-    val distance = Distance.ofGigameters(2_573_213)
-    val length = distance.toLength(Gigameter)
-
-    val formattedLength = length.format(context, converter = null)
-
-    formattedLength shouldBe "2573213.00Gm"
-  }
-
-  @Test fun `inch length is properly formatted`() {
-    val distance = Distance.ofInches(86)
-    val length = distance.toLength(Inch)
-
-    val formattedLength = length.format(context, converter = null)
-
-    formattedLength shouldBe "2yd 1ft 2in"
-  }
-
-  @Test fun `foot length is properly formatted`() {
-    val distance = Distance.ofFeet(111)
-    val length = distance.toLength(Foot)
-
-    val formattedLength = length.format(context, converter = null)
-
-    formattedLength shouldBe "37yd"
-  }
-
-  @Test fun `yard length is properly formatted`() {
-    val distance = Distance.ofMiles(4) + Distance.ofYards(666)
-    val length = distance.toLength(Yard)
-
-    val formattedLength = length.format(context, converter = null)
-
-    formattedLength shouldBe "4mi 666yd"
-  }
-
-  @Test fun `mile length is properly formatted`() {
-    val distance = Distance.ofMiles(69)
-    val length = distance.toLength(Mile)
-
-    val formattedLength = length.format(context, converter = null)
-
-    formattedLength shouldBe "69mi"
-  }
-
-  @Test fun `formatting uses provided separator`() {
-    Ruler.useImperialFormatter = false
-
-    val distance = Distance.ofMeters(1)
-    val length = distance.toLength(Meter)
-
-    val formattedLength = length.format(context, unitSeparator = "-", converter = null)
-
-    formattedLength shouldBe "1.00-m"
-  }
-
-  @Test fun `formatting uses provided resource provider`() {
-    val distance = Distance.ofMeters(1)
-    val length = distance.toLength(Meter)
-
-    val formattedLength = length.format(
-        context,
-        converter = null,
-        formatter = { separator, context ->
-          context.getString(R.string.io_mehow_ruler_yards, measure.toDouble(), separator)
-        }
-    )
-
-    formattedLength shouldBe "1.00yd"
-  }
-
-  @Test fun `formatting uses kilometers for large values with SI units`() {
-    // Only language of locale can be set with @Config and we need to set country.
-    val config = context.resources.configuration
-    val localizedConfig = Configuration(config).apply { setLocale(Locale.UK) }
-    val localizedContext = context.createConfigurationContext(localizedConfig)
-
-    val distance = Distance.ofGigameters(1)
-    val length = distance.toLength(Gigameter)
-
-    val formattedLength = length.format(localizedContext)
-
-    formattedLength shouldBe "1000000.00km"
-  }
-
-  @Test fun `formatting uses meters for small values with SI units`() {
-    // Only language of locale can be set with @Config and we need to set country.
-    val config = context.resources.configuration
-    val localizedConfig = Configuration(config).apply { setLocale(Locale.UK) }
-    val localizedContext = context.createConfigurationContext(localizedConfig)
-
-    val distance = Distance.ofMillimeters(987)
-    val length = distance.toLength(Millimeter)
-
-    val formattedLength = length.format(localizedContext)
-
-    formattedLength shouldBe "0.99m"
-  }
-
-  @Test fun `formatting uses provided converter`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.ofMillimeters(987)
-    val length = distance.toLength(Millimeter)
-
-    val formattedLength = length.format(
-        context,
-        converter = { length.withUnit(Nanometer) }
-    )
-
-    formattedLength shouldBe "987000000.00nm"
-  }
-
-  @Test fun `inch length is properly formatted without imperial formatting`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.ofInches(10)
-
-    val formattedDistance = distance.format(context)
-
-    formattedDistance shouldBe "10.00in"
-  }
-
-  @Test fun `foot length is properly formatted without imperial formatting`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.ofInches(10) +
-        Distance.ofFeet(2)
-
-    val formattedDistance = distance.format(context)
-
-    formattedDistance shouldBe "2.83ft"
-  }
-
-  @Test fun `yard length is properly formatted without imperial formatting`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.ofInches(10) +
-        Distance.ofFeet(2) +
-        Distance.ofYards(211)
-
-    val formattedDistance = distance.format(context)
-
-    formattedDistance shouldBe "211.94yd"
-  }
-
-  @Test fun `mile length is properly formatted without imperial formatting`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.ofInches(10) +
-        Distance.ofFeet(2) +
-        Distance.ofYards(211) +
-        Distance.ofMiles(58)
-
-    val formattedDistance = distance.format(context)
-
-    formattedDistance shouldBe "58.12mi"
-  }
-
-  @Test @Config(qualifiers = "ar") fun `nanometers are reversed for RTL locales`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.of(1, Nanometer)
-    val length = distance.toLength(Nanometer)
-
-    val formattedLength = length.format(context, converter = null)
-    val flooredLength = length.formatFloored(context)
-
-    formattedLength shouldBe "1.00نانومتر"
-    flooredLength shouldBe "1نانومتر"
-  }
-
-  @Test @Config(qualifiers = "ar") fun `micrometers are reversed for RTL locales`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.of(1, Micrometer)
-    val length = distance.toLength(Micrometer)
-
-    val formattedLength = length.format(context, converter = null)
-    val flooredLength = length.formatFloored(context)
-
-    formattedLength shouldBe "1.00ميكرومتر"
-    flooredLength shouldBe "1ميكرومتر"
-  }
-
-  @Test @Config(qualifiers = "ar") fun `millimeters are reversed for RTL locales`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.of(1, Millimeter)
-    val length = distance.toLength(Millimeter)
-
-    val formattedLength = length.format(context, converter = null)
-    val flooredLength = length.formatFloored(context)
-
-    formattedLength shouldBe "1.00مم"
-    flooredLength shouldBe "1مم"
-  }
-
-  @Test @Config(qualifiers = "ar") fun `meters are reversed for RTL locales`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.of(1, Meter)
-    val length = distance.toLength(Meter)
-
-    val formattedLength = length.format(context, converter = null)
-    val flooredLength = length.formatFloored(context)
-
-    formattedLength shouldBe "1.00م"
-    flooredLength shouldBe "1م"
-  }
-
-  @Test @Config(qualifiers = "ar") fun `kilometers are reversed for RTL locales`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.of(1, Kilometer)
-    val length = distance.toLength(Kilometer)
-
-    val formattedLength = length.format(context, converter = null)
-    val flooredLength = length.formatFloored(context)
-
-    formattedLength shouldBe "1.00كم"
-    flooredLength shouldBe "1كم"
-  }
-
-  @Test @Config(qualifiers = "ar") fun `megameters are reversed for RTL locales`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.of(1, Megameter)
-    val length = distance.toLength(Megameter)
-
-    val formattedLength = length.format(context, converter = null)
-    val flooredLength = length.formatFloored(context)
-
-    formattedLength shouldBe "1.00ميجامتر"
-    flooredLength shouldBe "1ميجامتر"
-  }
-
-  @Test @Config(qualifiers = "ar") fun `gigameters are reversed for RTL locales`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.of(1, Gigameter)
-    val length = distance.toLength(Gigameter)
-
-    val formattedLength = length.format(context, converter = null)
-    val flooredLength = length.formatFloored(context)
-
-    formattedLength shouldBe "1.00جيجامتر"
-    flooredLength shouldBe "1جيجامتر"
-  }
-
-  @Test @Config(qualifiers = "ar") fun `miles are reversed for RTL locales`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.of(1, Mile)
-    val length = distance.toLength(Mile)
-
-    val formattedLength = length.format(context, converter = null)
-    val flooredLength = length.formatFloored(context)
-
-    formattedLength shouldBe "1.00ميل"
-    flooredLength shouldBe "1ميل"
-  }
-
-  @Test @Config(qualifiers = "ar") fun `yards are reversed for RTL locales`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.of(1, Yard)
-    val length = distance.toLength(Yard)
-
-    val formattedLength = length.format(context, converter = null)
-    val flooredLength = length.formatFloored(context)
-
-    formattedLength shouldBe "1.00ياردة"
-    flooredLength shouldBe "1ياردة"
-  }
-
-  @Test @Config(qualifiers = "ar") fun `feet are reversed for RTL locales`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.of(1, Foot)
-    val length = distance.toLength(Foot)
-
-    val formattedLength = length.format(context, converter = null)
-    val flooredLength = length.formatFloored(context)
-
-    formattedLength shouldBe "1.00قدم"
-    flooredLength shouldBe "1قدم"
-  }
-
-  @Test @Config(qualifiers = "ar") fun `inches are reversed for RTL locales`() {
-    Ruler.useImperialFormatter = false
-    val distance = Distance.of(1, Inch)
-    val length = distance.toLength(Inch)
-
-    val formattedLength = length.format(context, converter = null)
-    val flooredLength = length.formatFloored(context)
-
-    formattedLength shouldBe "1.00بوصة"
-    flooredLength shouldBe "1بوصة"
+    Distance.Zero.format(context, formatter = formatter) shouldBe "hello"
   }
 }

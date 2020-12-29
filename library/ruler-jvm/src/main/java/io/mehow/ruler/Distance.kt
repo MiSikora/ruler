@@ -4,7 +4,11 @@ import io.mehow.ruler.ImperialLengthUnit.Foot
 import io.mehow.ruler.ImperialLengthUnit.Inch
 import io.mehow.ruler.ImperialLengthUnit.Mile
 import io.mehow.ruler.ImperialLengthUnit.Yard
+import io.mehow.ruler.SiLengthUnit.Centimeter
+import io.mehow.ruler.SiLengthUnit.Decameter
+import io.mehow.ruler.SiLengthUnit.Decimeter
 import io.mehow.ruler.SiLengthUnit.Gigameter
+import io.mehow.ruler.SiLengthUnit.Hectometer
 import io.mehow.ruler.SiLengthUnit.Kilometer
 import io.mehow.ruler.SiLengthUnit.Megameter
 import io.mehow.ruler.SiLengthUnit.Meter
@@ -224,9 +228,29 @@ public class Distance private constructor(
     public fun ofKilometers(value: Long): Distance = of(value, Kilometer)
 
     /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Decimeter].
+     */
+    public fun ofHectometers(value: Long): Distance = of(value, Hectometer)
+
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Centimeter].
+     */
+    public fun ofDecameters(value: Long): Distance = of(value, Decameter)
+
+    /**
      * Creates a distance representing a value expressed in [SiLengthUnit.Meter].
      */
     public fun ofMeters(value: Long): Distance = of(value, Meter)
+
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Decimeter].
+     */
+    public fun ofDecimeters(value: Long): Distance = of(value, Decimeter)
+
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Centimeter].
+     */
+    public fun ofCentimeters(value: Long): Distance = of(value, Centimeter)
 
     /**
      * Creates a distance representing a value expressed in [SiLengthUnit.Millimeter].
@@ -286,9 +310,29 @@ public class Distance private constructor(
     public fun ofKilometers(value: Double): Distance = of(value, Kilometer)
 
     /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Decimeter].
+     */
+    public fun ofHectometers(value: Double): Distance = of(value, Hectometer)
+
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Centimeter].
+     */
+    public fun ofDecameters(value: Double): Distance = of(value, Decameter)
+
+    /**
      * Creates a distance representing a value expressed in [SiLengthUnit.Meter].
      */
     public fun ofMeters(value: Double): Distance = of(value, Meter)
+
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Decimeter].
+     */
+    public fun ofDecimeters(value: Double): Distance = of(value, Decimeter)
+
+    /**
+     * Creates a distance representing a value expressed in [SiLengthUnit.Centimeter].
+     */
+    public fun ofCentimeters(value: Double): Distance = of(value, Centimeter)
 
     /**
      * Creates a distance representing a value expressed in [SiLengthUnit.Millimeter].

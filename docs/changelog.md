@@ -10,12 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Distance.Epsilon` constant that represents smallest possible change in of `Distance`.
 - `LengthUnits.bounds` property to the public API. It holds min and max distances that only that unit can represent as a natural count of self.
 - `Length.withFittingUnit(units, fitter)` that selects the best unit for a length using supplied units and fitting algorithm. A complementary `UnitFitter` interface is added along with `InRangeUnitFitter` and `LogDistanceUnitFitter` implementations.
+- New SI units – centimeters, decimeters, decameters and hectometers.
 
 ### Changed
 - Added one nanometer to `Distance.Min`. This change was made in order to make `Distance.abs()` operation safe.
 
 ### Deprecated
 - `Length.withAutoUnit()` in favour of `Length.withFittingUnit()` with default arguments.
+- `Ruler.removeConverter()` in favour of `Length.removeConverterFactory()`. It was left as a mistake from `0.x` releases.
+
+### Fixed
+- `FlooredLengthFormatter` not handling integer overflows when formatting lengths.
 
 ## [1.0.0] - 2020-12-28
 

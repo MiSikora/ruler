@@ -35,7 +35,18 @@ public object Ruler : LengthConverter, LengthFormatter {
   /**
    * Removes a converter factory from the conversion chain. Built-in factories cannot be removed.
    */
+  @Deprecated(
+      message = "This method will be removed in next major release.",
+      replaceWith = ReplaceWith("removeConverterFactory(factory)"),
+  )
   public fun removeConverter(factory: LengthConverter.Factory): Unit = synchronized(converterFactories) {
+    converterFactories -= factory
+  }
+
+  /**
+   * Removes a converter factory from the conversion chain. Built-in factories cannot be removed.
+   */
+  public fun removeConverterFactory(factory: LengthConverter.Factory): Unit = synchronized(converterFactories) {
     converterFactories -= factory
   }
 

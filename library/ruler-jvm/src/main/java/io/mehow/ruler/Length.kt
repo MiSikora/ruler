@@ -4,7 +4,11 @@ import io.mehow.ruler.ImperialLengthUnit.Foot
 import io.mehow.ruler.ImperialLengthUnit.Inch
 import io.mehow.ruler.ImperialLengthUnit.Mile
 import io.mehow.ruler.ImperialLengthUnit.Yard
+import io.mehow.ruler.SiLengthUnit.Centimeter
+import io.mehow.ruler.SiLengthUnit.Decameter
+import io.mehow.ruler.SiLengthUnit.Decimeter
 import io.mehow.ruler.SiLengthUnit.Gigameter
+import io.mehow.ruler.SiLengthUnit.Hectometer
 import io.mehow.ruler.SiLengthUnit.Kilometer
 import io.mehow.ruler.SiLengthUnit.Megameter
 import io.mehow.ruler.SiLengthUnit.Meter
@@ -180,57 +184,77 @@ public class Length<T : LengthUnit<T>> internal constructor(
     public fun <T : LengthUnit<T>> of(value: Long, unit: T): Length<T> = Length(Distance.of(value, unit), unit)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Gigameter].
+     * Creates a length representing a value expressed in [SiLengthUnit.Gigameter].
      */
     public fun ofGigameters(value: Long): Length<SiLengthUnit> = of(value, Gigameter)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Megameter].
+     * Creates a length representing a value expressed in [SiLengthUnit.Megameter].
      */
     public fun ofMegameters(value: Long): Length<SiLengthUnit> = of(value, Megameter)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Kilometer].
+     * Creates a length representing a value expressed in [SiLengthUnit.Kilometer].
      */
     public fun ofKilometers(value: Long): Length<SiLengthUnit> = of(value, Kilometer)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Meter].
+     * Creates a length representing a value expressed in [SiLengthUnit.Decimeter].
+     */
+    public fun ofHectometers(value: Long): Length<SiLengthUnit> = of(value, Hectometer)
+
+    /**
+     * Creates a length representing a value expressed in [SiLengthUnit.Centimeter].
+     */
+    public fun ofDecameters(value: Long): Length<SiLengthUnit> = of(value, Decameter)
+
+    /**
+     * Creates a length representing a value expressed in [SiLengthUnit.Meter].
      */
     public fun ofMeters(value: Long): Length<SiLengthUnit> = of(value, Meter)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Millimeter].
+     * Creates a length representing a value expressed in [SiLengthUnit.Decimeter].
+     */
+    public fun ofDecimeters(value: Long): Length<SiLengthUnit> = of(value, Decimeter)
+
+    /**
+     * Creates a length representing a value expressed in [SiLengthUnit.Centimeter].
+     */
+    public fun ofCentimeters(value: Long): Length<SiLengthUnit> = of(value, Centimeter)
+
+    /**
+     * Creates a length representing a value expressed in [SiLengthUnit.Millimeter].
      */
     public fun ofMillimeters(value: Long): Length<SiLengthUnit> = of(value, Millimeter)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Micrometer].
+     * Creates a length representing a value expressed in [SiLengthUnit.Micrometer].
      */
     public fun ofMicrometers(value: Long): Length<SiLengthUnit> = of(value, Micrometer)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Nanometer].
+     * Creates a length representing a value expressed in [SiLengthUnit.Nanometer].
      */
     public fun ofNanometers(value: Long): Length<SiLengthUnit> = of(value, Nanometer)
 
     /**
-     * Creates a distance representing a value expressed in [ImperialLengthUnit.Mile].
+     * Creates a length representing a value expressed in [ImperialLengthUnit.Mile].
      */
     public fun ofMiles(value: Long): Length<ImperialLengthUnit> = of(value, Mile)
 
     /**
-     * Creates a distance representing a value expressed in [ImperialLengthUnit.Yard].
+     * Creates a length representing a value expressed in [ImperialLengthUnit.Yard].
      */
     public fun ofYards(value: Long): Length<ImperialLengthUnit> = of(value, Yard)
 
     /**
-     * Creates a distance representing a value expressed in [ImperialLengthUnit.Foot].
+     * Creates a length representing a value expressed in [ImperialLengthUnit.Foot].
      */
     public fun ofFeet(value: Long): Length<ImperialLengthUnit> = of(value, Foot)
 
     /**
-     * Creates a distance representing a value expressed in [ImperialLengthUnit.Inch].
+     * Creates a length representing a value expressed in [ImperialLengthUnit.Inch].
      */
     public fun ofInches(value: Long): Length<ImperialLengthUnit> = of(value, Inch)
 
@@ -240,57 +264,77 @@ public class Length<T : LengthUnit<T>> internal constructor(
     public fun <T : LengthUnit<T>> of(value: Double, unit: T): Length<T> = Length(Distance.of(value, unit), unit)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Gigameter].
+     * Creates a length representing a value expressed in [SiLengthUnit.Gigameter].
      */
     public fun ofGigameters(value: Double): Length<SiLengthUnit> = of(value, Gigameter)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Megameter].
+     * Creates a length representing a value expressed in [SiLengthUnit.Megameter].
      */
     public fun ofMegameters(value: Double): Length<SiLengthUnit> = of(value, Megameter)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Kilometer].
+     * Creates a length representing a value expressed in [SiLengthUnit.Kilometer].
      */
     public fun ofKilometers(value: Double): Length<SiLengthUnit> = of(value, Kilometer)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Meter].
+     * Creates a length representing a value expressed in [SiLengthUnit.Decimeter].
+     */
+    public fun ofHectometers(value: Double): Length<SiLengthUnit> = of(value, Hectometer)
+
+    /**
+     * Creates a length representing a value expressed in [SiLengthUnit.Centimeter].
+     */
+    public fun ofDecameters(value: Double): Length<SiLengthUnit> = of(value, Decameter)
+
+    /**
+     * Creates a length representing a value expressed in [SiLengthUnit.Meter].
      */
     public fun ofMeters(value: Double): Length<SiLengthUnit> = of(value, Meter)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Millimeter].
+     * Creates a length representing a value expressed in [SiLengthUnit.Decimeter].
+     */
+    public fun ofDecimeters(value: Double): Length<SiLengthUnit> = of(value, Decimeter)
+
+    /**
+     * Creates a length representing a value expressed in [SiLengthUnit.Centimeter].
+     */
+    public fun ofCentimeters(value: Double): Length<SiLengthUnit> = of(value, Centimeter)
+
+    /**
+     * Creates a length representing a value expressed in [SiLengthUnit.Millimeter].
      */
     public fun ofMillimeters(value: Double): Length<SiLengthUnit> = of(value, Millimeter)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Micrometer].
+     * Creates a length representing a value expressed in [SiLengthUnit.Micrometer].
      */
     public fun ofMicrometers(value: Double): Length<SiLengthUnit> = of(value, Micrometer)
 
     /**
-     * Creates a distance representing a value expressed in [SiLengthUnit.Nanometer].
+     * Creates a length representing a value expressed in [SiLengthUnit.Nanometer].
      */
     public fun ofNanometers(value: Double): Length<SiLengthUnit> = of(value, Nanometer)
 
     /**
-     * Creates a distance representing a value expressed in [ImperialLengthUnit.Mile].
+     * Creates a length representing a value expressed in [ImperialLengthUnit.Mile].
      */
     public fun ofMiles(value: Double): Length<ImperialLengthUnit> = of(value, Mile)
 
     /**
-     * Creates a distance representing a value expressed in [ImperialLengthUnit.Yard].
+     * Creates a length representing a value expressed in [ImperialLengthUnit.Yard].
      */
     public fun ofYards(value: Double): Length<ImperialLengthUnit> = of(value, Yard)
 
     /**
-     * Creates a distance representing a value expressed in [ImperialLengthUnit.Foot].
+     * Creates a length representing a value expressed in [ImperialLengthUnit.Foot].
      */
     public fun ofFeet(value: Double): Length<ImperialLengthUnit> = of(value, Foot)
 
     /**
-     * Creates a distance representing a value expressed in [ImperialLengthUnit.Inch].
+     * Creates a length representing a value expressed in [ImperialLengthUnit.Inch].
      */
     public fun ofInches(value: Double): Length<ImperialLengthUnit> = of(value, Inch)
   }
