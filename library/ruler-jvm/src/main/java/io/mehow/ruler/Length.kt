@@ -42,9 +42,17 @@ public class Length<T : LengthUnit<T>> internal constructor(
   }
 
   /**
-   * Applies best fitting unit to this length. Fitting is based on bounds defined in units [LengthUnit].
+   * Applies a best fitted unit to this length from all available units in a unit system.
    */
-  public fun withAutoUnit(): Length<T> = unit.units.firstOrNull { distance.abs() in it }?.let(::withUnit) ?: this
+  public fun withAutoUnit(): Length<T> = withFittingUnit()
+
+  /**
+   * Applies a unit to this length from specified units according to the fitting algorithm.
+   */
+  public fun withFittingUnit(
+    units: Iterable<T> = unit.units,
+    unitFitter: UnitFitter = BuiltInUnitFitter,
+  ): Length<T> = unitFitter.findFit(units, this)?.let(::withUnit) ?: this
 
   /**
    * Ensures that a unit is within a specified range.

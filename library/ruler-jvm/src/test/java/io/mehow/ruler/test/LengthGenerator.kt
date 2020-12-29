@@ -26,13 +26,18 @@ internal class LengthGenerator<T : LengthUnit<T>> private constructor(
     }
   }
 
-  private val distanceEdgecases = this.ranges.flatMap { setOf(it.start, it.endInclusive) } + when {
-    ranges.any { Distance.Zero in it } -> setOf(Distance.Zero)
-    else -> emptySet()
-  }
+  private val distanceEdgeCases = this.ranges.flatMap { range ->
+    listOfNotNull(
+        range.start,
+        range.start + Distance.Epsilon,
+        Distance.Zero,
+        range.endInclusive - Distance.Epsilon,
+        range.endInclusive,
+    ).filter { it in range }
+  }.distinct()
 
   override fun edgecases() = units.flatMap { unit ->
-    distanceEdgecases.map { distance -> distance.toLength(unit) }
+    distanceEdgeCases.map { distance -> distance.toLength(unit) }
   }
 
   override fun sample(rs: RandomSource) = rs.random
@@ -74,21 +79,19 @@ internal class LengthGenerator<T : LengthUnit<T>> private constructor(
       vararg units: LengthUnit<*> = (SiLengthUnit.units + ImperialLengthUnit.units).toTypedArray(),
     ) = LengthGenerator<LengthUnit<*>>(ranges, *units)
 
-    fun forUnit(
-      unit: LengthUnit<*>,
-      min: Distance = Distance.Min,
-      max: Distance = Distance.Max,
-    ) = when (unit) {
-      is SiLengthUnit -> si(min, max)
-      is ImperialLengthUnit -> imperial(min, max)
-    }
+    fun unitRange(unit: SiLengthUnit) = si(listOf(
+        -unit.bounds.endInclusive..-unit.bounds.start,
+        unit.bounds,
+    ))
 
-    fun forUnit(
-      unit: LengthUnit<*>,
-      ranges: List<ClosedRange<Distance>>,
-    ) = when (unit) {
-      is SiLengthUnit -> si(ranges)
-      is ImperialLengthUnit -> imperial(ranges)
+    fun unitRange(unit: ImperialLengthUnit) = imperial(listOf(
+        -unit.bounds.endInclusive..-unit.bounds.start,
+        unit.bounds,
+    ))
+
+    fun unitRange(unit: LengthUnit<*>) = when (unit) {
+      is SiLengthUnit -> unitRange(unit)
+      is ImperialLengthUnit -> unitRange(unit)
     }
   }
 }

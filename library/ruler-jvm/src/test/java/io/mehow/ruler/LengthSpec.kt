@@ -10,36 +10,11 @@ import io.kotest.property.arbitrary.filterNot
 import io.kotest.property.arbitrary.long
 import io.kotest.property.arbitrary.numericDoubles
 import io.kotest.property.checkAll
-import io.mehow.ruler.ImperialLengthUnit.Foot
-import io.mehow.ruler.ImperialLengthUnit.Inch
-import io.mehow.ruler.ImperialLengthUnit.Mile
-import io.mehow.ruler.ImperialLengthUnit.Yard
-import io.mehow.ruler.SiLengthUnit.Gigameter
-import io.mehow.ruler.SiLengthUnit.Kilometer
-import io.mehow.ruler.SiLengthUnit.Megameter
 import io.mehow.ruler.SiLengthUnit.Meter
-import io.mehow.ruler.SiLengthUnit.Micrometer
-import io.mehow.ruler.SiLengthUnit.Millimeter
-import io.mehow.ruler.SiLengthUnit.Nanometer
 import io.mehow.ruler.test.LengthGenerator
+import io.mehow.ruler.test.toLength
 
 internal class LengthSpec : DescribeSpec({
-  fun Distance.toLength(unit: LengthUnit<*>) = when (unit) {
-    Nanometer -> toLength(Nanometer)
-    Micrometer -> toLength(Micrometer)
-    Millimeter -> toLength(Millimeter)
-    Meter -> toLength(Meter)
-    Kilometer -> toLength(Kilometer)
-    Megameter -> toLength(Megameter)
-    Gigameter -> toLength(Gigameter)
-    Inch -> toLength(Inch)
-    Foot -> toLength(Foot)
-    Yard -> toLength(Yard)
-    Mile -> toLength(Mile)
-  }
-
-  fun LengthUnit<*>.capacity() = bounds.endInclusive.toLength(this).measure.toLong()
-
   describe("length") {
     val lengthGenerator = LengthGenerator.create(
         min = Distance.ofGigameters(-1),
@@ -92,28 +67,32 @@ internal class LengthSpec : DescribeSpec({
       }
     }
 
-    context("with some distance") {
-      it("can change unit with an automatic fit") {
-        for (unit in LengthUnit.units) {
-          val inRangeValue = unit.capacity()
-          val generator = LengthGenerator.forUnit(
-              unit = unit,
-              ranges = listOf(
-                  Distance.of(-inRangeValue, unit)..Distance.of(-1, unit),
-                  Distance.of(1, unit)..Distance.of(inRangeValue, unit),
-              ),
-          )
-          checkAll(generator) { length ->
-            length.withAutoUnit().unit shouldBe unit
-          }
+    it("changes unit with an automatic fit") {
+      for (unit in LengthUnit.units) {
+        checkAll(LengthGenerator.unitRange(unit)) { length ->
+          length.withAutoUnit().unit shouldBe unit
         }
       }
     }
 
-    context("with zero distance") {
-      it("is not affected by unit automatic fit") {
+    context("when fitted") {
+      it("uses only units that are supplied") {
         for (unit in LengthUnit.units) {
-          Distance.Zero.toLength(unit).withAutoUnit().unit shouldBe unit
+          checkAll(LengthGenerator.create()) { length ->
+            length.withFittingUnit(listOf(unit)).unit shouldBe unit
+          }
+        }
+      }
+
+      it("uses supplied fitter") {
+        val fitter = object : UnitFitter {
+          @Suppress("UNCHECKED_CAST")
+          override fun <T : LengthUnit<T>> findFit(units: Iterable<T>, length: Length<T>) = Meter as T
+        }
+        for (unit in LengthUnit.units) {
+          checkAll(LengthGenerator.create()) { length ->
+            length.withFittingUnit(listOf(unit), fitter).unit shouldBe Meter
+          }
         }
       }
     }

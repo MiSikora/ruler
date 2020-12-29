@@ -13,7 +13,11 @@ public sealed class LengthUnit<T>(
    * Amount of meters in quantity of 1 of this unit.
    */
   public val meterRatio: BigDecimal,
-  internal val bounds: ClosedRange<Distance>,
+  /**
+   * Minimal and maximal distances that contain a natural [count of units][Length.measure] before a different unit
+   * is a better fit for the same distances.
+   */
+  public val bounds: ClosedRange<Distance>,
   private val ordinal: Int,
   private val name: String,
 ) : Comparable<T> where T : LengthUnit<T> {
@@ -52,7 +56,7 @@ public sealed class SiLengthUnit(
 ) : LengthUnit<SiLengthUnit>(meterRatio, bounds, ordinal, name) {
   public object Nanometer : SiLengthUnit(
       meterRatio = 0.000_000_001.toBigDecimal(),
-      bounds = Distance.Epsilon..Distance.create(nanometers = 1_000) - Distance.Epsilon,
+      bounds = Distance.Zero..Distance.create(nanometers = 1_000) - Distance.Epsilon,
       ordinal = 0,
       name = "Nanometer",
   )
@@ -122,7 +126,7 @@ public sealed class ImperialLengthUnit(
 ) : LengthUnit<ImperialLengthUnit>(meterRatio, bounds, ordinal, name) {
   public object Inch : ImperialLengthUnit(
       meterRatio = 0.025_4.toBigDecimal(),
-      bounds = Distance.Epsilon..Distance.create(nanometers = 304_800_000) - Distance.Epsilon,
+      bounds = Distance.Zero..Distance.create(nanometers = 304_800_000) - Distance.Epsilon,
       ordinal = 0,
       name = "Inch",
   )
