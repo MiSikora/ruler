@@ -11,8 +11,8 @@ import io.mehow.ruler.SiLengthUnit.Meter
 public object AutoFitLengthConverter : LengthConverter {
   private val siUnits = listOf(Meter, Kilometer)
 
-  override fun Length<*>.convert(context: Context): Length<*> = when (unit) {
-    is SiLengthUnit -> withUnit(Meter).withFittingUnit(siUnits)
-    is ImperialLengthUnit -> withUnit(Yard).withFittingUnit()
+  override fun Length<*>.convert(context: Context): Length<*> = when (val unit = unit) {
+    is SiLengthUnit -> withUnit(unit).withFittingUnit(siUnits)
+    is ImperialLengthUnit -> withUnit(unit).withFittingUnit()
   }
 }
