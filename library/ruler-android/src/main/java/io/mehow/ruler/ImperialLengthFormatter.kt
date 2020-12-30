@@ -146,20 +146,14 @@ public class ImperialLengthFormatter internal constructor(
       context: Context,
       unitSeparator: String,
     ) = context.getString(
-        resource,
+        R.string.io_mehow_ruler_distance_pattern,
         unitCount.format(context.preferredLocale, precision = 0),
         unitSeparator,
+        context.getString(unit.resource),
     )
 
     override fun equals(other: Any?) = other is UnitFormatter && unit == other.unit
 
     override fun hashCode() = unit.hashCode()
-
-    private val resource = when (unit) {
-      Inch -> R.string.io_mehow_ruler_inches_part
-      Foot -> R.string.io_mehow_ruler_feet_part
-      Yard -> R.string.io_mehow_ruler_yards_part
-      Mile -> R.string.io_mehow_ruler_miles_part
-    }
   }
 }

@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Length.withAutoUnit()` in favour of `Length.withFittingUnit()` with default arguments.
 - `Ruler.removeConverter()` in favour of `Length.removeConverterFactory()`. It was left as a mistake from `0.x` releases.
 
+### Removed
+- Duplicated Android resources. Formatting relies now on a single pattern and translated units.
+
 ### Fixed
 - `FlooredLengthFormatter` not handling integer overflows when formatting lengths.
 

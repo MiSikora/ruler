@@ -1,21 +1,8 @@
 package io.mehow.ruler
 
 import android.content.Context
-import io.mehow.ruler.ImperialLengthUnit.Foot
-import io.mehow.ruler.ImperialLengthUnit.Inch
-import io.mehow.ruler.ImperialLengthUnit.Mile
 import io.mehow.ruler.ImperialLengthUnit.Yard
-import io.mehow.ruler.SiLengthUnit.Centimeter
-import io.mehow.ruler.SiLengthUnit.Decameter
-import io.mehow.ruler.SiLengthUnit.Decimeter
-import io.mehow.ruler.SiLengthUnit.Gigameter
-import io.mehow.ruler.SiLengthUnit.Hectometer
-import io.mehow.ruler.SiLengthUnit.Kilometer
-import io.mehow.ruler.SiLengthUnit.Megameter
 import io.mehow.ruler.SiLengthUnit.Meter
-import io.mehow.ruler.SiLengthUnit.Micrometer
-import io.mehow.ruler.SiLengthUnit.Millimeter
-import io.mehow.ruler.SiLengthUnit.Nanometer
 
 /**
  * Formatter that applies whole quantity of units in a [Length].
@@ -25,39 +12,11 @@ public object FlooredLengthFormatter : LengthFormatter {
     unitSeparator: String,
     context: Context,
   ): String = context.getString(
-      unit.partResource,
+      R.string.io_mehow_ruler_distance_pattern,
       measure.toBigInteger().format(context.preferredLocale, precision = 0),
       unitSeparator,
+      context.getString(unit.resource),
   )
-
-  private val LengthUnit<*>.partResource
-    get() = when (this) {
-      is SiLengthUnit -> partResource
-      is ImperialLengthUnit -> partResource
-    }
-
-  private val SiLengthUnit.partResource
-    get() = when (this) {
-      Nanometer -> R.string.io_mehow_ruler_nanometers_part
-      Micrometer -> R.string.io_mehow_ruler_micrometers_part
-      Millimeter -> R.string.io_mehow_ruler_millimeters_part
-      Centimeter -> R.string.io_mehow_ruler_centimeters_part
-      Decimeter -> R.string.io_mehow_ruler_decimeters_part
-      Meter -> R.string.io_mehow_ruler_meters_part
-      Decameter -> R.string.io_mehow_ruler_decameters_part
-      Hectometer -> R.string.io_mehow_ruler_hectometers_part
-      Kilometer -> R.string.io_mehow_ruler_kilometers_part
-      Megameter -> R.string.io_mehow_ruler_megameters_part
-      Gigameter -> R.string.io_mehow_ruler_gigameters_part
-    }
-
-  private val ImperialLengthUnit.partResource
-    get() = when (this) {
-      Inch -> R.string.io_mehow_ruler_inches_part
-      Foot -> R.string.io_mehow_ruler_feet_part
-      Yard -> R.string.io_mehow_ruler_yards_part
-      Mile -> R.string.io_mehow_ruler_miles_part
-    }
 }
 
 /**

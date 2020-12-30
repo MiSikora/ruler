@@ -1,48 +1,20 @@
 <resources>
-  <string name="io_mehow_ruler_gigameters">%1$s%2$sGm</string>
-  <string name="io_mehow_ruler_gigameters_part">%1$s%2$sGm</string>
-
-  <string name="io_mehow_ruler_megameters">%1$s%2$sMm</string>
-  <string name="io_mehow_ruler_megameters_part">%1$s%2$sMm</string>
-
-  <string name="io_mehow_ruler_kilometers">%1$s%2$skm</string>
-  <string name="io_mehow_ruler_kilometers_part">%1$s%2$skm</string>
-
-  <string name="io_mehow_ruler_hectometers">%1$s%2$shm</string>
-  <string name="io_mehow_ruler_hectometers_part">%1$s%2$shm</string>
-
-  <string name="io_mehow_ruler_decameters">%1$s%2$sdam</string>
-  <string name="io_mehow_ruler_decameters_part">%1$s%2$sdam</string>
-
-  <string name="io_mehow_ruler_meters">%1$s%2$sm</string>
-  <string name="io_mehow_ruler_meters_part">%1$s%2$sm</string>
-
-  <string name="io_mehow_ruler_decimeters">%1$s%2$sdm</string>
-  <string name="io_mehow_ruler_decimeters_part">%1$s%2$sdm</string>
-
-  <string name="io_mehow_ruler_centimeters">%1$s%2$scm</string>
-  <string name="io_mehow_ruler_centimeters_part">%1$s%2$scm</string>
-
-  <string name="io_mehow_ruler_millimeters">%1$s%2$smm</string>
-  <string name="io_mehow_ruler_millimeters_part">%1$s%2$smm</string>
-
-  <string name="io_mehow_ruler_micrometers">%1$s%2$sµm</string>
-  <string name="io_mehow_ruler_micrometers_part">%1$s%2$sµm</string>
-
-  <string name="io_mehow_ruler_nanometers">%1$s%2$snm</string>
-  <string name="io_mehow_ruler_nanometers_part">%1$s%2$snm</string>
-
-  <string name="io_mehow_ruler_miles">%1$s%2$smi</string>
-  <string name="io_mehow_ruler_miles_part">%1$s%2$smi</string>
-
-  <string name="io_mehow_ruler_yards">%1$s%2$syd</string>
-  <string name="io_mehow_ruler_yards_part">%1$s%2$syd</string>
-
-  <string name="io_mehow_ruler_feet">%1$s%2$sft</string>
-  <string name="io_mehow_ruler_feet_part">%1$s%2$sft</string>
-
-  <string name="io_mehow_ruler_inches">%1$s%2$sin</string>
-  <string name="io_mehow_ruler_inches_part">%1$s%2$sin</string>
+  <string name="io_mehow_ruler_distance_pattern">%1$s%2$s%3$s</string>
+  <string name="io_mehow_ruler_gigameters">Gm</string>
+  <string name="io_mehow_ruler_megameters">Mm</string>
+  <string name="io_mehow_ruler_kilometers">km</string>
+  <string name="io_mehow_ruler_hectometers">hm</string>
+  <string name="io_mehow_ruler_decameters">dam</string>
+  <string name="io_mehow_ruler_meters">m</string>
+  <string name="io_mehow_ruler_decimeters">dm</string>
+  <string name="io_mehow_ruler_centimeters">cm</string>
+  <string name="io_mehow_ruler_millimeters">mm</string>
+  <string name="io_mehow_ruler_micrometers">µm</string>
+  <string name="io_mehow_ruler_nanometers">nm</string>
+  <string name="io_mehow_ruler_miles">mi</string>
+  <string name="io_mehow_ruler_yards">yd</string>
+  <string name="io_mehow_ruler_feet">ft</string>
+  <string name="io_mehow_ruler_inches">in</string>
 
   <string name="io_mehow_ruler_imperial_negative_wrapper">-(%1s)</string>
 </resources>
