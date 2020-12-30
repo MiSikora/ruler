@@ -37,7 +37,7 @@ internal class ImperialLengthFormatterTest {
 
     val formattedLength = formatter.format(length, context)
 
-    formattedLength shouldBe "-(10mi 11yd 2ft 7in)"
+    formattedLength shouldBe "-10mi 11yd 2ft 7in"
   }
 
   @Test fun `zero unit parts are ignored`() {
@@ -150,7 +150,7 @@ internal class ImperialLengthFormatterTest {
   }
 
   @Test fun `miles do not accumulate yards, feet and inches`() {
-    val distance = Distance.ofYards(1759) +
+    val distance = Distance.ofYards(300) +
         Distance.ofFeet(2) +
         Distance.ofInches(11)
     val length = distance.toLength(Meter)
@@ -164,8 +164,8 @@ internal class ImperialLengthFormatterTest {
   }
 
   @Test fun `yards do not accumulate feet and inches`() {
-    val distance = Distance.ofFeet(2) +
-        Distance.ofInches(11)
+    val distance = Distance.ofFeet(1) +
+        Distance.ofInches(5)
     val length = distance.toLength(Meter)
     val formatter = ImperialLengthFormatter.Builder()
         .withYards()
@@ -177,7 +177,7 @@ internal class ImperialLengthFormatterTest {
   }
 
   @Test fun `feet do not accumulate inches`() {
-    val distance = Distance.ofInches(11)
+    val distance = Distance.ofInches(4)
     val length = distance.toLength(Meter)
     val formatter = ImperialLengthFormatter.Builder()
         .withFeet()
@@ -212,7 +212,7 @@ internal class ImperialLengthFormatterTest {
 
     val formattedLength = formatter.format(length, context)
 
-    formattedLength shouldBe "17,611yd"
+    formattedLength shouldBe "17,612yd"
   }
 
   @Test fun `custom unit separator is displayed in a correct position`() {

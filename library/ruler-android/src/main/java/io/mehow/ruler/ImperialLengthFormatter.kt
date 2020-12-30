@@ -15,41 +15,34 @@ import io.mehow.ruler.ImperialLengthUnit.Yard
 public class ImperialLengthFormatter internal constructor(
   builder: Builder,
 ) : LengthFormatter {
-  private val formatters = builder.formatters.sortedByDescending(UnitFormatter::unit)
+  private val formatters = builder.formatters.sortedByDescending(UnitFormatter::formattingUnit)
   private val partSeparator = builder.partSeparator
   private val fallbackFormatter = builder.fallbackFormatter
 
   override fun Length<*>.format(unitSeparator: String, context: Context): String {
-    val parts = distance.abs().formatUnitParts(context, unitSeparator)
-    val noSignText = when {
-      parts.isEmpty() -> {
-        val fallbackUnitCount = distance.abs().toLength(fallbackFormatter.unit).measure.toLong()
-        fallbackFormatter.format(fallbackUnitCount, context, unitSeparator)
-      }
-      else -> parts.joinToString(partSeparator)
-    }
+    val parts = formatUnitParts(unitSeparator, context)
     return when {
-      distance < Distance.Zero -> context.getString(R.string.io_mehow_ruler_imperial_negative_wrapper, noSignText)
-      else -> noSignText
+      parts.isEmpty() -> fallbackFormatter.run { format(unitSeparator, context) }
+      else -> parts.joinToString(partSeparator)
     }
   }
 
-  private fun Distance.formatUnitParts(
-    context: Context,
+  private fun Length<*>.formatUnitParts(
     unitSeparator: String,
-  ) = formatters.fold(this to emptyList<String>()) { (partDistance, parts), formatter ->
+    context: Context,
+  ) = formatters.fold(distance to emptyList<String>()) { (partDistance, parts), formatter ->
     when {
-      partDistance.hasAtLeastOne(formatter.unit) -> {
-        val unitCount = partDistance.toLength(formatter.unit).measure.toLong()
-        val adjustedDistance = partDistance - Distance.of(unitCount, formatter.unit)
-        val part = formatter.format(unitCount, context, unitSeparator)
+      partDistance.hasAtLeastOne(formatter.formattingUnit) -> {
+        val roundedLength = partDistance.toLength(formatter.formattingUnit).roundDown()
+        val adjustedDistance = partDistance.abs() - roundedLength.abs()
+        val part = formatter.run { roundedLength.format(unitSeparator, context) }
         adjustedDistance to parts + part
       }
       else -> partDistance to parts
     }
   }.second
 
-  private fun Distance.hasAtLeastOne(unit: ImperialLengthUnit) = this >= Distance.of(1, unit)
+  private fun Distance.hasAtLeastOne(unit: ImperialLengthUnit) = this != Distance.Zero && this in unit
 
   public companion object {
     public val Full: ImperialLengthFormatter = Builder()
@@ -140,20 +133,19 @@ public class ImperialLengthFormatter internal constructor(
     )
   }
 
-  internal class UnitFormatter(val unit: ImperialLengthUnit) {
-    fun format(
-      unitCount: Long,
-      context: Context,
+  internal class UnitFormatter(val formattingUnit: ImperialLengthUnit) : LengthFormatter {
+    override fun Length<*>.format(
       unitSeparator: String,
-    ) = context.getString(
+      context: Context,
+    ): String = context.getString(
         R.string.io_mehow_ruler_distance_pattern,
-        unitCount.format(context.preferredLocale, precision = 0),
+        withUnit(formattingUnit).measure.format(context.preferredLocale, precision = 0),
         unitSeparator,
-        context.getString(unit.resource),
+        context.getString(formattingUnit.resource),
     )
 
-    override fun equals(other: Any?) = other is UnitFormatter && unit == other.unit
+    override fun equals(other: Any?) = other is UnitFormatter && formattingUnit == other.formattingUnit
 
-    override fun hashCode() = unit.hashCode()
+    override fun hashCode() = formattingUnit.hashCode()
   }
 }

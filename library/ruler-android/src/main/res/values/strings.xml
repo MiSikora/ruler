@@ -15,6 +15,4 @@
   <string name="io_mehow_ruler_yards">yd</string>
   <string name="io_mehow_ruler_feet">ft</string>
   <string name="io_mehow_ruler_inches">in</string>
-
-  <string name="io_mehow_ruler_imperial_negative_wrapper">-(%1s)</string>
 </resources>

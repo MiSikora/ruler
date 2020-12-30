@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - Duplicated Android resources. Formatting relies now on a single pattern and translated units.
+- Android resource for formatting negative imperial lengths. It is now handled automatically by generic formatting mechanism.
 
 ### Fixed
 - `FlooredLengthFormatter` not handling integer overflows when formatting lengths.

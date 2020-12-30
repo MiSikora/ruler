@@ -15,6 +15,4 @@
   <string name="io_mehow_ruler_yards">ياردة</string>
   <string name="io_mehow_ruler_feet">قدم</string>
   <string name="io_mehow_ruler_inches">بوصة</string>
-
-  <string name="io_mehow_ruler_imperial_negative_wrapper">-(%1s)</string>
 </resources>
