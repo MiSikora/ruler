@@ -43,7 +43,7 @@ public class Distance private constructor(
   /**
    * Returns a distance whose value is the absolute value of this distance.
    */
-  public fun abs(): Distance = create(meters.abs())
+  public fun abs(): Distance = if (meters >= BigDecimal.ZERO) this else create(meters.abs())
 
   /**
    * Adds specified distance to this distance.

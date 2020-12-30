@@ -96,7 +96,7 @@ public class Length<T : LengthUnit<T>> internal constructor(
   /**
    * Returns a length whose value is the absolute value of this length.
    */
-  public fun abs(): Length<T> = Length(distance.abs(), unit)
+  public fun abs(): Length<T> = if (distance >= Distance.Zero) this else Length(distance.abs(), unit)
 
   /**
    * Returns a length whose [measure] is rounded to a whole number that is closest towards 0.
