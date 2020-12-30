@@ -13,7 +13,7 @@ public object FlooredLengthFormatter : LengthFormatter {
     context: Context,
   ): String = context.getString(
       R.string.io_mehow_ruler_format_pattern,
-      measure.toBigInteger().format(context.preferredLocale, precision = 0),
+      measure.value.toBigInteger().format(context.preferredLocale, precision = 0),
       unitSeparator,
       context.getString(unit.resource),
   )

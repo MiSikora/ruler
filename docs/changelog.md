@@ -12,10 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Length.withFittingUnit(units, fitter)` that selects the best unit for a length using supplied units and fitting algorithm. A complementary `UnitFitter` interface is added along with `InRangeUnitFitter` and `LogDistanceUnitFitter` implementations.
 - New SI units – centimeters, decimeters, decameters and hectometers.
 - `Length.roundDown()` to get a length with whole unit count rounded towards 0.
+- `Measure` class to model a distance normalized to a unit.
 
 ### Changed
 - Added one nanometer to `Distance.Min`. This change was made in order to make `Distance.abs()` operation safe.
 - Distance and length formatting uses better mechanisms for formatting. Instead of custom parsing it relies on `java.text` and `android.icu` packages.
+- `Length.measure` is now of `Measure` type.
 
 ### Deprecated
 - `Length.withAutoUnit()` in favour of `Length.withFittingUnit()` with default arguments.

@@ -10,7 +10,6 @@ import io.kotest.property.arbitrary.filterNot
 import io.kotest.property.arbitrary.long
 import io.kotest.property.arbitrary.numericDoubles
 import io.kotest.property.checkAll
-import io.mehow.ruler.SiLengthUnit.Gigameter
 import io.mehow.ruler.SiLengthUnit.Meter
 import io.mehow.ruler.test.LengthGenerator
 import io.mehow.ruler.test.of
@@ -73,7 +72,7 @@ internal class LengthSpec : DescribeSpec({
       for (unit in LengthUnit.units) {
         checkAll(Arb.long(-1_000_000, 1_000_000)) { unitCount ->
           val length = Distance.of(unitCount, unit).toLength(unit)
-          length.measure shouldBeEqualComparingTo unitCount.toBigDecimal()
+          length.measure.value shouldBeEqualComparingTo unitCount.toBigDecimal()
         }
       }
     }

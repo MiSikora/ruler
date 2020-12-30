@@ -15,8 +15,6 @@ import io.mehow.ruler.SiLengthUnit.Meter
 import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
-import java.math.BigDecimal
-import java.math.RoundingMode.DOWN
 
 /**
  * A representation of [Distance] with a dimensional unit.
@@ -34,7 +32,7 @@ public class Length<T : LengthUnit<T>> internal constructor(
   /**
    * An amount of units that fit in a [distance].
    */
-  public val measure: BigDecimal = distance.meters.divide(unit.meterRatio, 9, DOWN)
+  public val measure: Measure<T> = Measure.lengthMeasure(this)
 
   /**
    * Applies provided unit to this length.
@@ -101,7 +99,7 @@ public class Length<T : LengthUnit<T>> internal constructor(
   /**
    * Returns a length whose [measure] is rounded to a whole number that is closest towards 0.
    */
-  public fun roundDown(): Length<T> = of(measure.toLong(), unit)
+  public fun roundDown(): Length<T> = of(measure.value.toLong(), unit)
 
   /**
    * Adds specified length to this length. Left hand side unit is preserved.
@@ -179,7 +177,7 @@ public class Length<T : LengthUnit<T>> internal constructor(
 
   override fun hashCode(): Int = 31 * distance.hashCode() + unit.hashCode()
 
-  override fun toString(): String = "Length(measure=${measure.stripTrailingZeros().toPlainString()}, unit=$unit)"
+  override fun toString(): String = "Length(measure=$measure)"
 
   public companion object {
 

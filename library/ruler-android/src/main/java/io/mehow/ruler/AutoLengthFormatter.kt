@@ -11,7 +11,7 @@ public object AutoLengthFormatter : LengthFormatter {
     context: Context,
   ): String = context.getString(
       R.string.io_mehow_ruler_format_pattern,
-      measure.format(context.preferredLocale, precision = 2),
+      measure.value.format(context.preferredLocale, precision = 2),
       unitSeparator,
       context.getString(unit.resource),
   )
