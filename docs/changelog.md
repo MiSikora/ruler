@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `LengthUnits.bounds` property to the public API. It holds min and max distances that only that unit can represent as a natural count of self.
 - `Length.withFittingUnit(units, fitter)` that selects the best unit for a length using supplied units and fitting algorithm. A complementary `UnitFitter` interface is added along with `InRangeUnitFitter` and `LogDistanceUnitFitter` implementations.
 - New SI units – centimeters, decimeters, decameters and hectometers.
+- `Length.roundDown()` to get a length with whole unit count rounded towards 0.
 
 ### Changed
 - Added one nanometer to `Distance.Min`. This change was made in order to make `Distance.abs()` operation safe.

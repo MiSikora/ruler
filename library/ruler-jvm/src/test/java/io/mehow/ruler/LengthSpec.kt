@@ -10,8 +10,10 @@ import io.kotest.property.arbitrary.filterNot
 import io.kotest.property.arbitrary.long
 import io.kotest.property.arbitrary.numericDoubles
 import io.kotest.property.checkAll
+import io.mehow.ruler.SiLengthUnit.Gigameter
 import io.mehow.ruler.SiLengthUnit.Meter
 import io.mehow.ruler.test.LengthGenerator
+import io.mehow.ruler.test.of
 import io.mehow.ruler.test.toLength
 
 internal class LengthSpec : DescribeSpec({
@@ -55,6 +57,15 @@ internal class LengthSpec : DescribeSpec({
     it("can have absolute value computed") {
       checkAll(lengthGenerator) { length ->
         length.abs() shouldBe length.distance.abs().toLength(length.unit)
+      }
+    }
+
+    it("can have it's value floored") {
+      for (unit in LengthUnit.units) {
+        checkAll(Arb.long(1..10_000L), Arb.numericDoubles(0.0, 0.999)) { whole, fraction ->
+          Length.of(whole + fraction, unit).roundDown() shouldBe Length.of(whole, unit)
+          -Length.of(whole + fraction, unit).roundDown() shouldBe -Length.of(whole, unit)
+        }
       }
     }
 

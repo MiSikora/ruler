@@ -99,6 +99,11 @@ public class Length<T : LengthUnit<T>> internal constructor(
   public fun abs(): Length<T> = Length(distance.abs(), unit)
 
   /**
+   * Returns a length whose [measure] is rounded to a whole number that is closest towards 0.
+   */
+  public fun roundDown(): Length<T> = of(measure.toLong(), unit)
+
+  /**
    * Adds specified length to this length. Left hand side unit is preserved.
    */
   public operator fun plus(other: Length<*>): Length<T> = (distance + other.distance).toLength(unit)

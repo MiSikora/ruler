@@ -5,6 +5,7 @@ import io.mehow.ruler.ImperialLengthUnit.Foot
 import io.mehow.ruler.ImperialLengthUnit.Inch
 import io.mehow.ruler.ImperialLengthUnit.Mile
 import io.mehow.ruler.ImperialLengthUnit.Yard
+import io.mehow.ruler.Length
 import io.mehow.ruler.LengthUnit
 import io.mehow.ruler.SiLengthUnit.Centimeter
 import io.mehow.ruler.SiLengthUnit.Decameter
@@ -35,3 +36,13 @@ internal fun Distance.toLength(unit: LengthUnit<*>) = when (unit) {
   Yard -> toLength(Yard)
   Mile -> toLength(Mile)
 }
+
+internal fun Length.Companion.of(
+  value: Long,
+  unit: LengthUnit<*>,
+) = Distance.of(value, unit).toLength(unit)
+
+internal fun Length.Companion.of(
+  value: Double,
+  unit: LengthUnit<*>,
+) = Distance.of(value, unit).toLength(unit)
