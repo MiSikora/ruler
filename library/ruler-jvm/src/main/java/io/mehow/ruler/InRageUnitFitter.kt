@@ -7,7 +7,5 @@ public object InRageUnitFitter : UnitFitter {
   override fun <T : LengthUnit<T>> findFit(
     units: Iterable<T>,
     length: Length<T>,
-  ): T? = length.distance.abs().let { distance ->
-    units.firstOrNull { distance in it }
-  }
+  ): T? = units.firstOrNull { length in it }
 }
