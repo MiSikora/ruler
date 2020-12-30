@@ -1,5 +1,4 @@
 <resources>
-  <string name="io_mehow_ruler_distance_pattern">%1$s%2$s%3$s</string>
   <string name="io_mehow_ruler_gigameters">Gm</string>
   <string name="io_mehow_ruler_megameters">Mm</string>
   <string name="io_mehow_ruler_kilometers">km</string>

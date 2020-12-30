@@ -138,7 +138,7 @@ public class ImperialLengthFormatter internal constructor(
       unitSeparator: String,
       context: Context,
     ): String = context.getString(
-        R.string.io_mehow_ruler_distance_pattern,
+        R.string.io_mehow_ruler_format_pattern,
         withUnit(formattingUnit).measure.format(context.preferredLocale, precision = 0),
         unitSeparator,
         context.getString(formattingUnit.resource),

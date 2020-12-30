@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <public name="io_mehow_ruler_gigameters" type="string" />
+  <public name="io_mehow_ruler_megameters" type="string" />
+  <public name="io_mehow_ruler_kilometers" type="string" />
+  <public name="io_mehow_ruler_hectometers" type="string" />
+  <public name="io_mehow_ruler_decameters" type="string" />
+  <public name="io_mehow_ruler_meters" type="string" />
+  <public name="io_mehow_ruler_decimeters" type="string" />
+  <public name="io_mehow_ruler_centimeters" type="string" />
+  <public name="io_mehow_ruler_millimeters" type="string" />
+  <public name="io_mehow_ruler_micrometers" type="string" />
+  <public name="io_mehow_ruler_nanometers" type="string" />
+  <public name="io_mehow_ruler_miles" type="string" />
+  <public name="io_mehow_ruler_yards" type="string" />
+  <public name="io_mehow_ruler_feet" type="string" />
+  <public name="io_mehow_ruler_inches" type="string" />
+</resources>
