@@ -1,0 +1,47 @@
+plugins {
+  id "com.android.application"
+  id "org.jetbrains.kotlin.android"
+}
+
+android {
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  compileSdkVersion versions.androidBuild.compileSdk
+
+  signingConfigs {
+    config {
+      keyAlias "mehow-io"
+      keyPassword "mehow-io"
+      storeFile file("mehow-io.keystore")
+      storePassword "mehow-io"
+    }
+  }
+
+  defaultConfig {
+    applicationId "io.mehow.ruler.sample"
+
+    minSdkVersion versions.androidBuild.minSdk
+    targetSdkVersion versions.androidBuild.targetSdk
+
+    versionCode 1
+    versionName "1.0.0"
+
+    vectorDrawables.useSupportLibrary true
+
+    signingConfig signingConfigs.config
+  }
+
+  buildTypes.debug.setMatchingFallbacks "release"
+
+  variantFilter {
+    setIgnore it.name != "debug"
+  }
+}
+
+dependencies {
+  implementation libs.android.material
+  implementation project(":library:ruler-android")
+}
