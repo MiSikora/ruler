@@ -31,27 +31,27 @@ internal class FlooredLengthFormatterTest {
   @Test fun `max length is displayed without overflow`() {
     val length = Distance.Max.toLength(Nanometer)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "9223372036854775807999999999nm"
+    FlooredLengthFormatter.format(length, context) shouldBe "9,223,372,036,854,775,807,999,999,999nm"
   }
 
   @Test fun `min length is displayed without overflow`() {
     val length = Distance.Min.toLength(Nanometer)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "-9223372036854775807999999999nm"
+    FlooredLengthFormatter.format(length, context) shouldBe "-9,223,372,036,854,775,807,999,999,999nm"
   }
 
   @Test fun `positive length is displayed correctly with RTL locale`() {
     val context = context.localise(Locale("ar"))
     val length = Length.ofMeters(12.36)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "12م"
+    FlooredLengthFormatter.format(length, context) shouldBe "١٢م"
   }
 
   @Test fun `negative length is displayed correctly with RTL locale`() {
     val context = context.localise(Locale("ar"))
     val length = Length.ofMeters(-12.36)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "-12م"
+    FlooredLengthFormatter.format(length, context) shouldBe "؜-١٢م"
   }
 
   @Test fun `custom separator is displayed in a correct position`() {
@@ -64,7 +64,7 @@ internal class FlooredLengthFormatterTest {
     val context = context.localise(Locale("ar"))
     val length = Length.ofMeters(12.36)
 
-    FlooredLengthFormatter.format(length, context, "|") shouldBe "12|م"
+    FlooredLengthFormatter.format(length, context, "|") shouldBe "١٢|م"
   }
 
   private val rainbowSiDistance = Distance.ofNanometers(1) +
@@ -94,7 +94,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `megameters do not display smaller unit parts`() {
     val length = rainbowSiDistance.toLength(Megameter)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "11010Mm"
+    FlooredLengthFormatter.format(length, context) shouldBe "11,010Mm"
   }
 
   @Test fun `megameters display zero distance`() {
@@ -106,7 +106,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `kilometers do not display smaller unit parts`() {
     val length = rainbowSiDistance.toLength(Kilometer)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "11010009km"
+    FlooredLengthFormatter.format(length, context) shouldBe "11,010,009km"
   }
 
   @Test fun `kilometers display zero distance`() {
@@ -118,7 +118,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `hectometers do not display smaller unit parts`() {
     val length = rainbowSiDistance.toLength(Hectometer)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "110100098hm"
+    FlooredLengthFormatter.format(length, context) shouldBe "110,100,098hm"
   }
 
   @Test fun `hectometers display zero distance`() {
@@ -130,7 +130,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `decameters do not display smaller unit parts`() {
     val length = rainbowSiDistance.toLength(Decameter)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "1101000987dam"
+    FlooredLengthFormatter.format(length, context) shouldBe "1,101,000,987dam"
   }
 
   @Test fun `decameters display zero distance`() {
@@ -142,7 +142,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `meters do not display smaller unit parts`() {
     val length = rainbowSiDistance.toLength(Meter)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "11010009876m"
+    FlooredLengthFormatter.format(length, context) shouldBe "11,010,009,876m"
   }
 
   @Test fun `meters display zero distance`() {
@@ -154,7 +154,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `decimeters do not display smaller unit parts`() {
     val length = rainbowSiDistance.toLength(Decimeter)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "110100098765dm"
+    FlooredLengthFormatter.format(length, context) shouldBe "110,100,098,765dm"
   }
 
   @Test fun `decimeters display zero distance`() {
@@ -166,7 +166,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `centimeters do not display smaller unit parts`() {
     val length = rainbowSiDistance.toLength(Centimeter)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "1101000987654cm"
+    FlooredLengthFormatter.format(length, context) shouldBe "1,101,000,987,654cm"
   }
 
   @Test fun `centimeters display zero distance`() {
@@ -178,7 +178,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `millimeters do not display smaller unit parts`() {
     val length = rainbowSiDistance.toLength(Millimeter)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "11010009876543mm"
+    FlooredLengthFormatter.format(length, context) shouldBe "11,010,009,876,543mm"
   }
 
   @Test fun `millimeters display zero distance`() {
@@ -190,7 +190,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `micrometers do not display smaller unit parts`() {
     val length = rainbowSiDistance.toLength(Micrometer)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "11010009876543002µm"
+    FlooredLengthFormatter.format(length, context) shouldBe "11,010,009,876,543,002µm"
   }
 
   @Test fun `micrometers display zero distance`() {
@@ -202,7 +202,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `nanometers display all unit parts`() {
     val length = rainbowSiDistance.toLength(Nanometer)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "11010009876543002001nm"
+    FlooredLengthFormatter.format(length, context) shouldBe "11,010,009,876,543,002,001nm"
   }
 
   @Test fun `nanometers display zero distance`() {
@@ -231,7 +231,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `yards do not display smaller unit parts`() {
     val length = rainbowImperialDistance.toLength(Yard)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "7043yd"
+    FlooredLengthFormatter.format(length, context) shouldBe "7,043yd"
   }
 
   @Test fun `yards display zero distance`() {
@@ -243,7 +243,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `feet do not display smaller unit parts`() {
     val length = rainbowImperialDistance.toLength(Foot)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "21131ft"
+    FlooredLengthFormatter.format(length, context) shouldBe "21,131ft"
   }
 
   @Test fun `feet display zero distance`() {
@@ -255,7 +255,7 @@ internal class FlooredLengthFormatterTest {
   @Test fun `inches display all unit parts`() {
     val length = rainbowImperialDistance.toLength(Inch)
 
-    FlooredLengthFormatter.format(length, context) shouldBe "253573in"
+    FlooredLengthFormatter.format(length, context) shouldBe "253,573in"
   }
 
   @Test fun `inches display zero distance`() {

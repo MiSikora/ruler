@@ -145,7 +145,11 @@ public class ImperialLengthFormatter internal constructor(
       unitCount: Long,
       context: Context,
       unitSeparator: String,
-    ) = context.getString(resource, unitCount, unitSeparator)
+    ) = context.getString(
+        resource,
+        unitCount.format(context.preferredLocale, precision = 0),
+        unitSeparator,
+    )
 
     override fun equals(other: Any?) = other is UnitFormatter && unit == other.unit
 

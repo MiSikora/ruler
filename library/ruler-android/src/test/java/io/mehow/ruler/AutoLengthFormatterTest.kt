@@ -17,27 +17,27 @@ internal class AutoLengthFormatterTest {
   @Test fun `max length is displayed without overflow`() {
     val length = Distance.Max.toLength(Nanometer)
 
-    AutoLengthFormatter.format(length, context) shouldBe "9223372036854776000000000000.00nm"
+    AutoLengthFormatter.format(length, context) shouldBe "9,223,372,036,854,775,807,999,999,999.00nm"
   }
 
   @Test fun `min length is displayed without overflow`() {
     val length = Distance.Min.toLength(Nanometer)
 
-    AutoLengthFormatter.format(length, context) shouldBe "-9223372036854776000000000000.00nm"
+    AutoLengthFormatter.format(length, context) shouldBe "-9,223,372,036,854,775,807,999,999,999.00nm"
   }
 
   @Test fun `positive length is displayed correctly with RTL locale`() {
     val context = context.localise(Locale("ar"))
     val length = Length.ofMeters(12.36)
 
-    AutoLengthFormatter.format(length, context) shouldBe "12.36م"
+    AutoLengthFormatter.format(length, context) shouldBe "١٢٫٣٦م"
   }
 
   @Test fun `negative length is displayed correctly with RTL locale`() {
     val context = context.localise(Locale("ar"))
     val length = Length.ofMeters(-12.36)
 
-    AutoLengthFormatter.format(length, context) shouldBe "-12.36م"
+    AutoLengthFormatter.format(length, context) shouldBe "؜-١٢٫٣٦م"
   }
 
   @Test fun `custom separator is displayed in a correct position`() {
@@ -50,7 +50,7 @@ internal class AutoLengthFormatterTest {
     val context = context.localise(Locale("ar"))
     val length = Length.ofMeters(12.36)
 
-    AutoLengthFormatter.format(length, context, "|") shouldBe "12.36|م"
+    AutoLengthFormatter.format(length, context, "|") shouldBe "١٢٫٣٦|م"
   }
 
   @Test fun `correct decimal point character is used for different locale`() {
@@ -58,6 +58,13 @@ internal class AutoLengthFormatterTest {
     val length = Length.ofMeters(12.36)
 
     AutoLengthFormatter.format(length, context) shouldBe "12,36m"
+  }
+
+  @Test fun `correct group character is used for different locale`() {
+    val context = context.localise(Locale("pl"))
+    val length = Length.ofMeters(1200)
+
+    AutoLengthFormatter.format(length, context) shouldBe "1 200,00m"
   }
 
   @Test fun `gigameters length is properly formatted`() {
@@ -87,7 +94,7 @@ internal class AutoLengthFormatterTest {
   @Test fun `decameters length is properly formatted`() {
     val length = Length.ofDecameters(6_314.321)
 
-    AutoLengthFormatter.format(length, context) shouldBe "6314.32dam"
+    AutoLengthFormatter.format(length, context) shouldBe "6,314.32dam"
   }
 
   @Test fun `meters length is properly formatted`() {
@@ -105,7 +112,7 @@ internal class AutoLengthFormatterTest {
   @Test fun `centimeters length is properly formatted`() {
     val length = Length.ofCentimeters(11_312.820_123)
 
-    AutoLengthFormatter.format(length, context) shouldBe "11312.82cm"
+    AutoLengthFormatter.format(length, context) shouldBe "11,312.82cm"
   }
 
   @Test fun `micrometers length is properly formatted`() {
@@ -142,6 +149,6 @@ internal class AutoLengthFormatterTest {
   @Test fun `inches length is properly formatted`() {
     val length = Length.ofInches(999.99999)
 
-    AutoLengthFormatter.format(length, context) shouldBe "1000.00in"
+    AutoLengthFormatter.format(length, context) shouldBe "1,000.00in"
   }
 }

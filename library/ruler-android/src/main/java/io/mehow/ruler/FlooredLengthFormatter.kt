@@ -24,7 +24,11 @@ public object FlooredLengthFormatter : LengthFormatter {
   override fun Length<*>.format(
     unitSeparator: String,
     context: Context,
-  ): String = context.getString(unit.partResource, measure.toBigInteger().toString(), unitSeparator)
+  ): String = context.getString(
+      unit.partResource,
+      measure.toBigInteger().format(context.preferredLocale, precision = 0),
+      unitSeparator,
+  )
 
   private val LengthUnit<*>.partResource
     get() = when (this) {

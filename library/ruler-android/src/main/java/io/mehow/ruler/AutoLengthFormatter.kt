@@ -21,10 +21,20 @@ import io.mehow.ruler.SiLengthUnit.Nanometer
  * Formatter that applies a resource based on a unit type in [Length].
  */
 public object AutoLengthFormatter : LengthFormatter {
-  override fun Length<*>.format(unitSeparator: String, context: Context): String = when (val unit = unit) {
-    is SiLengthUnit -> context.getString(unit.resource, measure.toDouble(), unitSeparator)
-    is ImperialLengthUnit -> context.getString(unit.resource, measure.toDouble(), unitSeparator)
-  }
+  override fun Length<*>.format(
+    unitSeparator: String,
+    context: Context,
+  ): String = context.getString(
+      unit.resource,
+      measure.format(context.preferredLocale, precision = 2),
+      unitSeparator,
+  )
+
+  private val LengthUnit<*>.resource
+    get() = when (this) {
+      is SiLengthUnit -> resource
+      is ImperialLengthUnit -> resource
+    }
 
   private val SiLengthUnit.resource
     get() = when (this) {

@@ -1,7 +1,5 @@
 package io.mehow.ruler
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import io.kotest.matchers.shouldBe
 import io.mehow.ruler.SiLengthUnit.Meter
 import io.mehow.ruler.test.format
@@ -119,7 +117,7 @@ internal class ImperialLengthFormatterTest {
 
     val formattedLength = formatter.format(length, context)
 
-    formattedLength shouldBe "3525yd"
+    formattedLength shouldBe "3,525yd"
   }
 
   @Test fun `feet accumulate miles and yards`() {
@@ -133,7 +131,7 @@ internal class ImperialLengthFormatterTest {
 
     val formattedLength = formatter.format(length, context)
 
-    formattedLength shouldBe "10578ft"
+    formattedLength shouldBe "10,578ft"
   }
 
   @Test fun `inches accumulate miles, yards and feet`() {
@@ -148,7 +146,7 @@ internal class ImperialLengthFormatterTest {
 
     val formattedLength = formatter.format(length, context)
 
-    formattedLength shouldBe "126947in"
+    formattedLength shouldBe "126,947in"
   }
 
   @Test fun `miles do not accumulate yards, feet and inches`() {
@@ -201,7 +199,7 @@ internal class ImperialLengthFormatterTest {
 
     val formattedLength = formatter.format(length, context)
 
-    formattedLength shouldBe "4ميل 3ياردة 2قدم 1بوصة"
+    formattedLength shouldBe "٤ميل ٣ياردة ٢قدم ١بوصة"
   }
 
   @Test fun `imperial formatter without specified parts has a fallback`() {
@@ -214,7 +212,7 @@ internal class ImperialLengthFormatterTest {
 
     val formattedLength = formatter.format(length, context)
 
-    formattedLength shouldBe "17611yd"
+    formattedLength shouldBe "17,611yd"
   }
 
   @Test fun `custom unit separator is displayed in a correct position`() {
@@ -241,7 +239,7 @@ internal class ImperialLengthFormatterTest {
 
     val formattedLength = formatter.format(length, context, "|")
 
-    formattedLength shouldBe "4|ميل 3|ياردة 2|قدم 1|بوصة"
+    formattedLength shouldBe "٤|ميل ٣|ياردة ٢|قدم ١|بوصة"
   }
 
 
@@ -282,6 +280,6 @@ internal class ImperialLengthFormatterTest {
 
     val formattedLength = formatter.format(length, context)
 
-    formattedLength shouldBe "4ميل|3ياردة|2قدم|1بوصة"
+    formattedLength shouldBe "٤ميل|٣ياردة|٢قدم|١بوصة"
   }
 }

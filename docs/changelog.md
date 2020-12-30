@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Added one nanometer to `Distance.Min`. This change was made in order to make `Distance.abs()` operation safe.
+- Distance and length formatting uses better mechanisms for formatting. Instead of custom parsing it relies on `java.text` and `android.icu` packages.
 
 ### Deprecated
 - `Length.withAutoUnit()` in favour of `Length.withFittingUnit()` with default arguments.
