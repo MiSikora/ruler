@@ -33,7 +33,7 @@ public sealed class LengthUnit<T>(
   /**
    * Checks if a distance is in range of this unit.
    */
-  public operator fun contains(distance: Distance): Boolean = distance in bounds
+  public operator fun contains(distance: Distance): Boolean = distance.abs() in bounds
 
   public companion object {
     /**

@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - `FlooredLengthFormatter` not handling integer overflows when formatting lengths.
+- `LengthUnit` returning false-negative when negative distance was checked if it is contained in a unit.
 
 ## [1.0.0] - 2020-12-28
 
