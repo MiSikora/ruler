@@ -12,7 +12,7 @@ android {
 }
 
 dependencies {
-  api project(':library:ruler-jvm')
+  api project(':library:ruler')
   api libs.android.x.annotation
 
   testImplementation libs.junit
