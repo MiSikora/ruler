@@ -22,7 +22,7 @@ import io.mehow.ruler.SiLengthUnit.Nanometer
 import java.util.Locale
 
 /**
- * Provides an APIS for managing [Length] formatting.
+ * Provides an APIs for managing [Length] formatting.
  */
 public class FormattingDriver internal constructor(
   private val builder: Builder,
