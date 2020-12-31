@@ -33,7 +33,7 @@ fun main(context: Context) {
   // Prints "109yd 1ft 1in".
   val humanReadableDistance: String = distance.format()
 
-  // Prints "2.0.00m".
+  // Prints "100.00m".
   val humanReadableLength: String = length.format()
 }
 ```
