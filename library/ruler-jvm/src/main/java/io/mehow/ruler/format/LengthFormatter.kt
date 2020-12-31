@@ -1,6 +1,6 @@
-package io.mehow.ruler
+package io.mehow.ruler.format
 
-import android.content.Context
+import io.mehow.ruler.Length
 
 /**
  * Formats [Length] to a displayable output.
@@ -9,16 +9,17 @@ public fun interface LengthFormatter {
   /**
    * Formats an input [Length] to a human-friendly text using a separator between a numeric value and a unit.
    */
-  public fun Length<*>.format(unitSeparator: String, context: Context): String
+  public fun format(length: Length<*>, driver: FormattingDriver): String
 
   /**
-   * Factory for [LengthFormatter] that can be [installed][Ruler.addFormatterFactory] in [Ruler].
+   * Factory for [LengthFormatter] that can be [installed][io.mehow.ruler.Ruler.addFormatterFactory]
+   * in [io.mehow.ruler.Ruler].
    */
   public fun interface Factory {
     /**
      * Creates a [LengthFormatter] that will be used to format an input. It should return `null` if no formatter
      * created by this factory can handle the input.
      */
-    public fun create(length: Length<*>, unitSeparator: String, context: Context): LengthFormatter?
+    public fun create(length: Length<*>, context: FormattingContext): LengthFormatter?
   }
 }

@@ -15,6 +15,10 @@ import io.mehow.ruler.SiLengthUnit.Meter
 import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
+import io.mehow.ruler.format.FormattingContext
+import io.mehow.ruler.format.FormattingDriver
+import io.mehow.ruler.format.LengthConverter
+import io.mehow.ruler.format.LengthFormatter
 import java.math.BigDecimal
 import kotlin.Long.Companion.MAX_VALUE
 import kotlin.Long.Companion.MIN_VALUE
@@ -39,6 +43,42 @@ public class Distance private constructor(
    * Converts this distance to a [Length] with [unit].
    */
   public fun <T : LengthUnit<T>> toLength(unit: T): Length<T> = Length(this, unit)
+
+  /**
+   * Transforms this distance to a [Length] and formats it to a human-readable form. General formatting behaviour
+   * is defined in [Ruler].
+   *
+   * @param converter Conversion rules that should override default ones.
+   * @param formatter Formatting rules that should override default ones.
+   */
+  public fun format(
+    converter: LengthConverter? = Ruler,
+    formatter: LengthFormatter = Ruler,
+  ): String = format(Ruler.driver, converter, formatter)
+
+  /**
+   * Transforms this distance to a [Length] and formats it to a human-readable form. General formatting behaviour
+   * is defined in [Ruler].
+   *
+   * @param context Formatting properties that should override default ones.
+   * @param converter Conversion rules that should override default ones.
+   * @param formatter Formatting rules that should override default ones.
+   */
+  public fun format(
+    context: FormattingContext,
+    converter: LengthConverter? = Ruler,
+    formatter: LengthFormatter = Ruler,
+  ): String = format(
+      driver = Ruler.driver.newBuilder().withFormattingContext(context).build(),
+      converter = converter,
+      formatter = formatter,
+  )
+
+  private fun format(
+    driver: FormattingDriver,
+    converter: LengthConverter? = Ruler,
+    formatter: LengthFormatter = Ruler,
+  ): String = driver.toLocalizedLength(this).format(driver, converter, formatter)
 
   /**
    * Returns a distance whose value is the absolute value of this distance.

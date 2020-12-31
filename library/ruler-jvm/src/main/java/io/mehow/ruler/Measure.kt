@@ -3,7 +3,7 @@ package io.mehow.ruler
 import java.math.BigDecimal
 import java.math.RoundingMode.DOWN
 
-public class Measure<T> private constructor(
+public class Measure<out T> private constructor(
   public val value: BigDecimal,
   public val dimension: T,
 ) {

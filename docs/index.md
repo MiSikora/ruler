@@ -31,10 +31,10 @@ fun main(context: Context) {
   // Assumes en_US Locale on a device.
 
   // Prints "109yd 1ft 1in".
-  val humanReadableDistance: String = distance.format(context)
+  val humanReadableDistance: String = distance.format()
 
   // Prints "100.00m".
-  val humanReadableLength: String = length.format(context)
+  val humanReadableLength: String = length.format()
 }
 ```
 
@@ -73,8 +73,8 @@ Snapshots of the development version are available on [Sonatype's snapshots repo
 
 Here is the list of all available artifacts that Ruler library provides.
 
-- **`io.mehow.ruler:ruler:1.0.0`**: Core of the library. Defines classes and interfaces that represent distances.
-- **`io.mehow.ruler:ruler-android:1.0.0`**: Provides distance formatters for Android platform that can present them to a user in a meaningful way.
+- **`io.mehow.ruler:ruler:1.0.0`**: Core of the library. Defines classes and interfaces that represent distances and gives capabilities to format the for a user in a human-readable way.
+- **`io.mehow.ruler:ruler-android:1.0.0`**: Provides formatting behaviour that can be installed at runtime in the core library.
 
 ## Attribution
 

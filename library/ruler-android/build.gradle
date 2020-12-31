@@ -13,10 +13,11 @@ android {
 
 dependencies {
   api project(':library:ruler-jvm')
+  api libs.android.x.annotation
 
   testImplementation libs.junit
   testImplementation libs.kotest.assertions
-  testImplementation libs.android.xTestCoreKtx
+  testImplementation libs.android.x.testCoreKtx
   testImplementation libs.robolectric
   testImplementation libs.junit
 }

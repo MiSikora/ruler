@@ -15,6 +15,10 @@ import io.mehow.ruler.SiLengthUnit.Meter
 import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
+import io.mehow.ruler.format.FormattingContext
+import io.mehow.ruler.format.FormattingDriver
+import io.mehow.ruler.format.LengthConverter
+import io.mehow.ruler.format.LengthFormatter
 
 /**
  * A representation of [Distance] with a dimensional unit.
@@ -42,15 +46,6 @@ public class Length<T : LengthUnit<T>> internal constructor(
     unit -> this as Length<R>
     else -> Length(distance, unit)
   }
-
-  /**
-   * Applies a best fitted unit to this length from all available units in a unit system.
-   */
-  @Deprecated(
-      message = "Will be removed in a next major release.",
-      replaceWith = ReplaceWith("withFittingUnit()"),
-  )
-  public fun withAutoUnit(): Length<T> = withFittingUnit()
 
   /**
    * Applies a unit to this length from specified units according to the fitting algorithm.
@@ -89,6 +84,43 @@ public class Length<T : LengthUnit<T>> internal constructor(
   public fun coerceUnitAtMostTo(max: T): Length<T> = when {
     unit > max -> Length(distance, max)
     else -> this
+  }
+
+  /**
+   * Formats this length to a human-readable form. General formatting behaviour is defined in [Ruler].
+   *
+   * @param converter Conversion rules that should override default ones.
+   * @param formatter Formatting rules that should override default ones.
+   */
+  public fun format(
+    converter: LengthConverter? = Ruler,
+    formatter: LengthFormatter = Ruler,
+  ): String = format(Ruler.driver, converter, formatter)
+
+  /**
+   * Formats this length to a human-readable form. General formatting behaviour is defined in [Ruler].
+   *
+   * @param context Formatting properties that should override default ones.
+   * @param converter Conversion rules that should override default ones.
+   * @param formatter Formatting rules that should override default ones.
+   */
+  public fun format(
+    context: FormattingContext,
+    converter: LengthConverter? = Ruler,
+    formatter: LengthFormatter = Ruler,
+  ): String = format(
+      driver = Ruler.driver.newBuilder().withFormattingContext(context).build(),
+      converter = converter,
+      formatter = formatter,
+  )
+
+  internal fun format(
+    driver: FormattingDriver,
+    converter: LengthConverter?,
+    formatter: LengthFormatter,
+  ): String {
+    val length = converter?.convert(this) ?: this
+    return formatter.format(length, driver)
   }
 
   /**

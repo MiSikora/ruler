@@ -22,7 +22,6 @@ import io.mehow.ruler.SiLengthUnit.Meter
 import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
-import io.mehow.ruler.format
 
 internal class SampleActivity : Activity() {
   override fun onCreate(inState: Bundle?) {
@@ -38,7 +37,7 @@ internal class SampleActivity : Activity() {
       val value = lengthValue.text?.toString()?.toDoubleOrNull() ?: return@setOnClickListener
       val unit = lengthUnit.selectedUnit ?: return@setOnClickListener
       val distance = runCatching { Distance.of(value, unit) }.getOrNull() ?: return@setOnClickListener
-      length.text = distance.toLength(unit).format(this, converter = { this })
+      length.text = distance.toLength(unit).format(converter = { it })
     }
   }
 

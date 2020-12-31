@@ -1,41 +1,49 @@
-package io.mehow.ruler
+package io.mehow.ruler.format
 
-import android.content.Context
+import io.mehow.ruler.Distance
+import io.mehow.ruler.ImperialLengthUnit
 import io.mehow.ruler.ImperialLengthUnit.Foot
 import io.mehow.ruler.ImperialLengthUnit.Inch
 import io.mehow.ruler.ImperialLengthUnit.Mile
 import io.mehow.ruler.ImperialLengthUnit.Yard
+import io.mehow.ruler.Length
+import io.mehow.ruler.Ruler
 
 /**
  * Formatter that applies imperial system friendly rules to a [Length]. For example when length is 3.5 feet it will
  * be displayed as "3ft 6in" instead of "3.5ft".
  *
- * @see ImperialLengthFormatter.Builder
+ * It does not use [precision][FormattingContext.fractionalPrecision] during formatting. Instead, it always uses
+ * precision of 0.
+ *
+ * @see ImperialFormatter.Builder
  */
-public class ImperialLengthFormatter internal constructor(
+public class ImperialFormatter internal constructor(
   builder: Builder,
 ) : LengthFormatter {
   private val formatters = builder.formatters.sortedByDescending(UnitFormatter::formattingUnit)
   private val partSeparator = builder.partSeparator
   private val fallbackFormatter = builder.fallbackFormatter
 
-  override fun Length<*>.format(unitSeparator: String, context: Context): String {
-    val parts = formatUnitParts(unitSeparator, context)
+  override fun format(length: Length<*>, driver: FormattingDriver): String {
+    val noFractionContext = driver.formattingContext.newBuilder().withPrecision(0).build()
+    val noFractionDriver = driver.newBuilder().withFormattingContext(noFractionContext).build()
+
+    val parts = length.formatUnitParts(noFractionDriver)
     return when {
-      parts.isEmpty() -> fallbackFormatter.run { format(unitSeparator, context) }
+      parts.isEmpty() -> fallbackFormatter.format(length, noFractionDriver)
       else -> parts.joinToString(partSeparator)
     }
   }
 
   private fun Length<*>.formatUnitParts(
-    unitSeparator: String,
-    context: Context,
+    driver: FormattingDriver,
   ) = formatters.fold(distance to emptyList<String>()) { (partDistance, parts), formatter ->
     when {
       partDistance.hasAtLeastOne(formatter.formattingUnit) -> {
-        val roundedLength = partDistance.toLength(formatter.formattingUnit).roundDown()
-        val adjustedDistance = partDistance.abs() - roundedLength.abs()
-        val part = formatter.run { roundedLength.format(unitSeparator, context) }
+        val unitLength = partDistance.toLength(formatter.formattingUnit).roundDown()
+        val adjustedDistance = partDistance.abs() - unitLength.abs()
+        val part = formatter.format(unitLength, driver)
         adjustedDistance to parts + part
       }
       else -> partDistance to parts
@@ -45,7 +53,7 @@ public class ImperialLengthFormatter internal constructor(
   private fun Distance.hasAtLeastOne(unit: ImperialLengthUnit) = this != Distance.Zero && this in unit
 
   public companion object {
-    public val Full: ImperialLengthFormatter = Builder()
+    public val Full: ImperialFormatter = Builder()
         .withMiles()
         .withYards()
         .withFeet()
@@ -54,42 +62,21 @@ public class ImperialLengthFormatter internal constructor(
   }
 
   /**
-   * Factory for [ImperialLengthFormatter] that can conditionally create a formatter with all unit parts.
-   *
-   * @param partSeparator Separator that should be used between unit parts.
-   * @param isEnabled Enables or disables formatter creation.
-   */
-  public class AllPartsFactory(
-    partSeparator: String,
-    private val isEnabled: () -> Boolean,
-  ) : LengthFormatter.Factory {
-    private val formatter = Builder()
-        .withMiles()
-        .withYards()
-        .withFeet()
-        .withInches()
-        .withPartSeparator(partSeparator)
-        .build()
-
-    override fun create(
-      length: Length<*>,
-      unitSeparator: String,
-      context: Context,
-    ): LengthFormatter? = formatter.takeIf { length.unit is ImperialLengthUnit && isEnabled() }
-  }
-
-  /**
-   * [ImperialLengthFormatter] builder. Created formatter uses only units that were set during builder construction.
+   * [ImperialFormatter] builder. Created formatter uses only units that were set during builder construction.
    * Units are always ordered by their capacity from highest to lowest.
    */
   public class Builder private constructor(
     internal val formatters: Set<UnitFormatter>,
-    private val fallbackUnit: ImperialLengthUnit = Yard,
-    internal val partSeparator: String = " ",
+    private val fallbackUnit: ImperialLengthUnit,
+    internal val partSeparator: String,
   ) {
     internal val fallbackFormatter = formatters.lastOrNull() ?: UnitFormatter(fallbackUnit)
 
-    public constructor() : this(emptySet())
+    public constructor() : this(
+        formatters = emptySet(),
+        fallbackUnit = Yard,
+        partSeparator = " ",
+    )
 
     /**
      * Adds miles unit part to the builder.
@@ -124,7 +111,7 @@ public class ImperialLengthFormatter internal constructor(
     /**
      * Creates new formatter with properties defined in this builder.
      */
-    public fun build(): ImperialLengthFormatter = ImperialLengthFormatter(this)
+    public fun build(): ImperialFormatter = ImperialFormatter(this)
 
     private fun withUnit(unit: ImperialLengthUnit) = Builder(
         formatters + UnitFormatter(unit),
@@ -134,18 +121,16 @@ public class ImperialLengthFormatter internal constructor(
   }
 
   internal class UnitFormatter(val formattingUnit: ImperialLengthUnit) : LengthFormatter {
-    override fun Length<*>.format(
-      unitSeparator: String,
-      context: Context,
-    ): String = context.getString(
-        R.string.io_mehow_ruler_format_pattern,
-        withUnit(formattingUnit).measure.value.format(context.preferredLocale, precision = 0),
-        unitSeparator,
-        context.getString(formattingUnit.resource),
-    )
+    override fun format(length: Length<*>, driver: FormattingDriver) = driver.format(length.withUnit(formattingUnit))
 
     override fun equals(other: Any?) = other is UnitFormatter && formattingUnit == other.formattingUnit
 
     override fun hashCode() = formattingUnit.hashCode()
+  }
+
+  internal object Factory : LengthFormatter.Factory {
+    override fun create(length: Length<*>, context: FormattingContext) = Full.takeIf {
+      length.unit is ImperialLengthUnit && Ruler.useImperialFormatter
+    }
   }
 }

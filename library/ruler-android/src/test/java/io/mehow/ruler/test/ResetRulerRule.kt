@@ -8,11 +8,13 @@ import org.junit.runners.model.Statement
 internal object ResetRulerRule : TestRule {
   override fun apply(base: Statement, description: Description) = object : Statement() {
     override fun evaluate() {
+      val driver = Ruler.driver
       val isUkImperial = Ruler.isUkImperial
       val useImperialFormatting = Ruler.useImperialFormatter
       try {
         return base.evaluate()
       } finally {
+        Ruler.driver = driver
         Ruler.isUkImperial = isUkImperial
         Ruler.useImperialFormatter = useImperialFormatting
         for (factory in Ruler.installedFormatterFactories) {

@@ -59,7 +59,7 @@ internal class LengthSpec : DescribeSpec({
       }
     }
 
-    it("can have it's value floored") {
+    it("can have its value floored") {
       for (unit in LengthUnit.units) {
         checkAll(Arb.long(1..10_000L), Arb.numericDoubles(0.0, 0.999)) { whole, fraction ->
           Length.of(whole + fraction, unit).roundDown() shouldBe Length.of(whole, unit)

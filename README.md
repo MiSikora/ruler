@@ -64,10 +64,10 @@ fun main(context: Context) {
   // Assumes en_US Locale on a device.
 
   // Prints "109yd 1ft 1in".
-  val humanReadableDistance: String = distance.format(context)
+  val humanReadableDistance: String = distance.format()
 
   // Prints "100.00m".
-  val humanReadableLength: String = length.format(context)
+  val humanReadableLength: String = length.format()
 }
 ```
 

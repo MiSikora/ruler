@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `Distance.format()` and `Length.format()` that do not require specifying `android.content.Context`. This a part of a large overhaul of this library. See `Changed` section for more information.
 - `Distance.Epsilon` constant that represents smallest possible change in of `Distance`.
 - `LengthUnits.bounds` property to the public API. It holds min and max distances that only that unit can represent as a natural count of self.
 - `Length.withFittingUnit(units, fitter)` that selects the best unit for a length using supplied units and fitting algorithm. A complementary `UnitFitter` interface is added along with `InRangeUnitFitter` and `LogDistanceUnitFitter` implementations.
@@ -15,20 +16,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Measure` class to model a distance normalized to a unit.
 
 ### Changed
+- Complete redesign of the formatting part of this library. Formatting is now a part of the JVM `io.mehow.ruler:ruler` artifacts. It allows to plug different formatting contexts such as the one from Android. `io.mehow.ruler:ruler-android` artifact is now much smaller and provides only default implementations that can be enabled at runtime. As a part of this redesign most of formatting classes are moved to `io.mehow.ruler.format` package. For more details check the [API documentation](https://mehow.io/ruler/api/ruler-jvm/ruler-jvm/).
 - Added one nanometer to `Distance.Min`. This change was made in order to make `Distance.abs()` operation safe.
-- Distance and length formatting uses better mechanisms for formatting. Instead of custom parsing it relies on `java.text` and `android.icu` packages.
+- Distance and length formatting use better mechanisms. Instead of custom parsing it relies on `java.text` or `android.icu` packages.
 - `Length.measure` is now of `Measure` type.
-
-### Deprecated
-- `Length.withAutoUnit()` in favour of `Length.withFittingUnit()` with default arguments.
-- `Ruler.removeConverter()` in favour of `Length.removeConverterFactory()`. It was left as a mistake from `0.x` releases.
+- `ImperialLengthFormatter` rounds smallest unit part instead of dropping the fraction.
 
 ### Removed
 - Duplicated Android resources. Formatting relies now on a single pattern and translated units.
 - Android resource for formatting negative imperial lengths. It is now handled automatically by generic formatting mechanism.
+- `Ruler.removeConverter()` in favour of `Length.removeConverterFactory()`.
+- `Length.withAutoUnit()` in favour of `Length.withFittingUnit()` with default arguments.
+- `FlooredLengthFormatter` and floored formatting mechanism. Formatting with a custom fractional precision should be used instead.
 
 ### Fixed
-- `FlooredLengthFormatter` not handling integer overflows when formatting lengths.
 - `LengthUnit` returning false-negative when negative distance was checked if it is contained in a unit.
 
 ## [1.0.0] - 2020-12-28

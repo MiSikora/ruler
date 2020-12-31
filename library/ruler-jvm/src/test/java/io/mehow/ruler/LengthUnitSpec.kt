@@ -7,7 +7,7 @@ import io.mehow.ruler.test.DistanceGenerator
 
 internal class LengthUnitSpec : DescribeSpec({
   describe("unit") {
-    it("contains distances within it's bounds") {
+    it("contains distances within its bounds") {
       for (unit in LengthUnit.units) {
         checkAll(DistanceGenerator.create(unit)) { distance ->
           unit.contains(distance) shouldBe true
@@ -16,7 +16,7 @@ internal class LengthUnitSpec : DescribeSpec({
       }
     }
 
-    it("does not contain distances outside of it's bounds") {
+    it("does not contain distances outside of its bounds") {
       for (unit in LengthUnit.units) {
         val otherUnits = when (unit) {
           is SiLengthUnit -> SiLengthUnit.units - unit
