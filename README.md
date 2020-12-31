@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-  implementation "io.mehow.ruler:ruler:1.0.0"
+  implementation "io.mehow.ruler:ruler:2.0.0"
 }
 ```
 
@@ -66,7 +66,7 @@ fun main(context: Context) {
   // Prints "109yd 1ft 1in".
   val humanReadableDistance: String = distance.format()
 
-  // Prints "100.00m".
+  // Prints "2.0.00m".
   val humanReadableLength: String = length.format()
 }
 ```

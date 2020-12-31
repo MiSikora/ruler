@@ -33,7 +33,7 @@ fun main(context: Context) {
   // Prints "109yd 1ft 1in".
   val humanReadableDistance: String = distance.format()
 
-  // Prints "100.00m".
+  // Prints "2.0.00m".
   val humanReadableLength: String = length.format()
 }
 ```
@@ -65,7 +65,7 @@ repositories {
 }
 
 dependencies {
-  implementation "io.mehow.ruler:ruler:1.0.0"
+  implementation "io.mehow.ruler:ruler:2.0.0"
 }
 ```
 
@@ -73,9 +73,9 @@ Snapshots of the development version are available on [Sonatype's snapshots repo
 
 Here is the list of all available artifacts that Ruler library provides.
 
-- **`io.mehow.ruler:ruler:1.0.0`**: Core of the library. Defines classes and interfaces that represent distances and gives capabilities to format the for a user in a human-readable way.
-- **`io.mehow.ruler:ruler-android:1.0.0`**: Provides formatting behaviour that can be installed at runtime in the core library.
-- **`io.mehow.ruler:ruler-android-startup:1.0.0`**: Uses [Jetpack Startup](https://developer.android.com/topic/libraries/app-startup) library to initialize Ruler with Android context formatting.
+- **`io.mehow.ruler:ruler:2.0.0`**: Core of the library. Defines classes and interfaces that represent distances and gives capabilities to format the for a user in a human-readable way.
+- **`io.mehow.ruler:ruler-android:2.0.0`**: Provides formatting behaviour that can be installed at runtime in the core library.
+- **`io.mehow.ruler:ruler-android-startup:2.0.0`**: Uses [Jetpack Startup](https://developer.android.com/topic/libraries/app-startup) library to initialize Ruler with Android context formatting.
 
 ## Attribution
 

@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2020-12-31
+
 ### Added
 - `Distance.format()` and `Length.format()` that do not require specifying `android.content.Context`. This a part of a large overhaul of this library. See `Changed` section for more information.
 - `Distance.Epsilon` constant that represents smallest possible change in of `Distance`.
@@ -167,7 +169,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[Unreleased]: https://github.com/MiSikora/ruler/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/MiSikora/ruler/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/MiSikora/ruler/releases/tag/2.0.0
 [1.0.0]: https://github.com/MiSikora/ruler/releases/tag/1.0.0
 [0.6.0]: https://github.com/MiSikora/ruler/releases/tag/0.6.0
 [0.5.3]: https://github.com/MiSikora/ruler/releases/tag/0.5.3
