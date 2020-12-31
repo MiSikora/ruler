@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New SI units – centimeters, decimeters, decameters and hectometers.
 - `Length.roundDown()` to get a length with whole unit count rounded towards 0.
 - `Measure` class to model a distance normalized to a unit.
+- `io.mehow.ruler:android-ruler-startup` artifact to initialize Ruler automatically with Android formatting rules.
 
 ### Changed
 - Complete redesign of the formatting part of this library. Formatting is now a part of the JVM `io.mehow.ruler:ruler` artifacts. It allows to plug different formatting contexts such as the one from Android. `io.mehow.ruler:ruler-android` artifact is now much smaller and provides only default implementations that can be enabled at runtime. As a part of this redesign most of formatting classes are moved to `io.mehow.ruler.format` package. For more details check the [API documentation](https://mehow.io/ruler/api/ruler/ruler/).

@@ -13,7 +13,6 @@ android {
 
 dependencies {
   api project(':library:ruler')
-  api libs.android.x.annotation
 
   testImplementation libs.junit
   testImplementation libs.kotest.assertions

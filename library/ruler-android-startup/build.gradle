@@ -1,0 +1,12 @@
+plugins {
+  id "com.android.library"
+  id "org.jetbrains.kotlin.android"
+}
+
+dependencies {
+  api project(':library:ruler-android')
+  implementation libs.android.x.startupRuntime
+}
+
+apply from: "$rootDir/gradle/dokka-config.gradle"
+apply from: "$rootDir/gradle/gradle-mvn-push.gradle"

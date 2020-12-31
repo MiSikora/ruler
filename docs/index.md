@@ -75,6 +75,7 @@ Here is the list of all available artifacts that Ruler library provides.
 
 - **`io.mehow.ruler:ruler:1.0.0`**: Core of the library. Defines classes and interfaces that represent distances and gives capabilities to format the for a user in a human-readable way.
 - **`io.mehow.ruler:ruler-android:1.0.0`**: Provides formatting behaviour that can be installed at runtime in the core library.
+- **`io.mehow.ruler:ruler-android-startup:1.0.0`**: Uses [Jetpack Startup](https://developer.android.com/topic/libraries/app-startup) library to initialize Ruler with Android context formatting.
 
 ## Attribution
 
