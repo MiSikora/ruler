@@ -57,7 +57,7 @@ check(metersLength - inchesLength == Length.ofMeters(0))
 Print distances and lengths in a human-readable way based on Locale.
 
 ```kotlin
-fun main(context: Context) {
+fun main() {
   val distance = Distance.ofMeters(100)
   val length = distance.toLength(Meter)
 
