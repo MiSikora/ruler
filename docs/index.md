@@ -24,7 +24,7 @@ check(metersLength - inchesLength == Length.ofMeters(0))
 Android artifact allows to show a user formatted distances and lengths using appropriate Locale if available.
 
 ```kotlin
-fun main(context: Context) {
+fun main() {
   val distance = Distance.ofMeters(100)
   val length = distance.toLength(Meter)
 
