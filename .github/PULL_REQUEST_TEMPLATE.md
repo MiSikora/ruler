@@ -9,7 +9,7 @@
 - [ ] I wrote tests.
 - [ ] I updated the [changelog](https://github.com/MiSikora/ruler/blob/trunk/docs/changelog.md).
 - [ ] I updated the [documentation](https://github.com/MiSikora/ruler/tree/trunk/docs).
-- [ ] I updated the API `./gradlew clean createFullJarRelease metalavaGenerateSignature`.
+- [ ] I updated the API `./gradlew createFullJarRelease metalavaGenerateSignature`.
 
 ## :test_tube: How to test
 <!-- Is there a special case to test your changes? -->
