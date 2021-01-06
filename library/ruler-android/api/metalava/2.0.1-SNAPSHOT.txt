@@ -1,0 +1,21 @@
+// Signature format: 4.0
+package io.mehow.ruler.format {
+
+  public final class ContextTranslator implements io.mehow.ruler.format.Translator {
+    ctor public ContextTranslator(android.content.Context context);
+    method public java.util.Locale getLocale();
+    method public String symbol(io.mehow.ruler.LengthUnit<?> unit);
+    property public java.util.Locale locale;
+  }
+
+  public final class FormattingDriverUtilsKt {
+    method public static io.mehow.ruler.format.FormattingDriver.Builder withAndroidContext(io.mehow.ruler.format.FormattingDriver.Builder, android.content.Context context);
+  }
+
+  public final class IcuFormatter implements io.mehow.ruler.format.MeasureFormatter {
+    method public String format(io.mehow.ruler.Measure<? extends io.mehow.ruler.LengthUnit<?>> measure, io.mehow.ruler.format.MeasureContext context);
+    field public static final io.mehow.ruler.format.IcuFormatter INSTANCE;
+  }
+
+}
+

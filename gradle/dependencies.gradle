@@ -38,6 +38,10 @@ ext.libs = [
         "gradlePlugin": "com.github.ben-manes:gradle-versions-plugin:0.36.0",
         "gradlePluginId": "com.github.ben-manes.versions",
     ],
+    "metalava": [
+        "gradlePlugin": "me.tylerbwong.gradle:metalava-gradle:0.1.6",
+        "gradlePluginId": "me.tylerbwong.gradle.metalava",
+    ],
     "junit": "junit:junit:4.13.1",
     "robolectric": "org.robolectric:robolectric:4.4",
 ]
