@@ -1,0 +1,11 @@
+// Signature format: 4.0
+package io.mehow.ruler.startup {
+
+  public final class RulerInitializer implements androidx.startup.Initializer<io.mehow.ruler.format.FormattingDriver> {
+    method public io.mehow.ruler.format.FormattingDriver create(android.content.Context context);
+    method public java.util.List<java.lang.Class<? extends androidx.startup.Initializer<?>>> dependencies();
+    field public static final io.mehow.ruler.startup.RulerInitializer INSTANCE;
+  }
+
+}
+

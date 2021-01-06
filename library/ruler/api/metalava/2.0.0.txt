@@ -1,0 +1,401 @@
+// Signature format: 4.0
+package io.mehow.ruler {
+
+  public final class Distance implements java.lang.Comparable<io.mehow.ruler.Distance> {
+    method public io.mehow.ruler.Distance abs();
+    method public int compareTo(io.mehow.ruler.Distance other);
+    method public operator io.mehow.ruler.Distance div(int divisor);
+    method public operator io.mehow.ruler.Distance div(long divisor);
+    method public operator io.mehow.ruler.Distance div(float divisor);
+    method public operator io.mehow.ruler.Distance div(double divisor);
+    method public String format(optional io.mehow.ruler.format.LengthConverter? converter, optional io.mehow.ruler.format.LengthFormatter formatter);
+    method public String format(io.mehow.ruler.format.FormattingContext context, optional io.mehow.ruler.format.LengthConverter? converter, optional io.mehow.ruler.format.LengthFormatter formatter);
+    method public java.math.BigDecimal getMeters();
+    method public operator io.mehow.ruler.Distance minus(io.mehow.ruler.Distance other);
+    method public operator io.mehow.ruler.Distance minus(io.mehow.ruler.Length<?> length);
+    method public operator io.mehow.ruler.Distance plus(io.mehow.ruler.Distance other);
+    method public operator io.mehow.ruler.Distance plus(io.mehow.ruler.Length<?> length);
+    method public operator io.mehow.ruler.Distance times(int multiplicand);
+    method public operator io.mehow.ruler.Distance times(long multiplicand);
+    method public operator io.mehow.ruler.Distance times(float multiplicand);
+    method public operator io.mehow.ruler.Distance times(double multiplicand);
+    method public <T extends io.mehow.ruler.LengthUnit<T>> io.mehow.ruler.Length<T> toLength(T unit);
+    method public operator io.mehow.ruler.Distance unaryMinus();
+    property public final java.math.BigDecimal meters;
+    field public static final io.mehow.ruler.Distance.Companion Companion;
+  }
+
+  public static final class Distance.Companion {
+    method public io.mehow.ruler.Distance getEpsilon();
+    method public io.mehow.ruler.Distance getMax();
+    method public io.mehow.ruler.Distance getMin();
+    method public io.mehow.ruler.Distance getZero();
+    method public io.mehow.ruler.Distance of(long value, io.mehow.ruler.LengthUnit<?> unit);
+    method public io.mehow.ruler.Distance of(double value, io.mehow.ruler.LengthUnit<?> unit);
+    method public io.mehow.ruler.Distance ofCentimeters(long value);
+    method public io.mehow.ruler.Distance ofCentimeters(double value);
+    method public io.mehow.ruler.Distance ofDecameters(long value);
+    method public io.mehow.ruler.Distance ofDecameters(double value);
+    method public io.mehow.ruler.Distance ofDecimeters(long value);
+    method public io.mehow.ruler.Distance ofDecimeters(double value);
+    method public io.mehow.ruler.Distance ofFeet(long value);
+    method public io.mehow.ruler.Distance ofFeet(double value);
+    method public io.mehow.ruler.Distance ofGigameters(long value);
+    method public io.mehow.ruler.Distance ofGigameters(double value);
+    method public io.mehow.ruler.Distance ofHectometers(long value);
+    method public io.mehow.ruler.Distance ofHectometers(double value);
+    method public io.mehow.ruler.Distance ofInches(long value);
+    method public io.mehow.ruler.Distance ofInches(double value);
+    method public io.mehow.ruler.Distance ofKilometers(long value);
+    method public io.mehow.ruler.Distance ofKilometers(double value);
+    method public io.mehow.ruler.Distance ofMegameters(long value);
+    method public io.mehow.ruler.Distance ofMegameters(double value);
+    method public io.mehow.ruler.Distance ofMeters(long value);
+    method public io.mehow.ruler.Distance ofMeters(double value);
+    method public io.mehow.ruler.Distance ofMicrometers(long value);
+    method public io.mehow.ruler.Distance ofMicrometers(double value);
+    method public io.mehow.ruler.Distance ofMiles(long value);
+    method public io.mehow.ruler.Distance ofMiles(double value);
+    method public io.mehow.ruler.Distance ofMillimeters(long value);
+    method public io.mehow.ruler.Distance ofMillimeters(double value);
+    method public io.mehow.ruler.Distance ofNanometers(long value);
+    method public io.mehow.ruler.Distance ofNanometers(double value);
+    method public io.mehow.ruler.Distance ofYards(long value);
+    method public io.mehow.ruler.Distance ofYards(double value);
+    property public final io.mehow.ruler.Distance Epsilon;
+    property public final io.mehow.ruler.Distance Max;
+    property public final io.mehow.ruler.Distance Min;
+    property public final io.mehow.ruler.Distance Zero;
+  }
+
+  public abstract sealed class ImperialLengthUnit extends io.mehow.ruler.LengthUnit<io.mehow.ruler.ImperialLengthUnit> {
+    method public java.util.List<io.mehow.ruler.ImperialLengthUnit> getUnits();
+    property public java.util.List<io.mehow.ruler.ImperialLengthUnit> units;
+    field public static final io.mehow.ruler.ImperialLengthUnit.Companion Companion;
+  }
+
+  public static final class ImperialLengthUnit.Companion {
+    method public java.util.List<io.mehow.ruler.ImperialLengthUnit> getUnits();
+    property public final java.util.List<io.mehow.ruler.ImperialLengthUnit> units;
+  }
+
+  public static final class ImperialLengthUnit.Foot extends io.mehow.ruler.ImperialLengthUnit {
+    field public static final io.mehow.ruler.ImperialLengthUnit.Foot INSTANCE;
+  }
+
+  public static final class ImperialLengthUnit.Inch extends io.mehow.ruler.ImperialLengthUnit {
+    field public static final io.mehow.ruler.ImperialLengthUnit.Inch INSTANCE;
+  }
+
+  public static final class ImperialLengthUnit.Mile extends io.mehow.ruler.ImperialLengthUnit {
+    field public static final io.mehow.ruler.ImperialLengthUnit.Mile INSTANCE;
+  }
+
+  public static final class ImperialLengthUnit.Yard extends io.mehow.ruler.ImperialLengthUnit {
+    field public static final io.mehow.ruler.ImperialLengthUnit.Yard INSTANCE;
+  }
+
+  public final class InRageUnitFitter implements io.mehow.ruler.UnitFitter {
+    method public <T extends io.mehow.ruler.LengthUnit<T>> T? findFit(Iterable<? extends T> units, io.mehow.ruler.Length<T> length);
+    field public static final io.mehow.ruler.InRageUnitFitter INSTANCE;
+  }
+
+  public final class Length<T extends io.mehow.ruler.LengthUnit<T>> implements java.lang.Comparable<io.mehow.ruler.Length<?>> {
+    method public io.mehow.ruler.Length<T> abs();
+    method public io.mehow.ruler.Length<T> coerceUnitAtLeastTo(T min);
+    method public io.mehow.ruler.Length<T> coerceUnitAtMostTo(T max);
+    method public io.mehow.ruler.Length<T> coerceUnitIn(kotlin.ranges.ClosedRange<T> range);
+    method public io.mehow.ruler.Length<T> coerceUnitIn(T min, T max);
+    method public int compareTo(io.mehow.ruler.Length<?> other);
+    method public operator io.mehow.ruler.Length<T> div(int divisor);
+    method public operator io.mehow.ruler.Length<T> div(long divisor);
+    method public operator io.mehow.ruler.Length<T> div(float divisor);
+    method public operator io.mehow.ruler.Length<T> div(double divisor);
+    method public String format(optional io.mehow.ruler.format.LengthConverter? converter, optional io.mehow.ruler.format.LengthFormatter formatter);
+    method public String format(io.mehow.ruler.format.FormattingContext context, optional io.mehow.ruler.format.LengthConverter? converter, optional io.mehow.ruler.format.LengthFormatter formatter);
+    method public io.mehow.ruler.Distance getDistance();
+    method public io.mehow.ruler.Measure<T> getMeasure();
+    method public T getUnit();
+    method public operator io.mehow.ruler.Length<T> minus(io.mehow.ruler.Length<?> other);
+    method public operator io.mehow.ruler.Length<T> minus(io.mehow.ruler.Distance distance);
+    method public operator io.mehow.ruler.Length<T> plus(io.mehow.ruler.Length<?> other);
+    method public operator io.mehow.ruler.Length<T> plus(io.mehow.ruler.Distance distance);
+    method public io.mehow.ruler.Length<T> roundDown();
+    method public operator io.mehow.ruler.Length<T> times(int multiplicand);
+    method public operator io.mehow.ruler.Length<T> times(long multiplicand);
+    method public operator io.mehow.ruler.Length<T> times(float multiplicand);
+    method public operator io.mehow.ruler.Length<T> times(double multiplicand);
+    method public operator io.mehow.ruler.Length<T> unaryMinus();
+    method public io.mehow.ruler.Length<T> withFittingUnit(optional Iterable<? extends T> units, optional io.mehow.ruler.UnitFitter unitFitter);
+    method public <R extends io.mehow.ruler.LengthUnit<R>> io.mehow.ruler.Length<R> withUnit(R unit);
+    property public final io.mehow.ruler.Distance distance;
+    property public final io.mehow.ruler.Measure<T> measure;
+    property public final T unit;
+    field public static final io.mehow.ruler.Length.Companion Companion;
+  }
+
+  public static final class Length.Companion {
+    method public <T extends io.mehow.ruler.LengthUnit<T>> io.mehow.ruler.Length<T> of(long value, T unit);
+    method public <T extends io.mehow.ruler.LengthUnit<T>> io.mehow.ruler.Length<T> of(double value, T unit);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofCentimeters(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofCentimeters(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofDecameters(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofDecameters(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofDecimeters(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofDecimeters(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.ImperialLengthUnit> ofFeet(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.ImperialLengthUnit> ofFeet(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofGigameters(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofGigameters(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofHectometers(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofHectometers(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.ImperialLengthUnit> ofInches(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.ImperialLengthUnit> ofInches(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofKilometers(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofKilometers(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofMegameters(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofMegameters(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofMeters(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofMeters(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofMicrometers(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofMicrometers(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.ImperialLengthUnit> ofMiles(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.ImperialLengthUnit> ofMiles(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofMillimeters(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofMillimeters(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofNanometers(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.SiLengthUnit> ofNanometers(double value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.ImperialLengthUnit> ofYards(long value);
+    method public io.mehow.ruler.Length<io.mehow.ruler.ImperialLengthUnit> ofYards(double value);
+  }
+
+  public abstract sealed class LengthUnit<T extends io.mehow.ruler.LengthUnit<T>> implements java.lang.Comparable<T> {
+    method public final int compareTo(T other);
+    method public final operator boolean contains(io.mehow.ruler.Distance distance);
+    method public final operator boolean contains(io.mehow.ruler.Length<?> length);
+    method public final kotlin.ranges.ClosedRange<io.mehow.ruler.Distance> getBounds();
+    method public final java.math.BigDecimal getMeterRatio();
+    method public abstract java.util.List<T> getUnits();
+    method public final String toString();
+    property public final kotlin.ranges.ClosedRange<io.mehow.ruler.Distance> bounds;
+    property public final java.math.BigDecimal meterRatio;
+    property public abstract java.util.List<T> units;
+    field public static final io.mehow.ruler.LengthUnit.Companion Companion;
+  }
+
+  public static final class LengthUnit.Companion {
+    method public java.util.List<io.mehow.ruler.LengthUnit<?>> getUnits();
+    property public final java.util.List<io.mehow.ruler.LengthUnit<?>> units;
+  }
+
+  public final class LogDistanceUnitFitter implements io.mehow.ruler.UnitFitter {
+    method public <T extends io.mehow.ruler.LengthUnit<T>> T? findFit(Iterable<? extends T> units, io.mehow.ruler.Length<T> length);
+    field public static final io.mehow.ruler.LogDistanceUnitFitter INSTANCE;
+  }
+
+  public final class LongMathKt {
+  }
+
+  public final class Measure<T> {
+    method public T! getDimension();
+    method public java.math.BigDecimal getValue();
+    property public final T! dimension;
+    property public final java.math.BigDecimal value;
+  }
+
+  public final class Ruler implements io.mehow.ruler.format.LengthConverter io.mehow.ruler.format.LengthFormatter {
+    method public void addConverterFactory(io.mehow.ruler.format.LengthConverter.Factory factory);
+    method public void addFormatterFactory(io.mehow.ruler.format.LengthFormatter.Factory factory);
+    method public io.mehow.ruler.Length<?> convert(io.mehow.ruler.Length<?> length);
+    method public String format(io.mehow.ruler.Length<?> length, io.mehow.ruler.format.FormattingDriver driver);
+    method public io.mehow.ruler.format.FormattingDriver getDriver();
+    method public java.util.List<io.mehow.ruler.format.LengthConverter.Factory> getInstalledConverterFactories();
+    method public java.util.List<io.mehow.ruler.format.LengthFormatter.Factory> getInstalledFormatterFactories();
+    method public java.util.Set<java.lang.String> getInstalledImperialCountryCodes();
+    method public boolean getUseImperialFormatter();
+    method public boolean isUkImperial();
+    method public void removeConverterFactory(io.mehow.ruler.format.LengthConverter.Factory factory);
+    method public void removeFormatterFactory(io.mehow.ruler.format.LengthFormatter.Factory factory);
+    method public void setDriver(io.mehow.ruler.format.FormattingDriver p);
+    method public void setUkImperial(boolean add);
+    method public void setUseImperialFormatter(boolean p);
+    property public final io.mehow.ruler.format.FormattingDriver driver;
+    property public final java.util.List<io.mehow.ruler.format.LengthConverter.Factory> installedConverterFactories;
+    property public final java.util.List<io.mehow.ruler.format.LengthFormatter.Factory> installedFormatterFactories;
+    property public final java.util.Set<java.lang.String> installedImperialCountryCodes;
+    property public final boolean isUkImperial;
+    property public final boolean useImperialFormatter;
+    field public static final io.mehow.ruler.Ruler INSTANCE;
+  }
+
+  public abstract sealed class SiLengthUnit extends io.mehow.ruler.LengthUnit<io.mehow.ruler.SiLengthUnit> {
+    method public java.util.List<io.mehow.ruler.SiLengthUnit> getUnits();
+    property public java.util.List<io.mehow.ruler.SiLengthUnit> units;
+    field public static final io.mehow.ruler.SiLengthUnit.Companion Companion;
+  }
+
+  public static final class SiLengthUnit.Centimeter extends io.mehow.ruler.SiLengthUnit {
+    field public static final io.mehow.ruler.SiLengthUnit.Centimeter INSTANCE;
+  }
+
+  public static final class SiLengthUnit.Companion {
+    method public java.util.List<io.mehow.ruler.SiLengthUnit> getUnits();
+    property public final java.util.List<io.mehow.ruler.SiLengthUnit> units;
+  }
+
+  public static final class SiLengthUnit.Decameter extends io.mehow.ruler.SiLengthUnit {
+    field public static final io.mehow.ruler.SiLengthUnit.Decameter INSTANCE;
+  }
+
+  public static final class SiLengthUnit.Decimeter extends io.mehow.ruler.SiLengthUnit {
+    field public static final io.mehow.ruler.SiLengthUnit.Decimeter INSTANCE;
+  }
+
+  public static final class SiLengthUnit.Gigameter extends io.mehow.ruler.SiLengthUnit {
+    field public static final io.mehow.ruler.SiLengthUnit.Gigameter INSTANCE;
+  }
+
+  public static final class SiLengthUnit.Hectometer extends io.mehow.ruler.SiLengthUnit {
+    field public static final io.mehow.ruler.SiLengthUnit.Hectometer INSTANCE;
+  }
+
+  public static final class SiLengthUnit.Kilometer extends io.mehow.ruler.SiLengthUnit {
+    field public static final io.mehow.ruler.SiLengthUnit.Kilometer INSTANCE;
+  }
+
+  public static final class SiLengthUnit.Megameter extends io.mehow.ruler.SiLengthUnit {
+    field public static final io.mehow.ruler.SiLengthUnit.Megameter INSTANCE;
+  }
+
+  public static final class SiLengthUnit.Meter extends io.mehow.ruler.SiLengthUnit {
+    field public static final io.mehow.ruler.SiLengthUnit.Meter INSTANCE;
+  }
+
+  public static final class SiLengthUnit.Micrometer extends io.mehow.ruler.SiLengthUnit {
+    field public static final io.mehow.ruler.SiLengthUnit.Micrometer INSTANCE;
+  }
+
+  public static final class SiLengthUnit.Millimeter extends io.mehow.ruler.SiLengthUnit {
+    field public static final io.mehow.ruler.SiLengthUnit.Millimeter INSTANCE;
+  }
+
+  public static final class SiLengthUnit.Nanometer extends io.mehow.ruler.SiLengthUnit {
+    field public static final io.mehow.ruler.SiLengthUnit.Nanometer INSTANCE;
+  }
+
+  public interface UnitFitter {
+    method public <T extends io.mehow.ruler.LengthUnit<T>> T? findFit(Iterable<? extends T> units, io.mehow.ruler.Length<T> length);
+  }
+
+}
+
+package io.mehow.ruler.format {
+
+  public final class AutoFitConverter implements io.mehow.ruler.format.LengthConverter {
+    ctor public AutoFitConverter(java.util.List<? extends io.mehow.ruler.SiLengthUnit> siFitting, java.util.List<? extends io.mehow.ruler.ImperialLengthUnit> imperialFitting);
+    ctor public AutoFitConverter();
+    method public io.mehow.ruler.Length<?> convert(io.mehow.ruler.Length<?> length);
+  }
+
+  public final class DecimalFormatter implements io.mehow.ruler.format.MeasureFormatter {
+    method public String format(io.mehow.ruler.Measure<? extends io.mehow.ruler.LengthUnit<?>> measure, io.mehow.ruler.format.MeasureContext context);
+    field public static final io.mehow.ruler.format.DecimalFormatter INSTANCE;
+  }
+
+  public final class FormattingContext {
+    method public int getFractionalPrecision();
+    method public String getUnitSeparator();
+    method public io.mehow.ruler.format.FormattingContext.Builder newBuilder();
+    property public final int fractionalPrecision;
+    property public final String unitSeparator;
+    field public static final io.mehow.ruler.format.FormattingContext.Companion Companion;
+  }
+
+  public static final class FormattingContext.Builder {
+    ctor public FormattingContext.Builder();
+    method public io.mehow.ruler.format.FormattingContext build();
+    method public io.mehow.ruler.format.FormattingContext.Builder withPrecision(int precision);
+    method public io.mehow.ruler.format.FormattingContext.Builder withSeparator(String separator);
+  }
+
+  public static final class FormattingContext.Companion {
+    method public io.mehow.ruler.format.FormattingContext withPrecision(int precision);
+    method public io.mehow.ruler.format.FormattingContext withSeparator(String separator);
+  }
+
+  public final class FormattingDriver {
+    method public String format(io.mehow.ruler.Length<?> length, optional io.mehow.ruler.format.FormattingContext context);
+    method public io.mehow.ruler.format.FormattingContext getFormattingContext();
+    method public io.mehow.ruler.format.FormattingDriver.Builder newBuilder();
+    property public final io.mehow.ruler.format.FormattingContext formattingContext;
+  }
+
+  public static final class FormattingDriver.Builder {
+    ctor public FormattingDriver.Builder();
+    method public io.mehow.ruler.format.FormattingDriver build();
+    method public io.mehow.ruler.format.FormattingDriver.Builder withFormattingContext(io.mehow.ruler.format.FormattingContext context);
+    method public io.mehow.ruler.format.FormattingDriver.Builder withMeasureFormatter(io.mehow.ruler.format.MeasureFormatter formatter);
+    method public io.mehow.ruler.format.FormattingDriver.Builder withTranslator(io.mehow.ruler.format.Translator translator);
+  }
+
+  public final class ImperialFormatter implements io.mehow.ruler.format.LengthFormatter {
+    method public String format(io.mehow.ruler.Length<?> length, io.mehow.ruler.format.FormattingDriver driver);
+    field public static final io.mehow.ruler.format.ImperialFormatter.Companion Companion;
+  }
+
+  public static final class ImperialFormatter.Builder {
+    ctor public ImperialFormatter.Builder();
+    method public io.mehow.ruler.format.ImperialFormatter build();
+    method public io.mehow.ruler.format.ImperialFormatter.Builder withFallbackUnit(io.mehow.ruler.ImperialLengthUnit unit);
+    method public io.mehow.ruler.format.ImperialFormatter.Builder withFeet();
+    method public io.mehow.ruler.format.ImperialFormatter.Builder withInches();
+    method public io.mehow.ruler.format.ImperialFormatter.Builder withMiles();
+    method public io.mehow.ruler.format.ImperialFormatter.Builder withPartSeparator(String separator);
+    method public io.mehow.ruler.format.ImperialFormatter.Builder withYards();
+  }
+
+  public static final class ImperialFormatter.Companion {
+    method public io.mehow.ruler.format.ImperialFormatter getFull();
+    property public final io.mehow.ruler.format.ImperialFormatter Full;
+  }
+
+  public fun interface LengthConverter {
+    method public io.mehow.ruler.Length<?> convert(io.mehow.ruler.Length<?> length);
+  }
+
+  public static fun interface LengthConverter.Factory {
+    method public io.mehow.ruler.format.LengthConverter? create(io.mehow.ruler.Length<?> length);
+  }
+
+  public fun interface LengthFormatter {
+    method public String format(io.mehow.ruler.Length<?> length, io.mehow.ruler.format.FormattingDriver driver);
+  }
+
+  public static fun interface LengthFormatter.Factory {
+    method public io.mehow.ruler.format.LengthFormatter? create(io.mehow.ruler.Length<?> length, io.mehow.ruler.format.FormattingContext context);
+  }
+
+  public final class MeasureContext {
+    method public int getFractionalPrecision();
+    method public java.util.Locale getLocale();
+    property public final int fractionalPrecision;
+    property public final java.util.Locale locale;
+  }
+
+  public fun interface MeasureFormatter {
+    method public String format(io.mehow.ruler.Measure<? extends io.mehow.ruler.LengthUnit<?>> measure, io.mehow.ruler.format.MeasureContext context);
+  }
+
+  public final class NoOpFormatter implements io.mehow.ruler.format.LengthFormatter {
+    method public String format(io.mehow.ruler.Length<?> length, io.mehow.ruler.format.FormattingDriver driver);
+    field public static final io.mehow.ruler.format.NoOpFormatter INSTANCE;
+  }
+
+  public interface Translator {
+    method public java.util.Locale getLocale();
+    method public String symbol(io.mehow.ruler.LengthUnit<?> unit);
+    property public abstract java.util.Locale locale;
+  }
+
+}
+
