@@ -14,9 +14,37 @@ on:
       - '.github/CODEOWNERS'
 
 jobs:
+  android-tests:
+    if: ${{ github.repository == 'MiSikora/ruler' }}
+    name: Android Tests
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache Gradle Dirs
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches/
+            ~/.gradle/wrapper/
+          key: cache-gradle-${{ hashFiles('**/*.gradle', '**/gradle-wrapper.properties') }}
+          restore-keys: cache-gradle-
+
+      - name: Run Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew connectedCheck --stacktrace
+        env:
+          API_LEVEL: 29
+
+      - name: Stop Gradle
+        run: ./gradlew --stop
+
   tests:
     if: ${{ github.repository == 'MiSikora/ruler' }}
-    name: Tests
+    name: JVM Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
