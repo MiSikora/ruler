@@ -15,10 +15,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import java.util.Locale
 
-@RunWith(RobolectricTestRunner::class)
 internal class RtlContextTest {
   @get:Rule val resetRuleRule = ResetRulerRule
   private val context = getApplicationContext()
@@ -27,19 +25,19 @@ internal class RtlContextTest {
     Ruler.contextualize(context.localize(Locale("ar")))
   }
 
-  @Test fun `positive SI length is displayed correctly`() {
+  @Test fun positiveSiLengthIsDisplayedCorrectly() {
     val length = Length.ofMeters(12.36)
 
     length.format(converter = null, formatter = NoOpFormatter) shouldBe "١٢٫٣٦م"
   }
 
-  @Test fun `negative SI length is displayed correctly`() {
+  @Test fun negativeSiLengthIsDisplayedCorrectly() {
     val length = Length.ofMeters(-12.36)
 
     length.format(converter = null, formatter = NoOpFormatter) shouldBe "؜-١٢٫٣٦م"
   }
 
-  @Test fun `custom separator is displayed in a correct position`() {
+  @Test fun customSeparatorIsDisplayedInCorrectPosition() {
     val length = Length.ofMeters(12.36)
 
     val context = FormattingContext.withSeparator("|")
@@ -48,7 +46,7 @@ internal class RtlContextTest {
     length.format(converter = null, formatter = NoOpFormatter) shouldBe "١٢٫٣٦|م"
   }
 
-  @Test fun `imperial unit parts are reversed with RTL locale`() {
+  @Test fun imperialUnitPartsAreReversedForRtlLocale() {
     val distance = Distance.ofMiles(4) +
         Distance.ofYards(3) +
         Distance.ofFeet(2) +
@@ -59,7 +57,7 @@ internal class RtlContextTest {
     length.format(converter = null, formatter = formatter) shouldBe "٤ميل ٣ياردة ٢قدم ١بوصة"
   }
 
-  @Test fun `custom unit separator is displayed in a correct position with RTL locale`() {
+  @Test fun customUnitSeparatorIsDisplayedInCorrectPositionForRtlLocale() {
     val distance = Distance.ofMiles(4) +
         Distance.ofYards(3) +
         Distance.ofFeet(2) +
@@ -73,7 +71,7 @@ internal class RtlContextTest {
     length.format(converter = null, formatter = formatter) shouldBe "٤|ميل ٣|ياردة ٢|قدم ١|بوصة"
   }
 
-  @Test fun `custom part separator is displayed in a correct position with RTL locale`() {
+  @Test fun customPartSeparatorIsDisplayedInCorrectPositionForRtlLocale() {
     val distance = Distance.ofMiles(4) +
         Distance.ofYards(3) +
         Distance.ofFeet(2) +

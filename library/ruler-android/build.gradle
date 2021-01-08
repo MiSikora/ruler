@@ -6,19 +6,30 @@ plugins {
 android {
   resourcePrefix "io_mehow_ruler_"
 
-  testOptions {
-    unitTests.includeAndroidResources true
+  defaultConfig {
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunnerArgument "clearPackageData", "true"
+  }
+
+  testOptions.execution "ANDROIDX_TEST_ORCHESTRATOR"
+  testBuildType "release"
+
+  buildTypes {
+    release {
+      // Since we test release build it has to be signed.
+      signingConfig signingConfigs.getByName("debug")
+    }
   }
 }
 
 dependencies {
   api project(':library:ruler')
 
-  testImplementation libs.junit
-  testImplementation libs.kotest.assertions
-  testImplementation libs.android.x.testCoreKtx
-  testImplementation libs.robolectric
-  testImplementation libs.junit
+  androidTestUtil libs.android.x.test.orchestrator
+  androidTestImplementation libs.android.x.testExtJunitKtx
+  androidTestImplementation libs.android.x.test.coreKtx
+  androidTestImplementation libs.android.x.test.runner
+  androidTestImplementation libs.kotest.assertions
 }
 
 apply from: "$rootDir/gradle/metalava-config.gradle"
