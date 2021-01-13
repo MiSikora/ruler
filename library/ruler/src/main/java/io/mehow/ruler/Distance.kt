@@ -30,7 +30,7 @@ import kotlin.Long.Companion.MIN_VALUE
  * This class models a quantity of space in terms of meters and nanometers. Physical distance
  * could be of infinite length. For practicality, the can have values between [Long.MIN_VALUE] meters exclusive
  * and [Long.MAX_VALUE] meters and `999_999_999` nanometers inclusive, which is approximately -975 and 975 light years.
- * Exclusive lower bound is set An attempt to create a distance out of these bounds will throw an exception.
+ * An attempt to create a distance out of these bounds will throw an exception.
  */
 public class Distance private constructor(
   private val metersPart: Long = 0L,
