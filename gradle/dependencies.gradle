@@ -49,5 +49,5 @@ ext.libs = [
         "gradlePluginId": "me.tylerbwong.gradle.metalava",
     ],
     "junit": "junit:junit:4.13.1",
-    "robolectric": "org.robolectric:robolectric:4.4",
+    "robolectric": "org.robolectric:robolectric:4.5",
 ]
