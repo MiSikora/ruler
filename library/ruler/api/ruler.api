@@ -1,0 +1,383 @@
+public final class io/mehow/ruler/Distance : java/lang/Comparable {
+	public static final field Companion Lio/mehow/ruler/Distance$Companion;
+	public synthetic fun <init> (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun abs ()Lio/mehow/ruler/Distance;
+	public fun compareTo (Lio/mehow/ruler/Distance;)I
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public final fun div (D)Lio/mehow/ruler/Distance;
+	public final fun div (F)Lio/mehow/ruler/Distance;
+	public final fun div (I)Lio/mehow/ruler/Distance;
+	public final fun div (J)Lio/mehow/ruler/Distance;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun format (Lio/mehow/ruler/format/FormattingContext;Lio/mehow/ruler/format/LengthConverter;Lio/mehow/ruler/format/LengthFormatter;)Ljava/lang/String;
+	public final fun format (Lio/mehow/ruler/format/LengthConverter;Lio/mehow/ruler/format/LengthFormatter;)Ljava/lang/String;
+	public static synthetic fun format$default (Lio/mehow/ruler/Distance;Lio/mehow/ruler/format/FormattingContext;Lio/mehow/ruler/format/LengthConverter;Lio/mehow/ruler/format/LengthFormatter;ILjava/lang/Object;)Ljava/lang/String;
+	public static synthetic fun format$default (Lio/mehow/ruler/Distance;Lio/mehow/ruler/format/LengthConverter;Lio/mehow/ruler/format/LengthFormatter;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun getMeters ()Ljava/math/BigDecimal;
+	public fun hashCode ()I
+	public final fun minus (Lio/mehow/ruler/Distance;)Lio/mehow/ruler/Distance;
+	public final fun minus (Lio/mehow/ruler/Length;)Lio/mehow/ruler/Distance;
+	public final fun plus (Lio/mehow/ruler/Distance;)Lio/mehow/ruler/Distance;
+	public final fun plus (Lio/mehow/ruler/Length;)Lio/mehow/ruler/Distance;
+	public final fun times (D)Lio/mehow/ruler/Distance;
+	public final fun times (F)Lio/mehow/ruler/Distance;
+	public final fun times (I)Lio/mehow/ruler/Distance;
+	public final fun times (J)Lio/mehow/ruler/Distance;
+	public final fun toLength (Lio/mehow/ruler/LengthUnit;)Lio/mehow/ruler/Length;
+	public fun toString ()Ljava/lang/String;
+	public final fun unaryMinus ()Lio/mehow/ruler/Distance;
+}
+
+public final class io/mehow/ruler/Distance$Companion {
+	public final fun getEpsilon ()Lio/mehow/ruler/Distance;
+	public final fun getMax ()Lio/mehow/ruler/Distance;
+	public final fun getMin ()Lio/mehow/ruler/Distance;
+	public final fun getZero ()Lio/mehow/ruler/Distance;
+	public final fun of (DLio/mehow/ruler/LengthUnit;)Lio/mehow/ruler/Distance;
+	public final fun of (JLio/mehow/ruler/LengthUnit;)Lio/mehow/ruler/Distance;
+	public final fun ofCentimeters (D)Lio/mehow/ruler/Distance;
+	public final fun ofCentimeters (J)Lio/mehow/ruler/Distance;
+	public final fun ofDecameters (D)Lio/mehow/ruler/Distance;
+	public final fun ofDecameters (J)Lio/mehow/ruler/Distance;
+	public final fun ofDecimeters (D)Lio/mehow/ruler/Distance;
+	public final fun ofDecimeters (J)Lio/mehow/ruler/Distance;
+	public final fun ofFeet (D)Lio/mehow/ruler/Distance;
+	public final fun ofFeet (J)Lio/mehow/ruler/Distance;
+	public final fun ofGigameters (D)Lio/mehow/ruler/Distance;
+	public final fun ofGigameters (J)Lio/mehow/ruler/Distance;
+	public final fun ofHectometers (D)Lio/mehow/ruler/Distance;
+	public final fun ofHectometers (J)Lio/mehow/ruler/Distance;
+	public final fun ofInches (D)Lio/mehow/ruler/Distance;
+	public final fun ofInches (J)Lio/mehow/ruler/Distance;
+	public final fun ofKilometers (D)Lio/mehow/ruler/Distance;
+	public final fun ofKilometers (J)Lio/mehow/ruler/Distance;
+	public final fun ofMegameters (D)Lio/mehow/ruler/Distance;
+	public final fun ofMegameters (J)Lio/mehow/ruler/Distance;
+	public final fun ofMeters (D)Lio/mehow/ruler/Distance;
+	public final fun ofMeters (J)Lio/mehow/ruler/Distance;
+	public final fun ofMicrometers (D)Lio/mehow/ruler/Distance;
+	public final fun ofMicrometers (J)Lio/mehow/ruler/Distance;
+	public final fun ofMiles (D)Lio/mehow/ruler/Distance;
+	public final fun ofMiles (J)Lio/mehow/ruler/Distance;
+	public final fun ofMillimeters (D)Lio/mehow/ruler/Distance;
+	public final fun ofMillimeters (J)Lio/mehow/ruler/Distance;
+	public final fun ofNanometers (D)Lio/mehow/ruler/Distance;
+	public final fun ofNanometers (J)Lio/mehow/ruler/Distance;
+	public final fun ofYards (D)Lio/mehow/ruler/Distance;
+	public final fun ofYards (J)Lio/mehow/ruler/Distance;
+}
+
+public abstract class io/mehow/ruler/ImperialLengthUnit : io/mehow/ruler/LengthUnit {
+	public static final field Companion Lio/mehow/ruler/ImperialLengthUnit$Companion;
+	public synthetic fun <init> (Ljava/math/BigDecimal;Lkotlin/ranges/ClosedRange;ILjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getUnits ()Ljava/util/List;
+}
+
+public final class io/mehow/ruler/ImperialLengthUnit$Companion {
+	public final fun getUnits ()Ljava/util/List;
+}
+
+public final class io/mehow/ruler/ImperialLengthUnit$Foot : io/mehow/ruler/ImperialLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/ImperialLengthUnit$Foot;
+}
+
+public final class io/mehow/ruler/ImperialLengthUnit$Inch : io/mehow/ruler/ImperialLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/ImperialLengthUnit$Inch;
+}
+
+public final class io/mehow/ruler/ImperialLengthUnit$Mile : io/mehow/ruler/ImperialLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/ImperialLengthUnit$Mile;
+}
+
+public final class io/mehow/ruler/ImperialLengthUnit$Yard : io/mehow/ruler/ImperialLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/ImperialLengthUnit$Yard;
+}
+
+public final class io/mehow/ruler/InRageUnitFitter : io/mehow/ruler/UnitFitter {
+	public static final field INSTANCE Lio/mehow/ruler/InRageUnitFitter;
+	public fun findFit (Ljava/lang/Iterable;Lio/mehow/ruler/Length;)Lio/mehow/ruler/LengthUnit;
+}
+
+public final class io/mehow/ruler/Length : java/lang/Comparable {
+	public static final field Companion Lio/mehow/ruler/Length$Companion;
+	public final fun abs ()Lio/mehow/ruler/Length;
+	public final fun coerceUnitAtLeastTo (Lio/mehow/ruler/LengthUnit;)Lio/mehow/ruler/Length;
+	public final fun coerceUnitAtMostTo (Lio/mehow/ruler/LengthUnit;)Lio/mehow/ruler/Length;
+	public final fun coerceUnitIn (Lio/mehow/ruler/LengthUnit;Lio/mehow/ruler/LengthUnit;)Lio/mehow/ruler/Length;
+	public final fun coerceUnitIn (Lkotlin/ranges/ClosedRange;)Lio/mehow/ruler/Length;
+	public fun compareTo (Lio/mehow/ruler/Length;)I
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public final fun div (D)Lio/mehow/ruler/Length;
+	public final fun div (F)Lio/mehow/ruler/Length;
+	public final fun div (I)Lio/mehow/ruler/Length;
+	public final fun div (J)Lio/mehow/ruler/Length;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun format (Lio/mehow/ruler/format/FormattingContext;Lio/mehow/ruler/format/LengthConverter;Lio/mehow/ruler/format/LengthFormatter;)Ljava/lang/String;
+	public final fun format (Lio/mehow/ruler/format/LengthConverter;Lio/mehow/ruler/format/LengthFormatter;)Ljava/lang/String;
+	public static synthetic fun format$default (Lio/mehow/ruler/Length;Lio/mehow/ruler/format/FormattingContext;Lio/mehow/ruler/format/LengthConverter;Lio/mehow/ruler/format/LengthFormatter;ILjava/lang/Object;)Ljava/lang/String;
+	public static synthetic fun format$default (Lio/mehow/ruler/Length;Lio/mehow/ruler/format/LengthConverter;Lio/mehow/ruler/format/LengthFormatter;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun getDistance ()Lio/mehow/ruler/Distance;
+	public final fun getMeasure ()Lio/mehow/ruler/Measure;
+	public final fun getUnit ()Lio/mehow/ruler/LengthUnit;
+	public fun hashCode ()I
+	public final fun minus (Lio/mehow/ruler/Distance;)Lio/mehow/ruler/Length;
+	public final fun minus (Lio/mehow/ruler/Length;)Lio/mehow/ruler/Length;
+	public final fun plus (Lio/mehow/ruler/Distance;)Lio/mehow/ruler/Length;
+	public final fun plus (Lio/mehow/ruler/Length;)Lio/mehow/ruler/Length;
+	public final fun roundDown ()Lio/mehow/ruler/Length;
+	public final fun times (D)Lio/mehow/ruler/Length;
+	public final fun times (F)Lio/mehow/ruler/Length;
+	public final fun times (I)Lio/mehow/ruler/Length;
+	public final fun times (J)Lio/mehow/ruler/Length;
+	public fun toString ()Ljava/lang/String;
+	public final fun unaryMinus ()Lio/mehow/ruler/Length;
+	public final fun withFittingUnit (Ljava/lang/Iterable;Lio/mehow/ruler/UnitFitter;)Lio/mehow/ruler/Length;
+	public static synthetic fun withFittingUnit$default (Lio/mehow/ruler/Length;Ljava/lang/Iterable;Lio/mehow/ruler/UnitFitter;ILjava/lang/Object;)Lio/mehow/ruler/Length;
+	public final fun withUnit (Lio/mehow/ruler/LengthUnit;)Lio/mehow/ruler/Length;
+}
+
+public final class io/mehow/ruler/Length$Companion {
+	public final fun of (DLio/mehow/ruler/LengthUnit;)Lio/mehow/ruler/Length;
+	public final fun of (JLio/mehow/ruler/LengthUnit;)Lio/mehow/ruler/Length;
+	public final fun ofCentimeters (D)Lio/mehow/ruler/Length;
+	public final fun ofCentimeters (J)Lio/mehow/ruler/Length;
+	public final fun ofDecameters (D)Lio/mehow/ruler/Length;
+	public final fun ofDecameters (J)Lio/mehow/ruler/Length;
+	public final fun ofDecimeters (D)Lio/mehow/ruler/Length;
+	public final fun ofDecimeters (J)Lio/mehow/ruler/Length;
+	public final fun ofFeet (D)Lio/mehow/ruler/Length;
+	public final fun ofFeet (J)Lio/mehow/ruler/Length;
+	public final fun ofGigameters (D)Lio/mehow/ruler/Length;
+	public final fun ofGigameters (J)Lio/mehow/ruler/Length;
+	public final fun ofHectometers (D)Lio/mehow/ruler/Length;
+	public final fun ofHectometers (J)Lio/mehow/ruler/Length;
+	public final fun ofInches (D)Lio/mehow/ruler/Length;
+	public final fun ofInches (J)Lio/mehow/ruler/Length;
+	public final fun ofKilometers (D)Lio/mehow/ruler/Length;
+	public final fun ofKilometers (J)Lio/mehow/ruler/Length;
+	public final fun ofMegameters (D)Lio/mehow/ruler/Length;
+	public final fun ofMegameters (J)Lio/mehow/ruler/Length;
+	public final fun ofMeters (D)Lio/mehow/ruler/Length;
+	public final fun ofMeters (J)Lio/mehow/ruler/Length;
+	public final fun ofMicrometers (D)Lio/mehow/ruler/Length;
+	public final fun ofMicrometers (J)Lio/mehow/ruler/Length;
+	public final fun ofMiles (D)Lio/mehow/ruler/Length;
+	public final fun ofMiles (J)Lio/mehow/ruler/Length;
+	public final fun ofMillimeters (D)Lio/mehow/ruler/Length;
+	public final fun ofMillimeters (J)Lio/mehow/ruler/Length;
+	public final fun ofNanometers (D)Lio/mehow/ruler/Length;
+	public final fun ofNanometers (J)Lio/mehow/ruler/Length;
+	public final fun ofYards (D)Lio/mehow/ruler/Length;
+	public final fun ofYards (J)Lio/mehow/ruler/Length;
+}
+
+public abstract class io/mehow/ruler/LengthUnit : java/lang/Comparable {
+	public static final field Companion Lio/mehow/ruler/LengthUnit$Companion;
+	public synthetic fun <init> (Ljava/math/BigDecimal;Lkotlin/ranges/ClosedRange;ILjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun compareTo (Lio/mehow/ruler/LengthUnit;)I
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public final fun contains (Lio/mehow/ruler/Distance;)Z
+	public final fun contains (Lio/mehow/ruler/Length;)Z
+	public final fun getBounds ()Lkotlin/ranges/ClosedRange;
+	public final fun getMeterRatio ()Ljava/math/BigDecimal;
+	public abstract fun getUnits ()Ljava/util/List;
+	public final fun toString ()Ljava/lang/String;
+}
+
+public final class io/mehow/ruler/LengthUnit$Companion {
+	public final fun getUnits ()Ljava/util/List;
+}
+
+public final class io/mehow/ruler/LogDistanceUnitFitter : io/mehow/ruler/UnitFitter {
+	public static final field INSTANCE Lio/mehow/ruler/LogDistanceUnitFitter;
+	public fun findFit (Ljava/lang/Iterable;Lio/mehow/ruler/Length;)Lio/mehow/ruler/LengthUnit;
+}
+
+public final class io/mehow/ruler/Measure {
+	public static final field Companion Lio/mehow/ruler/Measure$Companion;
+	public synthetic fun <init> (Ljava/math/BigDecimal;Ljava/lang/Object;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDimension ()Ljava/lang/Object;
+	public final fun getValue ()Ljava/math/BigDecimal;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/mehow/ruler/Ruler : io/mehow/ruler/format/LengthConverter, io/mehow/ruler/format/LengthFormatter {
+	public static final field INSTANCE Lio/mehow/ruler/Ruler;
+	public final fun addConverterFactory (Lio/mehow/ruler/format/LengthConverter$Factory;)V
+	public final fun addFormatterFactory (Lio/mehow/ruler/format/LengthFormatter$Factory;)V
+	public fun convert (Lio/mehow/ruler/Length;)Lio/mehow/ruler/Length;
+	public fun format (Lio/mehow/ruler/Length;Lio/mehow/ruler/format/FormattingDriver;)Ljava/lang/String;
+	public final fun getDriver ()Lio/mehow/ruler/format/FormattingDriver;
+	public final fun getInstalledConverterFactories ()Ljava/util/List;
+	public final fun getInstalledFormatterFactories ()Ljava/util/List;
+	public final fun getInstalledImperialCountryCodes ()Ljava/util/Set;
+	public final fun getUseImperialFormatter ()Z
+	public final fun isUkImperial ()Z
+	public final fun removeConverterFactory (Lio/mehow/ruler/format/LengthConverter$Factory;)V
+	public final fun removeFormatterFactory (Lio/mehow/ruler/format/LengthFormatter$Factory;)V
+	public final fun setDriver (Lio/mehow/ruler/format/FormattingDriver;)V
+	public final fun setUkImperial (Z)V
+	public final fun setUseImperialFormatter (Z)V
+}
+
+public abstract class io/mehow/ruler/SiLengthUnit : io/mehow/ruler/LengthUnit {
+	public static final field Companion Lio/mehow/ruler/SiLengthUnit$Companion;
+	public synthetic fun <init> (Ljava/math/BigDecimal;Lkotlin/ranges/ClosedRange;ILjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getUnits ()Ljava/util/List;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Centimeter : io/mehow/ruler/SiLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/SiLengthUnit$Centimeter;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Companion {
+	public final fun getUnits ()Ljava/util/List;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Decameter : io/mehow/ruler/SiLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/SiLengthUnit$Decameter;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Decimeter : io/mehow/ruler/SiLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/SiLengthUnit$Decimeter;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Gigameter : io/mehow/ruler/SiLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/SiLengthUnit$Gigameter;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Hectometer : io/mehow/ruler/SiLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/SiLengthUnit$Hectometer;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Kilometer : io/mehow/ruler/SiLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/SiLengthUnit$Kilometer;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Megameter : io/mehow/ruler/SiLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/SiLengthUnit$Megameter;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Meter : io/mehow/ruler/SiLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/SiLengthUnit$Meter;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Micrometer : io/mehow/ruler/SiLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/SiLengthUnit$Micrometer;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Millimeter : io/mehow/ruler/SiLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/SiLengthUnit$Millimeter;
+}
+
+public final class io/mehow/ruler/SiLengthUnit$Nanometer : io/mehow/ruler/SiLengthUnit {
+	public static final field INSTANCE Lio/mehow/ruler/SiLengthUnit$Nanometer;
+}
+
+public abstract interface class io/mehow/ruler/UnitFitter {
+	public abstract fun findFit (Ljava/lang/Iterable;Lio/mehow/ruler/Length;)Lio/mehow/ruler/LengthUnit;
+}
+
+public final class io/mehow/ruler/format/AutoFitConverter : io/mehow/ruler/format/LengthConverter {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun convert (Lio/mehow/ruler/Length;)Lio/mehow/ruler/Length;
+}
+
+public final class io/mehow/ruler/format/DecimalFormatter : io/mehow/ruler/format/MeasureFormatter {
+	public static final field INSTANCE Lio/mehow/ruler/format/DecimalFormatter;
+	public fun format (Lio/mehow/ruler/Measure;Lio/mehow/ruler/format/MeasureContext;)Ljava/lang/String;
+}
+
+public final class io/mehow/ruler/format/FormattingContext {
+	public static final field Companion Lio/mehow/ruler/format/FormattingContext$Companion;
+	public final fun getFractionalPrecision ()I
+	public final fun getUnitSeparator ()Ljava/lang/String;
+	public final fun newBuilder ()Lio/mehow/ruler/format/FormattingContext$Builder;
+}
+
+public final class io/mehow/ruler/format/FormattingContext$Builder {
+	public fun <init> ()V
+	public final fun build ()Lio/mehow/ruler/format/FormattingContext;
+	public final fun withPrecision (I)Lio/mehow/ruler/format/FormattingContext$Builder;
+	public final fun withSeparator (Ljava/lang/String;)Lio/mehow/ruler/format/FormattingContext$Builder;
+}
+
+public final class io/mehow/ruler/format/FormattingContext$Companion {
+	public final fun withPrecision (I)Lio/mehow/ruler/format/FormattingContext;
+	public final fun withSeparator (Ljava/lang/String;)Lio/mehow/ruler/format/FormattingContext;
+}
+
+public final class io/mehow/ruler/format/FormattingDriver {
+	public final fun format (Lio/mehow/ruler/Length;Lio/mehow/ruler/format/FormattingContext;)Ljava/lang/String;
+	public static synthetic fun format$default (Lio/mehow/ruler/format/FormattingDriver;Lio/mehow/ruler/Length;Lio/mehow/ruler/format/FormattingContext;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun getFormattingContext ()Lio/mehow/ruler/format/FormattingContext;
+	public final fun newBuilder ()Lio/mehow/ruler/format/FormattingDriver$Builder;
+}
+
+public final class io/mehow/ruler/format/FormattingDriver$Builder {
+	public fun <init> ()V
+	public final fun build ()Lio/mehow/ruler/format/FormattingDriver;
+	public final fun withFormattingContext (Lio/mehow/ruler/format/FormattingContext;)Lio/mehow/ruler/format/FormattingDriver$Builder;
+	public final fun withMeasureFormatter (Lio/mehow/ruler/format/MeasureFormatter;)Lio/mehow/ruler/format/FormattingDriver$Builder;
+	public final fun withTranslator (Lio/mehow/ruler/format/Translator;)Lio/mehow/ruler/format/FormattingDriver$Builder;
+}
+
+public final class io/mehow/ruler/format/ImperialFormatter : io/mehow/ruler/format/LengthFormatter {
+	public static final field Companion Lio/mehow/ruler/format/ImperialFormatter$Companion;
+	public fun format (Lio/mehow/ruler/Length;Lio/mehow/ruler/format/FormattingDriver;)Ljava/lang/String;
+}
+
+public final class io/mehow/ruler/format/ImperialFormatter$Builder {
+	public fun <init> ()V
+	public final fun build ()Lio/mehow/ruler/format/ImperialFormatter;
+	public final fun withFallbackUnit (Lio/mehow/ruler/ImperialLengthUnit;)Lio/mehow/ruler/format/ImperialFormatter$Builder;
+	public final fun withFeet ()Lio/mehow/ruler/format/ImperialFormatter$Builder;
+	public final fun withInches ()Lio/mehow/ruler/format/ImperialFormatter$Builder;
+	public final fun withMiles ()Lio/mehow/ruler/format/ImperialFormatter$Builder;
+	public final fun withPartSeparator (Ljava/lang/String;)Lio/mehow/ruler/format/ImperialFormatter$Builder;
+	public final fun withYards ()Lio/mehow/ruler/format/ImperialFormatter$Builder;
+}
+
+public final class io/mehow/ruler/format/ImperialFormatter$Companion {
+	public final fun getFull ()Lio/mehow/ruler/format/ImperialFormatter;
+}
+
+public abstract interface class io/mehow/ruler/format/LengthConverter {
+	public abstract fun convert (Lio/mehow/ruler/Length;)Lio/mehow/ruler/Length;
+}
+
+public abstract interface class io/mehow/ruler/format/LengthConverter$Factory {
+	public abstract fun create (Lio/mehow/ruler/Length;)Lio/mehow/ruler/format/LengthConverter;
+}
+
+public abstract interface class io/mehow/ruler/format/LengthFormatter {
+	public abstract fun format (Lio/mehow/ruler/Length;Lio/mehow/ruler/format/FormattingDriver;)Ljava/lang/String;
+}
+
+public abstract interface class io/mehow/ruler/format/LengthFormatter$Factory {
+	public abstract fun create (Lio/mehow/ruler/Length;Lio/mehow/ruler/format/FormattingContext;)Lio/mehow/ruler/format/LengthFormatter;
+}
+
+public final class io/mehow/ruler/format/MeasureContext {
+	public final fun getFractionalPrecision ()I
+	public final fun getLocale ()Ljava/util/Locale;
+}
+
+public abstract interface class io/mehow/ruler/format/MeasureFormatter {
+	public abstract fun format (Lio/mehow/ruler/Measure;Lio/mehow/ruler/format/MeasureContext;)Ljava/lang/String;
+}
+
+public final class io/mehow/ruler/format/NoOpFormatter : io/mehow/ruler/format/LengthFormatter {
+	public static final field INSTANCE Lio/mehow/ruler/format/NoOpFormatter;
+	public fun format (Lio/mehow/ruler/Length;Lio/mehow/ruler/format/FormattingDriver;)Ljava/lang/String;
+}
+
+public abstract interface class io/mehow/ruler/format/Translator {
+	public abstract fun getLocale ()Ljava/util/Locale;
+	public abstract fun symbol (Lio/mehow/ruler/LengthUnit;)Ljava/lang/String;
+}
+

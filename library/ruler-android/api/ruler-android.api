@@ -1,0 +1,15 @@
+public final class io/mehow/ruler/format/ContextTranslator : io/mehow/ruler/format/Translator {
+	public fun <init> (Landroid/content/Context;)V
+	public fun getLocale ()Ljava/util/Locale;
+	public fun symbol (Lio/mehow/ruler/LengthUnit;)Ljava/lang/String;
+}
+
+public final class io/mehow/ruler/format/FormattingDriverUtilsKt {
+	public static final fun withAndroidContext (Lio/mehow/ruler/format/FormattingDriver$Builder;Landroid/content/Context;)Lio/mehow/ruler/format/FormattingDriver$Builder;
+}
+
+public final class io/mehow/ruler/format/IcuFormatter : io/mehow/ruler/format/MeasureFormatter {
+	public static final field INSTANCE Lio/mehow/ruler/format/IcuFormatter;
+	public fun format (Lio/mehow/ruler/Measure;Lio/mehow/ruler/format/MeasureContext;)Ljava/lang/String;
+}
+

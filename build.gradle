@@ -12,13 +12,19 @@ buildscript {
 
   dependencies {
     classpath libs.android.gradlePlugin
-    classpath libs.kotlinGradlePlugin
+    classpath libs.kotlin.gradlePlugin
     classpath libs.mavenPublishGradlePlugin
     classpath libs.dokka.gradlePlugin
     classpath libs.detekt.gradlePlugin
     classpath libs.gradleVersions.gradlePlugin
-    classpath libs.metalava.gradlePlugin
+    classpath libs.kotlin.x.binaryCompatibility.gradlePlugin
   }
+}
+
+apply plugin: libs.kotlin.x.binaryCompatibility.gradlePluginId
+
+apiValidation {
+  ignoredProjects += ["sample"]
 }
 
 allprojects {

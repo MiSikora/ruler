@@ -1,0 +1,7 @@
+public final class io/mehow/ruler/startup/RulerInitializer : androidx/startup/Initializer {
+	public static final field INSTANCE Lio/mehow/ruler/startup/RulerInitializer;
+	public fun create (Landroid/content/Context;)Lio/mehow/ruler/format/FormattingDriver;
+	public synthetic fun create (Landroid/content/Context;)Ljava/lang/Object;
+	public fun dependencies ()Ljava/util/List;
+}
+

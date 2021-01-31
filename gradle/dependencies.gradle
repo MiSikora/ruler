@@ -23,7 +23,15 @@ ext.libs = [
         ],
         "material": "com.google.android.material:material:1.2.1",
     ],
-    "kotlinGradlePlugin": "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21",
+    "kotlin": [
+        "gradlePlugin": "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21",
+        "x": [
+            "binaryCompatibility": [
+                "gradlePlugin": "org.jetbrains.kotlinx:binary-compatibility-validator:0.3.0",
+                "gradlePluginId": "binary-compatibility-validator",
+            ],
+        ],
+    ],
     "dokka": [
         "gradlePlugin": "org.jetbrains.dokka:dokka-gradle-plugin:1.4.20",
         "gradlePluginId": "org.jetbrains.dokka",
@@ -43,10 +51,6 @@ ext.libs = [
     "gradleVersions": [
         "gradlePlugin": "com.github.ben-manes:gradle-versions-plugin:0.36.0",
         "gradlePluginId": "com.github.ben-manes.versions",
-    ],
-    "metalava": [
-        "gradlePlugin": "me.tylerbwong.gradle:metalava-gradle:0.1.6",
-        "gradlePluginId": "me.tylerbwong.gradle.metalava",
     ],
     "junit": "junit:junit:4.13.1",
 ]
