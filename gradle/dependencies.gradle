@@ -52,5 +52,5 @@ ext.libs = [
         "gradlePlugin": "com.github.ben-manes:gradle-versions-plugin:0.36.0",
         "gradlePluginId": "com.github.ben-manes.versions",
     ],
-    "junit": "junit:junit:4.13.1",
+    "junit": "junit:junit:4.13.2",
 ]
