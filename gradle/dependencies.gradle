@@ -11,7 +11,7 @@ ext.versions = [
 
 ext.libs = [
     "android": [
-        "gradlePlugin": "com.android.tools.build:gradle:7.0.0-alpha14",
+        "gradlePlugin": "com.android.tools.build:gradle:7.0.0-alpha15",
         "x": [
             "startupRuntime": "androidx.startup:startup-runtime:1.0.0",
             "test": [
