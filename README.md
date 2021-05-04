@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-  implementation "io.mehow.ruler:ruler:2.0.0"
+  implementation "io.mehow.ruler:ruler:2.0.1"
 }
 ```
 
