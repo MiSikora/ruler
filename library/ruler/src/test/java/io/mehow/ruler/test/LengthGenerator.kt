@@ -36,9 +36,9 @@ internal class LengthGenerator<T : LengthUnit<T>> private constructor(
     ).filter { it in range }
   }.distinct()
 
-  override fun edgecases() = units.flatMap { unit ->
+  override fun edgecase(rs: RandomSource) = units.flatMap { unit ->
     distanceEdgeCases.map { distance -> distance.toLength(unit) }
-  }
+  }.random(rs.random)
 
   override fun sample(rs: RandomSource) = rs.random
       .nextDistance(ranges.random())

@@ -17,7 +17,7 @@ internal class DistanceGenerator private constructor(
       range.endInclusive,
   ).filter { it in range }.distinct()
 
-  override fun edgecases() = edgeCases
+  override fun edgecase(rs: RandomSource) = edgeCases.random(rs.random)
 
   override fun sample(rs: RandomSource) = rs.random
       .nextDistance(range)
