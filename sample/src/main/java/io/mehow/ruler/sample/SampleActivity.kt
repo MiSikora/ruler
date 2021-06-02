@@ -23,6 +23,7 @@ import io.mehow.ruler.SiLengthUnit.Micrometer
 import io.mehow.ruler.SiLengthUnit.Millimeter
 import io.mehow.ruler.SiLengthUnit.Nanometer
 
+@Suppress("ReturnStatement")
 internal class SampleActivity : Activity() {
   override fun onCreate(inState: Bundle?) {
     super.onCreate(inState)

@@ -58,6 +58,7 @@ public class Length<T : LengthUnit<T>> internal constructor(
   /**
    * Ensures that a unit is within a specified range.
    */
+  @Suppress("ThrowExpression")
   public fun coerceUnitIn(range: ClosedRange<T>): Length<T> = when {
     range.isEmpty() -> throw IllegalArgumentException("Range cannot be empty!")
     unit > range.endInclusive -> Length(distance, range.endInclusive)
@@ -118,10 +119,7 @@ public class Length<T : LengthUnit<T>> internal constructor(
     driver: FormattingDriver,
     converter: LengthConverter?,
     formatter: LengthFormatter,
-  ): String {
-    val length = converter?.convert(this) ?: this
-    return formatter.format(length, driver)
-  }
+  ): String = formatter.format(converter?.convert(this) ?: this, driver)
 
   /**
    * Returns a length whose value is the absolute value of this length.

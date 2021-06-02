@@ -290,3 +290,29 @@ style:
     active: true
   WildcardImport:
     active: true
+
+impure:
+  active: true
+  LoopUsage:
+    active: true
+  ReturnStatement:
+    active: true
+  VariableUsage:
+    active: true
+  ReturnUnit:
+    active: true
+    ignoreFunctionType: false
+    ignoredAnnotations: [ ]
+    ignoreDsl: false
+  ClassDefinition:
+    active: false
+  AbstractClassDefinition:
+    active: false
+  ThrowExpression:
+    active: true
+  MutableCollections:
+    active: true
+  BranchStatement:
+    active: true
+  MissingElse:
+    active: false

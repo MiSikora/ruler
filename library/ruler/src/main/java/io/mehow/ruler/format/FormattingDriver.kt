@@ -42,11 +42,11 @@ public class FormattingDriver internal constructor(
   /**
    * Formats length to a human-readable form using a supplied context.
    */
-  public fun format(length: Length<*>, context: FormattingContext = formattingContext): String {
+  public fun format(length: Length<*>, context: FormattingContext = formattingContext): String = run {
     val value = measureFormatter.format(length.measure, MeasureContext(context.fractionalPrecision, translator.locale))
     val separator = context.unitSeparator
     val unit = translator.symbol(length.unit)
-    return value + separator + unit
+    value + separator + unit
   }
 
   /**

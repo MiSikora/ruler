@@ -25,12 +25,12 @@ public class ImperialFormatter internal constructor(
   private val partSeparator = builder.partSeparator
   private val fallbackFormatter = builder.fallbackFormatter
 
-  override fun format(length: Length<*>, driver: FormattingDriver): String {
+  override fun format(length: Length<*>, driver: FormattingDriver): String = run {
     val noFractionContext = driver.formattingContext.newBuilder().withPrecision(0).build()
     val noFractionDriver = driver.newBuilder().withFormattingContext(noFractionContext).build()
 
     val parts = length.formatUnitParts(noFractionDriver)
-    return when {
+    when {
       parts.isEmpty() -> fallbackFormatter.format(length, noFractionDriver)
       else -> parts.joinToString(partSeparator)
     }

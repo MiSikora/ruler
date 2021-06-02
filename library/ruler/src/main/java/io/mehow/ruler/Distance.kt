@@ -147,6 +147,7 @@ public class Distance private constructor(
   /**
    * Divides this distance by specified value.
    */
+  @Suppress("ThrowExpression")
   public operator fun div(divisor: Long): Distance = when (divisor) {
     0L -> throw ArithmeticException("Cannot divide by 0.")
     1L -> this
@@ -161,6 +162,7 @@ public class Distance private constructor(
   /**
    * Divides this distance by specified value.
    */
+  @Suppress("ThrowExpression")
   public operator fun div(divisor: Double): Distance = when (divisor) {
     0.0 -> throw ArithmeticException("Cannot divide by 0.")
     1.0 -> this
@@ -175,10 +177,10 @@ public class Distance private constructor(
   /**
    * Compares this distance based on the space quantity.
    */
-  override fun compareTo(other: Distance): Int {
-    val cmp = metersPart.compareTo(other.metersPart)
-    return if (cmp != 0) cmp else nanosPart.compareTo(other.nanosPart)
-  }
+  override fun compareTo(other: Distance): Int = metersPart
+      .compareTo(other.metersPart)
+      .takeIf { it != 0 }
+      ?: nanosPart.compareTo(other.nanosPart)
 
   override fun equals(other: Any?): Boolean = other is Distance &&
       metersPart == other.metersPart &&
@@ -212,7 +214,8 @@ public class Distance private constructor(
      */
     public val Epsilon: Distance = Distance(nanosPart = 1)
 
-    internal fun create(meters: BigDecimal): Distance {
+    @Suppress("ThrowExpression")
+    internal fun create(meters: BigDecimal): Distance = run {
       val nanos = meters.movePointRight(9).toBigInteger()
       val divRem = nanos.divideAndRemainder(nanosInMeterBig)
       if (divRem[0].bitLength() > 63) {
@@ -220,19 +223,20 @@ public class Distance private constructor(
       }
       val storedMeters = divRem[0].toLong()
       val storedNanometers = divRem[1].toLong()
-      return create(storedMeters, storedNanometers)
+      create(storedMeters, storedNanometers)
     }
 
+    @Suppress("ThrowExpression")
     internal fun create(
       meters: Long = 0,
       nanometers: Long = 0,
-    ): Distance {
-      var meterPart = nanometers / nanosInMeter
-      var nanoPart = nanometers % nanosInMeter
-      if (nanoPart < 0) {
-        nanoPart += nanosInMeter
-        meterPart--
-      }
+    ): Distance = run {
+      val rawNanoPart = nanometers % nanosInMeter
+      val rawMeterPart = nanometers / nanosInMeter
+      val takeIfNoOverflow: Long.() -> Long? = { takeUnless { rawNanoPart < 0 } }
+
+      val nanoPart = rawNanoPart.takeIfNoOverflow() ?: rawNanoPart + nanosInMeter
+      val meterPart = rawMeterPart.takeIfNoOverflow() ?: rawMeterPart - 1
 
       val totalMeters = meters.safeAdd(meterPart)
       val totalNanometers = nanoPart
@@ -242,7 +246,7 @@ public class Distance private constructor(
         throw ArithmeticException("Exceeded meters capacity: $totalMeters m")
       }
 
-      return Distance(totalMeters, totalNanometers)
+      Distance(totalMeters, totalNanometers)
     }
 
     /**

@@ -15,6 +15,7 @@ import io.mehow.ruler.format.NoOpFormatter
  * or [formatter factories][LengthFormatter.Factory]. If no factories are installed Ruler uses built-in factories
  * to convert and format input.
  */
+@Suppress("VariableDefinition")
 public object Ruler : LengthConverter, LengthFormatter {
   /**
    * Default driver for lengths and distances formatting.

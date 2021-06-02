@@ -110,6 +110,7 @@ apply plugin: libs.detekt.gradlePluginId
 dependencies {
   detekt libs.detekt.formatting
   detekt libs.detekt.cli
+  detektPlugins libs.kurePotlin
 }
 
 tasks.withType(Detekt) {

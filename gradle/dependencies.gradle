@@ -48,6 +48,7 @@ ext.libs = [
         "formatting": "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}",
         "cli": "io.gitlab.arturbosch.detekt:detekt-cli:${versions.detekt}",
     ],
+    "kurePotlin": "pl.setblack:kure-potlin:0.5.0",
     "gradleVersions": [
         "gradlePlugin": "com.github.ben-manes:gradle-versions-plugin:0.39.0",
         "gradlePluginId": "com.github.ben-manes.versions",

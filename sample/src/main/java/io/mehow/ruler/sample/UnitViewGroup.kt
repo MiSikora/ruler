@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatSpinner
 import io.mehow.ruler.LengthUnit
 import androidx.appcompat.R as AppCompatR
 
+@Suppress("VariableDefinition")
 internal class UnitViewGroup @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet,

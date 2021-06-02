@@ -1,3 +1,5 @@
+@file:Suppress("ReturnStatement", "ThrowExpression")
+
 /*
  * Copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
  *
