@@ -41,7 +41,7 @@ ext.libs = [
         "assertions": "io.kotest:kotest-assertions-core-jvm:${versions.kotest}",
         "property": "io.kotest:kotest-property-jvm:${versions.kotest}",
     ],
-    "mavenPublishGradlePlugin": "com.vanniktech:gradle-maven-publish-plugin:0.15.1",
+    "mavenPublishGradlePlugin": "com.vanniktech:gradle-maven-publish-plugin:0.16.0",
     "detekt": [
         "gradlePluginId": "io.gitlab.arturbosch.detekt",
         "gradlePlugin": "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${versions.detekt}",
