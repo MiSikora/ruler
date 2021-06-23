@@ -194,7 +194,6 @@ public final class io/mehow/ruler/LogDistanceUnitFitter : io/mehow/ruler/UnitFit
 }
 
 public final class io/mehow/ruler/Measure {
-	public static final field Companion Lio/mehow/ruler/Measure$Companion;
 	public synthetic fun <init> (Ljava/math/BigDecimal;Ljava/lang/Object;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDimension ()Ljava/lang/Object;
