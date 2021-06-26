@@ -52,7 +52,8 @@ allprojects {
     kotlinOptions {
       jvmTarget = JavaVersion.VERSION_1_8.toString()
       freeCompilerArgs += [
-          "-progressive",
+          // TODO: https://youtrack.jetbrains.com/issue/KT-47476
+          //  "-progressive",
           // TODO: Remove API in tests https://youtrack.jetbrains.com/issue/KT-42718
           "-Xexplicit-api=strict",
       ]
