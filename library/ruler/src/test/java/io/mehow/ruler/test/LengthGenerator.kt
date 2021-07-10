@@ -26,15 +26,7 @@ internal class LengthGenerator<T : LengthUnit<T>> private constructor(
     }
   }
 
-  private val distanceEdgeCases = this.ranges.flatMap { range ->
-    listOfNotNull(
-        range.start,
-        range.start + Distance.Epsilon,
-        Distance.Zero,
-        range.endInclusive - Distance.Epsilon,
-        range.endInclusive,
-    ).filter { it in range }
-  }.distinct()
+  private val distanceEdgeCases = this.ranges.flatMap { it.edgeCases() }.distinct()
 
   override fun edgecase(rs: RandomSource) = units.flatMap { unit ->
     distanceEdgeCases.map { distance -> distance.toLength(unit) }
@@ -71,13 +63,21 @@ internal class LengthGenerator<T : LengthUnit<T>> private constructor(
     fun create(
       min: Distance = Distance.Min,
       max: Distance = Distance.Max,
-      vararg units: LengthUnit<*> = (SiLengthUnit.units + ImperialLengthUnit.units).toTypedArray(),
-    ) = LengthGenerator<LengthUnit<*>>(listOf(min..max), *units)
+      siUnits: Collection<SiLengthUnit> = SiLengthUnit.units,
+      imperialUnits: Collection<ImperialLengthUnit> = ImperialLengthUnit.units,
+    ) = object : Arb<Length<*>>() {
+      private val range = min..max
+      private val units = siUnits + imperialUnits
 
-    fun create(
-      ranges: List<ClosedRange<Distance>>,
-      vararg units: LengthUnit<*> = (SiLengthUnit.units + ImperialLengthUnit.units).toTypedArray(),
-    ) = LengthGenerator<LengthUnit<*>>(ranges, *units)
+      override fun edgecase(rs: RandomSource) = units.flatMap { unit ->
+        range.edgeCases().map { distance -> distance.toLength(unit) }
+      }.random(rs.random)
+
+      override fun sample(rs: RandomSource) = rs.random
+          .nextDistance(range)
+          .toLength(units.random())
+          .let(::Sample)
+    }
 
     fun unitRange(unit: SiLengthUnit) = si(listOf(
         -unit.bounds.endInclusive..-unit.bounds.start,
@@ -93,5 +93,13 @@ internal class LengthGenerator<T : LengthUnit<T>> private constructor(
       is SiLengthUnit -> unitRange(unit)
       is ImperialLengthUnit -> unitRange(unit)
     }
+
+    private fun ClosedRange<Distance>.edgeCases() = listOfNotNull(
+        start,
+        start + Distance.Epsilon,
+        Distance.Zero,
+        endInclusive - Distance.Epsilon,
+        endInclusive,
+    ).filter { it in this }
   }
 }

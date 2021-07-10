@@ -87,8 +87,14 @@ internal class LengthSpec : DescribeSpec({
       }
 
       it("uses only units that are supplied") {
-        for (unit in LengthUnit.units) {
-          checkAll(LengthGenerator.create()) { length ->
+        for (unit in SiLengthUnit.units) {
+          checkAll(LengthGenerator.si()) { length ->
+            length.withFittingUnit(listOf(unit)).unit shouldBe unit
+          }
+        }
+
+        for (unit in ImperialLengthUnit.units) {
+          checkAll(LengthGenerator.imperial()) { length ->
             length.withFittingUnit(listOf(unit)).unit shouldBe unit
           }
         }
@@ -99,8 +105,15 @@ internal class LengthSpec : DescribeSpec({
           @Suppress("UNCHECKED_CAST")
           override fun <T : LengthUnit<T>> findFit(units: Iterable<T>, length: Length<T>) = Meter as T
         }
-        for (unit in LengthUnit.units) {
-          checkAll(LengthGenerator.create()) { length ->
+
+        for (unit in SiLengthUnit.units) {
+          checkAll(LengthGenerator.si()) { length ->
+            length.withFittingUnit(listOf(unit), fitter).unit shouldBe Meter
+          }
+        }
+
+        for (unit in ImperialLengthUnit.units) {
+          checkAll(LengthGenerator.imperial()) { length ->
             length.withFittingUnit(listOf(unit), fitter).unit shouldBe Meter
           }
         }
