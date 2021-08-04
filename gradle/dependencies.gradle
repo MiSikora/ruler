@@ -13,7 +13,7 @@ ext.libs = [
     "android": [
         "gradlePlugin": "com.android.tools.build:gradle:7.1.0-alpha06",
         "x": [
-            "startupRuntime": "androidx.startup:startup-runtime:1.0.0",
+            "startupRuntime": "androidx.startup:startup-runtime:1.1.0",
             "test": [
                 "coreKtx": "androidx.test:core-ktx:${versions.androidxTest}",
                 "orchestrator": "androidx.test:orchestrator:${versions.androidxTest}",
