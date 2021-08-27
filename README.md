@@ -1,10 +1,7 @@
 # Ruler 📐
 
-![Quality Check CI](https://github.com/MiSikora/ruler/workflows/Quality%20Check/badge.svg?branch=trunk&event=push)
-![Snapshot CI](https://github.com/MiSikora/ruler/workflows/Snapshot/badge.svg?branch=trunk&event=push)
 [<img src="https://img.shields.io/maven-central/v/io.mehow.ruler/ruler.svg?label=latest%20release"/>](https://search.maven.org/search?q=g:io.mehow.ruler)
 [<img src="https://img.shields.io/nexus/s/https/oss.sonatype.org/io.mehow.ruler/ruler.svg?label=latest%20snapshot"/>](https://oss.sonatype.org/content/repositories/snapshots/io/mehow/ruler/)
-![GitHub License](https://img.shields.io/github/license/MiSikora/ruler)
 
 Distance measurements library for Kotlin and Android.
 
