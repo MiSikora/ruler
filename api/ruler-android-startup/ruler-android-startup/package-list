@@ -1,0 +1,8 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:io.mehow.ruler.startup////PointingToDeclaration/ruler-android-startup/io.mehow.ruler.startup/index.html
+$dokka.location:io.mehow.ruler.startup/RulerInitializer///PointingToDeclaration/ruler-android-startup/io.mehow.ruler.startup/-ruler-initializer/index.html
+$dokka.location:io.mehow.ruler.startup/RulerInitializer/create/#android.content.Context/PointingToDeclaration/ruler-android-startup/io.mehow.ruler.startup/-ruler-initializer/create.html
+$dokka.location:io.mehow.ruler.startup/RulerInitializer/dependencies/#/PointingToDeclaration/ruler-android-startup/io.mehow.ruler.startup/-ruler-initializer/dependencies.html
+io.mehow.ruler.startup
+

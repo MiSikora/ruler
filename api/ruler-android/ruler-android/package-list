@@ -1,0 +1,12 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:io.mehow.ruler.format////PointingToDeclaration/ruler-android/io.mehow.ruler.format/index.html
+$dokka.location:io.mehow.ruler.format//withAndroidContext/io.mehow.ruler.format.FormattingDriver.Builder#android.content.Context/PointingToDeclaration/ruler-android/io.mehow.ruler.format/with-android-context.html
+$dokka.location:io.mehow.ruler.format/ContextTranslator///PointingToDeclaration/ruler-android/io.mehow.ruler.format/-context-translator/index.html
+$dokka.location:io.mehow.ruler.format/ContextTranslator/ContextTranslator/#android.content.Context/PointingToDeclaration/ruler-android/io.mehow.ruler.format/-context-translator/-context-translator.html
+$dokka.location:io.mehow.ruler.format/ContextTranslator/locale/#/PointingToDeclaration/ruler-android/io.mehow.ruler.format/-context-translator/locale.html
+$dokka.location:io.mehow.ruler.format/ContextTranslator/symbol/#io.mehow.ruler.LengthUnit[*]/PointingToDeclaration/ruler-android/io.mehow.ruler.format/-context-translator/symbol.html
+$dokka.location:io.mehow.ruler.format/IcuFormatter///PointingToDeclaration/ruler-android/io.mehow.ruler.format/-icu-formatter/index.html
+$dokka.location:io.mehow.ruler.format/IcuFormatter/format/#io.mehow.ruler.Measure[io.mehow.ruler.LengthUnit[*]]#io.mehow.ruler.format.MeasureContext/PointingToDeclaration/ruler-android/io.mehow.ruler.format/-icu-formatter/format.html
+io.mehow.ruler.format
+
