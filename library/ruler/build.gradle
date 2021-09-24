@@ -5,9 +5,9 @@ plugins {
 test.useJUnitPlatform()
 
 dependencies {
-  testImplementation libs.kotest.runnerJunit5
-  testImplementation libs.kotest.assertions
-  testImplementation libs.kotest.property
+  testImplementation deps.kotest.runnerJunit5
+  testImplementation deps.kotest.assertions
+  testImplementation deps.kotest.property
 }
 
 apply from: "$rootDir/gradle/dokka-config.gradle"

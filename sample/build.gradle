@@ -42,6 +42,6 @@ android {
 }
 
 dependencies {
-  implementation libs.android.material
+  implementation deps.android.material
   implementation project(":library:ruler-android-startup")
 }

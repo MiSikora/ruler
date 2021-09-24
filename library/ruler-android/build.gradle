@@ -25,11 +25,11 @@ android {
 dependencies {
   api project(':library:ruler')
 
-  androidTestUtil libs.android.x.test.orchestrator
-  androidTestImplementation libs.android.x.testExtJunitKtx
-  androidTestImplementation libs.android.x.test.coreKtx
-  androidTestImplementation libs.android.x.test.runner
-  androidTestImplementation libs.kotest.assertions
+  androidTestUtil deps.android.x.test.orchestrator
+  androidTestImplementation deps.android.x.test.junitKtx
+  androidTestImplementation deps.android.x.test.coreKtx
+  androidTestImplementation deps.android.x.test.runner
+  androidTestImplementation deps.kotest.assertions
 }
 
 apply from: "$rootDir/gradle/dokka-config.gradle"

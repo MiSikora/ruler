@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
   api project(':library:ruler-android')
-  implementation libs.android.x.startupRuntime
+  implementation deps.android.x.startupRuntime
 }
 
 apply from: "$rootDir/gradle/dokka-config.gradle"
