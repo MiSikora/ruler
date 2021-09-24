@@ -1,6 +1,0 @@
-rootProject.name ='ruler-library'
-
-include ':library:ruler'
-include ':library:ruler-android'
-include ':library:ruler-android-startup'
-include ':sample'
