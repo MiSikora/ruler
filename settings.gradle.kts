@@ -8,6 +8,7 @@ include(
 )
 
 enableFeaturePreview("VERSION_CATALOGS")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {
   defaultLibrariesExtensionName.set("deps")

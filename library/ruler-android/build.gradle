@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-  api project(':library:ruler')
+  api projects.library.ruler
 
   androidTestUtil deps.android.x.test.orchestrator
   androidTestImplementation deps.android.x.test.junitKtx

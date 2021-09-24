@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-  api project(':library:ruler-android')
+  api projects.library.rulerAndroid
   implementation deps.android.x.startupRuntime
 }
 
