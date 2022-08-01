@@ -27,7 +27,7 @@ ext.libs = [
         "gradlePlugin": "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10",
         "x": [
             "binaryCompatibility": [
-                "gradlePlugin": "org.jetbrains.kotlinx:binary-compatibility-validator:0.10.0",
+                "gradlePlugin": "org.jetbrains.kotlinx:binary-compatibility-validator:0.11.0",
                 "gradlePluginId": "binary-compatibility-validator",
             ],
         ],
